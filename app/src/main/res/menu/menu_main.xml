@@ -15,4 +15,9 @@
         android:title="@string/addpost"
         app:showAsAction="always"
         android:icon="@drawable/ic_add"/>
+
+<!--    <item android:id="@+id/action_back"-->
+<!--        android:title="@string/back"-->
+<!--        app:showAsAction="always"-->
+<!--        android:icon="@drawable/ic_menu_back"/>-->
 </menu>

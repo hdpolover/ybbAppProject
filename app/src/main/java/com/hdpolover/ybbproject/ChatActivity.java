@@ -158,7 +158,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                     catch (Exception e){
                         //there is exception getting picture, set default picture
-                        Picasso.get().load(R.drawable.ic_default_img_white).into(profileIv);
+                    //    Picasso.get().load(R.drawable.ic_default_img_white).into(profileIv);
                     }
                 }
             }
@@ -414,6 +414,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        //menu.findItem(R.id.action_back).setVisible(true);
         //hide searchview, as we dont need it here
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.action_add_post).setVisible(false);
