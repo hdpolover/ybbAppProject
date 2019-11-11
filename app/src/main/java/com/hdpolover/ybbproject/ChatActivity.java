@@ -59,7 +59,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageView profileIv;
     TextView nameTv, userStatusTv;
     EditText messageEt;
-    ImageButton sendBtn;
+    ImageButton sendBtn, backBtn;
 
     //firebase auth
     FirebaseAuth firebaseAuth;
@@ -95,6 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         userStatusTv = findViewById(R.id.userStatusTv);
         messageEt = findViewById(R.id.messageEt);
         sendBtn = findViewById(R.id.sendBtn);
+        backBtn = findViewById(R.id.backBtn);
 
         //Layout for recyclerview
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -166,6 +167,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        //click button to back
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 
