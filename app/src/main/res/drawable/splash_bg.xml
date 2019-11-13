@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    to set background in splash screen -->
+    <item android:drawable="@android:color/white"/>
+
+    <item
+        android:gravity="center"
+        android:width="260dp"
+        android:height="130dp">
+
+        <bitmap
+            android:gravity="fill_horizontal|fill_vertical"
+            android:src="@drawable/logo_ybb" />
+
+    </item>
+</layer-list>
