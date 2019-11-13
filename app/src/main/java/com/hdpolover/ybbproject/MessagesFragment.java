@@ -26,7 +26,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterChatlist;
 import com.hdpolover.ybbproject.adapters.AdapterUsers;
+import com.hdpolover.ybbproject.models.ModelChat;
+import com.hdpolover.ybbproject.models.ModelChatlist;
 import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.util.ArrayList;
@@ -36,10 +39,14 @@ public class MessagesFragment extends Fragment {
 
     RecyclerView recyclerView;
     AdapterUsers adapterUsers;
+    List<ModelChatlist> chatList;
     List<ModelUser> userList;
 
-    //firebase auth
+    DatabaseReference reference;
+    FirebaseUser currentUser;
     FirebaseAuth firebaseAuth;
+
+    AdapterChatlist adapterChatlist;
 
     @Nullable
     @Override
@@ -48,20 +55,101 @@ public class MessagesFragment extends Fragment {
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        //init recyclerview
-        recyclerView = view.findViewById(R.id.user_recyclerView);
-        //set it's propertis
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = view.findViewById(R.id.recyclerView);
 
-        //init user list
-        userList = new ArrayList<>();
+        chatList = new ArrayList<>();
 
-        //getAll users
-        getAllUsers();
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chatList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    ModelChatlist chatlist = ds.getValue(ModelChatlist.class);
+                    chatList.add(chatlist);
+                }
+                loadChats();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//        //init user list
+//        userList = new ArrayList<>();
         return view;
+    }
+
+    private void loadChats() {
+        userList = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    ModelUser user = ds.getValue(ModelUser.class);
+                    for (ModelChatlist chatlist: chatList){
+                        if(user.getUid() != null && user.getUid().equals(chatlist.getId())){
+                            userList.add(user);
+                            break;
+                        }
+                    }
+                    //adapter
+                    adapterChatlist = new AdapterChatlist(getContext(), userList);
+                    //set adapter
+                    recyclerView.setAdapter(adapterChatlist);
+                    //set last message
+                    for(int i = 0; i < userList.size(); i++){
+                        lastMessage(userList.get(i).getUid());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void lastMessage(final String userId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String theLastMessage = "default";
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    ModelChat chat = ds.getValue(ModelChat.class);
+                    if(chat == null){
+                        continue;
+                    }
+                    String sender = chat.getSender();
+                    String receiver = chat.getReceiver();
+                    if(sender == null || receiver == null){
+                        continue;
+                    }
+                    if(chat.getReceiver().equals(currentUser.getUid()) &&
+                            chat.getSender().equals(userId) ||
+                            chat.getReceiver().equals(userId) &&
+                            chat.getSender().equals(currentUser.getUid())){
+                        theLastMessage = chat.getMessage();
+
+                    }
+                }
+
+                adapterChatlist.setLastMessageMap(userId, theLastMessage);
+                adapterChatlist.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getAllUsers() {
