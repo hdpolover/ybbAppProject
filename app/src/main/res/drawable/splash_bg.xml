@@ -7,7 +7,7 @@
     <item
         android:gravity="center"
         android:width="260dp"
-        android:height="130dp">
+        android:height="120dp">
 
         <bitmap
             android:gravity="fill_horizontal|fill_vertical"

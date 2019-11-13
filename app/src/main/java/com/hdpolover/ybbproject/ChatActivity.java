@@ -320,6 +320,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        //create chatlist node / child in firebase database
+
     }
 
     //for notification
