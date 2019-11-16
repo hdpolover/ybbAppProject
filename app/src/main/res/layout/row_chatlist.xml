@@ -47,7 +47,6 @@
             android:layout_toRightOf="@id/profileIv"
             android:layout_below="@+id/nameTv"/>
 
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
