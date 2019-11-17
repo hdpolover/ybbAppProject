@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.AddPostActivity;
+import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelPost;
@@ -87,6 +88,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final String pImage = postList.get(position).getpImage();
         String pTimestamp = postList.get(position).getpTime();
         String pUpvotes = postList.get(position).getpUpvotes();
+        String pComments = postList.get(position).getpComments();
 
         //convert timestamp to dd/mm/yyy hh:mm am/pm
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -98,7 +100,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         myHolder.pTimeTv.setText(pTime);
         myHolder.pTitleTv.setText(pTitle);
         myHolder.pDescTv.setText(pDesc);
-        myHolder.pUpvotesTv.setText(pUpvotes);
+        myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
+        myHolder.pCommentsTv.setText(pComments + " comments");
         //set upvotes for each post
         setUpvotes(myHolder, pId);
 
@@ -172,8 +175,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         myHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //will implement later
-                Toast.makeText(context, "Comment", Toast.LENGTH_SHORT).show();
+               //start postdetailactivity
+                Intent intent = new Intent(context, PostDetailActivity.class);
+                intent.putExtra("postId", pId);
+                context.startActivity(intent);
             }
         });
         myHolder.profileLayout.setOnClickListener(new View.OnClickListener() {
@@ -228,6 +233,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
             popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
         }
+        popupMenu.getMenu().add(Menu.NONE, 2, 0, "View Detail");
 
         //item click listener
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -245,7 +251,13 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                     intent.putExtra("key", "editPost");
                     intent.putExtra("editPostId", pId);
                     context.startActivity(intent);
+                } else if  (id == 2){
+                    //start postdetailactivity
+                    Intent intent = new Intent(context, PostDetailActivity.class);
+                    intent.putExtra("postId", pId);
+                    context.startActivity(intent);
                 }
+
                 return false;
             }
         });
@@ -341,7 +353,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_post.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv;
+        TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv, pCommentsTv;
         ImageButton moreBtn;
         Button upvoteBtn, commentBtn;
         LinearLayout profileLayout;
@@ -356,7 +368,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             pTitleTv = itemView.findViewById(R.id.pTitleTv);
             pDescTv = itemView.findViewById(R.id.pDescTv);
             pTimeTv = itemView.findViewById(R.id.pTimeTv);
-            pUpvotesTv = itemView.findViewById(R.id.pUpvoteTv);
+            pUpvotesTv = itemView.findViewById(R.id.pUpvotesTv);
+            pCommentsTv = itemView.findViewById(R.id.pCommentsTv);
             moreBtn = itemView.findViewById(R.id.moreBtn);
             upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
             commentBtn = itemView.findViewById(R.id.commentBtn);
