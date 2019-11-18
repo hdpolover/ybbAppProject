@@ -449,7 +449,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     //set data
                     try {
                         //if image is received then set
-                        Picasso.get().load(myDp).placeholder(R.drawable.ic_default_img).into(cAvatarIv);
+                        Picasso.get().load(myDp)
+                                .placeholder(R.drawable.ic_default_img)
+                                .fit()
+                                .centerInside()
+                                .into(cAvatarIv);
                     } catch (Exception e) {
                         Picasso.get().load(R.drawable.ic_default_img).into(cAvatarIv);
                     }

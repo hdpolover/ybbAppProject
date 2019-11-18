@@ -24,7 +24,7 @@
                 app:cardElevation="3dp"
                 app:contentPadding="5dp"
                 app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/cardview_shadow_end_color"
+                app:cardBackgroundColor="@color/cardview_light_background"
                 >
 
                 <LinearLayout
@@ -216,8 +216,6 @@
             android:layout_centerVertical="true"
             android:background="#fff"
             android:layout_alignParentRight="true"/>
-
-
 
     </RelativeLayout>
 

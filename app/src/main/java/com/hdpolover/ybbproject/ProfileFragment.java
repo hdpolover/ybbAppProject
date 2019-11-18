@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
@@ -78,7 +77,7 @@ public class ProfileFragment extends Fragment {
     RecyclerView postsRecyclerView;
 
     //progress dialog
-    ProgressDialog progressDialog;
+    ProgressDialog pd;
 
     //permissions constants
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -126,7 +125,7 @@ public class ProfileFragment extends Fragment {
         fab = view.findViewById(R.id.fab);
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
 
-        progressDialog = new ProgressDialog(getActivity());
+        pd = new ProgressDialog(getActivity());
 
         //we have to get info of currently signed in user
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
@@ -319,25 +318,25 @@ public class ProfileFragment extends Fragment {
                 //handle dialog item click
                 if(which == 0){
                     //edit profile
-                    progressDialog.setMessage("Updating Profile Picture");
+                    pd.setMessage("Updating Profile Picture...");
                     profileOrCoverPhoto = "image";
                     showImagePicDialog();
                     
                 }else if(which == 1){
                     //edit cover
-                    progressDialog.setMessage("Updating Cover Photo");
+                    pd.setMessage("Updating Cover Photo");
                     profileOrCoverPhoto = "cover";
                     showImagePicDialog();
 
                 }else if(which == 2){
                     //edit name
-                    progressDialog.setMessage("Updating Name");
+                    pd.setMessage("Updating Name");
                     //calling method and pass key "name" as parameter
                     showNamePhotoUpdateDialog("name");
 
                 }else if(which == 3){
                     //edit phone
-                    progressDialog.setMessage("Updating Phone");
+                    pd.setMessage("Updating Phone");
                     //calling method and pass key "phone" as parameter
                     showNamePhotoUpdateDialog("phone");
 
@@ -373,7 +372,7 @@ public class ProfileFragment extends Fragment {
 
                 if(!TextUtils.isEmpty(value)){
 
-                    progressDialog.show();
+                    pd.show();
                     HashMap<String, Object> result = new HashMap<>();
                     result.put(keyParam, value);
 
@@ -382,13 +381,13 @@ public class ProfileFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     //updated
-                                    progressDialog.dismiss();
+                                    pd.dismiss();
                                     Toast.makeText(getActivity(),"Updated...",Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
+                            pd.dismiss();
                             Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -556,9 +555,7 @@ public class ProfileFragment extends Fragment {
 
             if(requestCode == IMAGE_PICK_CAMERA_CODE){
                 //image is picked from camera, get url of image
-
                 uploadProfileCoverPhoto(image_uri);
-
             }
         }
 
@@ -568,7 +565,7 @@ public class ProfileFragment extends Fragment {
     private void uploadProfileCoverPhoto(Uri uri) {
 
         //show progress
-        progressDialog.show();
+        pd.show();
 
         //path and name of image to be stored in firebase storage
         //e.g Users_Profile_Cover_Imgs/image_e112312412.jpg
@@ -595,14 +592,14 @@ public class ProfileFragment extends Fragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             //url is database of user is added successfully
-                                            progressDialog.dismiss();
+                                            pd.dismiss();
                                             Toast.makeText(getActivity(),"Image Updated...",Toast.LENGTH_SHORT).show();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     //error
-                                    progressDialog.dismiss();
+                                    pd.dismiss();
                                     Toast.makeText(getActivity(),"Error Updating Image...",Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -663,7 +660,7 @@ public class ProfileFragment extends Fragment {
                             }
                         }else{
                             //error
-                            progressDialog.dismiss();
+                            pd.dismiss();
                             Toast.makeText(getActivity(),"Some error occured",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -671,7 +668,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 //there were some error
-                progressDialog.dismiss();
+                pd.dismiss();
                 Toast.makeText(getActivity(),""+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });

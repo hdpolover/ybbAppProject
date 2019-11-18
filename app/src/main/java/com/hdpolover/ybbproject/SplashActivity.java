@@ -4,18 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 
 public class SplashActivity extends AppCompatActivity {
 
+    private int loadingTime = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        //jump to dashboard activity after splash screen
-        startActivity(new Intent(this, DashboardActivity.class));
-        finish();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //jump to dashboard activity after splash screen
+                Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, loadingTime);
     }
-
 }

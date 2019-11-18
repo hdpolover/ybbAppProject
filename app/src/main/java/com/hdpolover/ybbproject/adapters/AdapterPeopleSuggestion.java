@@ -45,7 +45,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
+public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleSuggestion.MyHolder> {
 
     Context context;
     List<ModelPost> postList;
@@ -56,8 +56,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     private  DatabaseReference postsRef;
 
     boolean mProcessUpvote = false;
+    private MyHolder holder;
+    private int position;
 
-    public  AdapterPost(Context context, List<ModelPost> postList) {
+    public  AdapterPeopleSuggestion(Context context, List<ModelPost> postList) {
         this.context = context;
         this.postList = postList;
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -69,133 +71,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //inflate layout row_post.xml
-        View view = LayoutInflater.from(context).inflate(R.layout.row_posts, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_people_suggestion, viewGroup, false);
 
         return new MyHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyHolder myHolder, final int position) {
-        //get data
-        final String uid = postList.get(position).getUid();
-        String uEmail = postList.get(position).getuEmail();
-        String uName = postList.get(position).getuName();
-        String uDp = postList.get(position).getuDp();
-        final String pId = postList.get(position).getpId();
-        String pTitle = postList.get(position).getpTitle();
-        String pDesc = postList.get(position).getpDesc();
-        final String pImage = postList.get(position).getpImage();
-        String pTimestamp = postList.get(position).getpTime();
-        String pUpvotes = postList.get(position).getpUpvotes();
-        String pComments = postList.get(position).getpComments();
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
-        //convert timestamp to dd/mm/yyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(pTimestamp));
-        String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
-
-        //set data
-        myHolder.uNameTv.setText(uName);
-        myHolder.pTimeTv.setText(pTime);
-        myHolder.pTitleTv.setText(pTitle);
-        myHolder.pDescTv.setText(pDesc);
-        myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
-        myHolder.pCommentsTv.setText(pComments + " comments");
-        //set upvotes for each post
-        setUpvotes(myHolder, pId);
-
-        //set user dp
-        try {
-            Picasso.get().load(uDp)
-                    .placeholder(R.drawable.ic_default_img)
-                    .centerInside()
-                    .into(myHolder.uPictureIv);
-        } catch (Exception e) {
-
-        }
-
-        //set post image
-        //if no image then hide the imageview
-        if (pImage.equals("noImage")) {
-            //hide imageview
-            myHolder.pImageIv.setVisibility(View.GONE);
-        } else {
-            //hide imageview
-            myHolder.pImageIv.setVisibility(View.VISIBLE);
-
-            try {
-                Picasso.get().load(pImage)
-                        .fit()
-                        .centerInside()
-                        .into(myHolder.pImageIv);
-            } catch (Exception e) {
-
-            }
-        }
-
-        //handle button clicks
-        myHolder.moreBtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                showMoreOptions(myHolder.moreBtn, uid, myUid, pId, pImage);
-            }
-        });
-        myHolder.upvoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //get total number of upvotes for the post, whose like buton is clicked
-                //if currently signed in user has not liked it before
-                //increase value by 1, otherwose decrease value by 1
-                final int pUpvotes = Integer.parseInt(postList.get(position).getpUpvotes());
-                mProcessUpvote = true;
-                //get id of the post clicked
-                final String postIde = postList.get(position).getpId();
-                upvotesRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (mProcessUpvote) {
-                            if (dataSnapshot.child(postIde).hasChild(myUid)) {
-                                //already upvoted, so remove upvote
-                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes-1));
-                                upvotesRef.child(postIde).child(myUid).removeValue();
-                                mProcessUpvote = false;
-                            }
-                             else {
-                                 //not upvotes, upvte it
-                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes+1));
-                                upvotesRef.child(postIde).child(myUid).setValue("Upvotes");
-                                mProcessUpvote = false;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
-        myHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               //start postdetailactivity
-                Intent intent = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("postId", pId);
-                context.startActivity(intent);
-            }
-        });
-        myHolder.profileLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //will be used to go to userprofileactivity
-                //with uid to show user's posts
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", uid);
-                context.startActivity(intent);
-            }
-        });
     }
 
     private void setUpvotes(final MyHolder holder, final String postKey) {
@@ -356,7 +239,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     //view holder class
     class MyHolder extends RecyclerView.ViewHolder {
-        //view from row_post.xml
+        //view from row_people_suggestion.xml
         ImageView uPictureIv, pImageIv;
         TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv, pCommentsTv;
         ImageButton moreBtn;
