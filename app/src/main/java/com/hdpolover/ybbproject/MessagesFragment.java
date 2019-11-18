@@ -100,11 +100,14 @@ public class MessagesFragment extends Fragment {
     }
 
     private void showContact() {
-        ContactFragment fragment = new ContactFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_messages, fragment);
-        fragmentTransaction.commit();
+//        ContactFragment fragment = new ContactFragment();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_messages, fragment);
+//        fragmentTransaction.commit();
+
+        Intent intent = new Intent(getActivity(), ContactActivity.class);
+        startActivity(intent);
     }
 
 
