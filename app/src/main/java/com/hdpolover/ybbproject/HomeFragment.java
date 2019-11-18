@@ -3,6 +3,7 @@ package com.hdpolover.ybbproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterPeopleSuggestion;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
+import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
@@ -38,9 +41,13 @@ public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FloatingActionButton fab;
 
-    RecyclerView recyclerView;
+    RecyclerView postRecyclerView;
     List<ModelPost> postList;
     AdapterPost adapterPost;
+
+    RecyclerView peopleSuggestionRecyclerView;
+    List<ModelPeopleSuggestion> peopleList;
+    AdapterPeopleSuggestion adapterPeopleSuggestion;
 
     public HomeFragment() {
         //required empty constructor
@@ -56,20 +63,56 @@ public class HomeFragment extends Fragment {
         fab = view.findViewById(R.id.fab);
 
         //recycler view and its properties
-        recyclerView = view.findViewById(R.id.postRecyclerView);
+        postRecyclerView = view.findViewById(R.id.postRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //show newest post first, for this load from last
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
         //set layput to recycler view
-        recyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.setLayoutManager(layoutManager);
+
+        //recycler view and its properties
+        peopleSuggestionRecyclerView = view.findViewById(R.id.peopleRecyclerView);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
+        //set layout to recycler view
+        peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
 
         //init post list
         postList = new ArrayList<>();
+        peopleList = new ArrayList<>();
 
+        loadPeople();
         loadPosts();
 
         return view;
+    }
+
+    private void loadPeople() {
+        //path of all posts
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        //get all data from this ref
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                peopleList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ModelPeopleSuggestion modelPeopleSuggestion = ds.getValue(ModelPeopleSuggestion.class);
+
+                    peopleList.add(modelPeopleSuggestion);
+
+                    //adapter
+                    adapterPeopleSuggestion = new AdapterPeopleSuggestion(getActivity(), peopleList);
+                    //set adapter recycler view
+                    peopleSuggestionRecyclerView.setAdapter(adapterPeopleSuggestion);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //in case of error
+//                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadPosts() {
@@ -88,7 +131,7 @@ public class HomeFragment extends Fragment {
                     //adapter
                     adapterPost = new AdapterPost(getActivity(), postList);
                     //set adapter recycler view
-                    recyclerView.setAdapter(adapterPost);
+                    postRecyclerView.setAdapter(adapterPost);
                 }
             }
 
@@ -119,7 +162,7 @@ public class HomeFragment extends Fragment {
                     //adapter
                     adapterPost = new AdapterPost(getActivity(), postList);
                     //set adapter recycler view
-                    recyclerView.setAdapter(adapterPost);
+                    postRecyclerView.setAdapter(adapterPost);
                 }
             }
 

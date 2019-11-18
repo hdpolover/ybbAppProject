@@ -201,7 +201,7 @@ public class MessagesFragment extends Fragment {
 //                    //adapter
 //                    adapterUsers = new AdapterUsers(getActivity(), userList);
 //                    //set adapter to recycler view
-//                    recyclerView.setAdapter(adapterUsers);
+//                    postRecyclerView.setAdapter(adapterUsers);
 //                }
 //            }
 //
@@ -244,7 +244,7 @@ public class MessagesFragment extends Fragment {
 //                    //refresh adapter
 //                    adapterUsers.notifyDataSetChanged();
 //                    //set adapter to recycler view
-//                    recyclerView.setAdapter(adapterUsers);
+//                    postRecyclerView.setAdapter(adapterUsers);
 //                }
 //            }
 //

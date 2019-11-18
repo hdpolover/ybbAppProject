@@ -10,6 +10,10 @@ public class ModelPeopleSuggestion {
         this.uName = uName;
     }
 
+    public ModelPeopleSuggestion() {
+
+    }
+
     public String getUid() {
         return uid;
     }
