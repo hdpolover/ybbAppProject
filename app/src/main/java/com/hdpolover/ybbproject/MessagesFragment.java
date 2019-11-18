@@ -16,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,11 +50,14 @@ public class MessagesFragment extends Fragment {
     FirebaseAuth firebaseAuth;
 
     AdapterChatlist adapterChatlist;
+    FloatingActionButton fab;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_messages, container, false);
+
+        fab = view.findViewById(R.id.fab);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -78,10 +84,29 @@ public class MessagesFragment extends Fragment {
 
             }
         });
+
+
+        //handle fab click
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showContact();
+            }
+        });
+
 //        //init user list
 //        userList = new ArrayList<>();
         return view;
     }
+
+    private void showContact() {
+        ContactFragment fragment = new ContactFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_messages, fragment);
+        fragmentTransaction.commit();
+    }
+
 
     private void loadChats() {
         userList = new ArrayList<>();

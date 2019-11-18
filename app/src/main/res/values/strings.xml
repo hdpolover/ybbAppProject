@@ -9,4 +9,7 @@
     <string name="search">Search</string>
     <string name="back">Back</string>
     <string name="forgot_password">Forgot Password? Recover</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
