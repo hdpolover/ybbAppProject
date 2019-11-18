@@ -7,7 +7,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,7 +17,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/peopleRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/postRecyclerView"

@@ -38,6 +38,7 @@ import com.hdpolover.ybbproject.AddPostActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
+import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.hdpolover.ybbproject.models.ModelPost;
 import com.squareup.picasso.Picasso;
 
@@ -48,23 +49,13 @@ import java.util.Locale;
 public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleSuggestion.MyHolder> {
 
     Context context;
-    List<ModelPost> postList;
+    List<ModelPeopleSuggestion> peopleList;
 
-    String myUid;
-
-    private DatabaseReference upvotesRef; //for upvotes datavase node
-    private  DatabaseReference postsRef;
-
-    boolean mProcessUpvote = false;
     private MyHolder holder;
-    private int position;
 
-    public  AdapterPeopleSuggestion(Context context, List<ModelPost> postList) {
+    public  AdapterPeopleSuggestion(Context context, List<ModelPeopleSuggestion> peopleList) {
         this.context = context;
-        this.postList = postList;
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        this.peopleList = peopleList;
     }
 
     @NonNull
@@ -81,186 +72,26 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
 
     }
 
-    private void setUpvotes(final MyHolder holder, final String postKey) {
-        upvotesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(postKey).hasChild(myUid)) {
-                    //user has liked this post
-//                    to indicate that the post is liked by this signedin user
-//                            change drawable left icon of upvote button
-//                            change text of upvote button from upvote to upvoted
-                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
-                    holder.upvoteBtn.setText("Upvoted");
-                } else {
-                    //user has not liked this post
-                    //to indicate that the post is not liked by this signedin user
-                    //change drawable left icon of upvote button
-                    //change text of upvote button from upvoted to upvote
-                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
-                    holder.upvoteBtn.setText("Upvotes");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void showMoreOptions(ImageButton moreBtn, String uid, final String myUid, final String pId, final String pImage) {
-        //creating popup menu currently having delete
-        PopupMenu popupMenu = new PopupMenu(context, moreBtn, Gravity.END);
-
-        //show delete option in only post of currently signedin user
-        if (uid.equals(myUid)) {
-            //add items in menu
-            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
-            popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
-        }
-        popupMenu.getMenu().add(Menu.NONE, 2, 0, "View Detail");
-
-        //item click listener
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == 0) {
-                    //delete is clicked
-                    beginDelete(pId, pImage);
-                }
-                else if (id == 1) {
-                    //edit is clicked
-                    //start addpostactivity with key "edit post" and the id of the post clicked
-                    Intent intent = new Intent(context, AddPostActivity.class);
-                    intent.putExtra("key", "editPost");
-                    intent.putExtra("editPostId", pId);
-                    context.startActivity(intent);
-                } else if  (id == 2){
-                    //start postdetailactivity
-                    Intent intent = new Intent(context, PostDetailActivity.class);
-                    intent.putExtra("postId", pId);
-                    context.startActivity(intent);
-                }
-
-                return false;
-            }
-        });
-        //show menu
-        popupMenu.show();
-    }
-
-    private void beginDelete(String pId, String pImage) {
-        //post can be with or without image
-        if (pImage.equals("noImage")) {
-            //post is without image
-            deleteWithoutImage(pId);
-        } else {
-            //post is with image
-            deleteWithImage(pId, pImage);
-        }
-    }
-
-    private void deleteWithoutImage(String pId) {
-        //progress bar
-        final ProgressDialog pd = new ProgressDialog(context);
-        pd.setMessage("Deleting post...");
-
-        Query fQuery = FirebaseDatabase.getInstance().getReference("Posts")
-                .orderByChild("pId").equalTo(pId);
-        fQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ds.getRef().removeValue(); //remove values from firebase where pid matches
-                }
-                //deleted
-                Toast.makeText(context, "Deleted successfully", Toast.LENGTH_SHORT).show();
-                pd.dismiss();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void deleteWithImage(final String pId, String pImage) {
-        //progress bar
-        final ProgressDialog pd = new ProgressDialog(context);
-        pd.setMessage("Deleting post...");
-
-        //steps: 1. delte image using uri 2. delete from database
-        StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(pImage);
-        picRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        //image deleted, now delete database
-                        Query fQuery = FirebaseDatabase.getInstance().getReference("Posts")
-                                .orderByChild("pId").equalTo(pId);
-                        fQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                                    ds.getRef().removeValue(); //remove values from firebase where pid matches
-                                }
-                                //deleted
-                                Toast.makeText(context, "Deleted successfully", Toast.LENGTH_SHORT).show();
-                                pd.dismiss();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //failed, can;t go further
-                        pd.dismiss();
-                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-    }
-
     @Override
     public int getItemCount() {
-        return postList.size();
+        return peopleList.size();
     }
 
     //view holder class
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_people_suggestion.xml
-        ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv, pCommentsTv;
-        ImageButton moreBtn;
-        Button upvoteBtn, commentBtn;
+        ImageView profileImageIv;
+        TextView profileNameTv;
+        Button followBtn;
         LinearLayout profileLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             //init views
-            uPictureIv = itemView.findViewById(R.id.uPictureIv);
-            pImageIv = itemView.findViewById(R.id.pImageIv);
-            uNameTv = itemView.findViewById(R.id.uNameTv);
-            pTitleTv = itemView.findViewById(R.id.pTitleTv);
-            pDescTv = itemView.findViewById(R.id.pDescTv);
-            pTimeTv = itemView.findViewById(R.id.pTimeTv);
-            pUpvotesTv = itemView.findViewById(R.id.pUpvotesTv);
-            pCommentsTv = itemView.findViewById(R.id.pCommentsTv);
-            moreBtn = itemView.findViewById(R.id.moreBtn);
-            upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
-            commentBtn = itemView.findViewById(R.id.commentBtn);
+            profileImageIv = itemView.findViewById(R.id.profileImageIv);
+            profileNameTv = itemView.findViewById(R.id.profileNameTv);
+            followBtn = itemView.findViewById(R.id.followBtn);
             profileLayout = itemView.findViewById(R.id.profileLayout);
         }
     }
