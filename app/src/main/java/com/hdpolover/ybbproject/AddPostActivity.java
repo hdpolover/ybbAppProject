@@ -423,7 +423,7 @@ public class AddPostActivity extends AppCompatActivity {
             Bitmap bitmap = ((BitmapDrawable)imageIv.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //image compress
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
             byte[] data = baos.toByteArray();
 
             //post with image
@@ -451,6 +451,8 @@ public class AddPostActivity extends AppCompatActivity {
                                     hashMap.put("pDesc", desc);
                                     hashMap.put("pImage", downloadUri);
                                     hashMap.put("pTime", timeStamp);
+                                    hashMap.put("pUpvotes", "0");
+                                    hashMap.put("pComments", "0");
 
                                     //path to store post data
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
@@ -503,6 +505,8 @@ public class AddPostActivity extends AppCompatActivity {
             hashMap.put("pDesc", desc);
             hashMap.put("pImage", "noImage");
             hashMap.put("pTime", timeStamp);
+            hashMap.put("pUpvotes", "0");
+            hashMap.put("pComments", "0");
 
             //path to store post data
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
