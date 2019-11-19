@@ -125,8 +125,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
             try {
                 Picasso.get().load(pImage)
-                        .fit()
-                        .centerInside()
                         .into(myHolder.pImageIv);
             } catch (Exception e) {
 
