@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -234,7 +235,7 @@ public class AddPostActivity extends AppCompatActivity {
         Bitmap bitmap = ((BitmapDrawable)imageIv.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         //image compress
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         byte[] data = baos.toByteArray();
 
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
@@ -307,7 +308,7 @@ public class AddPostActivity extends AppCompatActivity {
                         Bitmap bitmap = ((BitmapDrawable)imageIv.getDrawable()).getBitmap();
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         //image compress
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
                         byte[] data = baos.toByteArray();
 
                         StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);

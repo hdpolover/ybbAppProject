@@ -21,7 +21,8 @@
             android:hint="Enter Title"
             android:singleLine="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
 
 <!--        Image view for post image-->
         <ImageView

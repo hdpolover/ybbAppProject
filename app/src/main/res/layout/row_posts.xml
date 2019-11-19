@@ -26,7 +26,6 @@
                 android:id="@+id/uPictureIv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_default_img"/>
 
             <LinearLayout
