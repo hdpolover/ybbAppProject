@@ -2,14 +2,19 @@ package com.hdpolover.ybbproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -77,11 +82,11 @@ public class ContactActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelUser modelUser = ds.getValue(ModelUser.class);
 
                     //get all users except currently signed in user
-                    if(!modelUser.getUid().equals(fUser.getUid())){
+                    if (!modelUser.getUid().equals(fUser.getUid())) {
                         userList.add(modelUser);
                     }
 
@@ -110,7 +115,7 @@ public class ContactActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelUser modelUser = ds.getValue(ModelUser.class);
 
                     //conditions to fulfil search
@@ -119,9 +124,9 @@ public class ContactActivity extends AppCompatActivity {
 
                     //get all searched users except currently signed in user
 
-                    if(!modelUser.getUid().equals(fUser.getUid())){
-                        if(modelUser.getName().toLowerCase().contains(query.toLowerCase()) ||
-                                modelUser.getEmail().toLowerCase().contains(query.toLowerCase())){
+                    if (!modelUser.getUid().equals(fUser.getUid())) {
+                        if (modelUser.getName().toLowerCase().contains(query.toLowerCase()) ||
+                                modelUser.getEmail().toLowerCase().contains(query.toLowerCase())) {
                             userList.add(modelUser);
                         }
                     }
@@ -140,5 +145,49 @@ public class ContactActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //hide searchview, as we dont need it here
+        menu.findItem(R.id.action_logout).setVisible(false);
+        menu.findItem(R.id.action_add_post).setVisible(false);
+
+        //searchView
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        //search listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //called when user press search button from keyboard
+                //if search query is not empty the search
+                if (!TextUtils.isEmpty(s.trim())) {
+                    //search text contains text, search it
+                    searchUsers(s);
+                } else {
+                    //search text empty, get all users
+                    getAllUsers();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                //called whenever user press any single letter
+                //if search query is not empty the search
+                if (!TextUtils.isEmpty(s.trim())) {
+                    //search text contains text, search it
+                    searchUsers(s);
+                } else {
+                    //search text empty, get all users
+                    getAllUsers();
+                }
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
