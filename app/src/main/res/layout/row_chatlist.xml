@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:contentPadding="3dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/imgProfile"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <!--ImageView : online/offline status -->
@@ -21,32 +22,43 @@
         <ImageView
             android:id="@+id/onlineStatusIv"
             android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/imgProfile"
+        android:layout_toRightOf="@id/imgProfile">
 
         <!--Textview: username -->
         <TextView
             android:id="@+id/nameTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="His Name"
             android:layout_marginStart="4dp"
+            android:text="His Name"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:layout_toEndOf="@id/profileIv"
-            android:layout_toRightOf="@id/profileIv"/>
+            android:textSize="18sp" />
 
         <!--Textview: last message (by sender/receiver) -->
         <TextView
             android:id="@+id/lastMessageTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="the last message"
+            android:layout_below="@+id/nameTv"
             android:layout_marginStart="4dp"
             android:maxLines="2"
-            android:layout_toEndOf="@id/profileIv"
-            android:layout_toRightOf="@id/profileIv"
-            android:layout_below="@+id/nameTv"/>
+            android:text="the last message" />
 
     </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/imgProfile"
+        android:background="#f5f0f0" />
+
+</RelativeLayout>

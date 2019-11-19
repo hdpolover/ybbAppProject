@@ -68,11 +68,11 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance();
-        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+        String Time = DateFormat.format("hh:mm aa", cal).toString();
 
         //set data
         myHolder.messageTv.setText(message);
-        myHolder.timeTv.setText(dateTime);
+        myHolder.timeTv.setText(Time);
         try {
             Picasso.get().load(imageUrl).into(myHolder.profileIv);
         } catch (Exception e) {

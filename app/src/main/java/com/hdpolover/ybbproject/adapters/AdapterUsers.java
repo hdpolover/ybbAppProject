@@ -46,7 +46,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
-        final String hisUID  = userList.get(position).getUid();
+        final String hisUID = userList.get(position).getUid();
         String userImage = userList.get(position).getImage();
         String userName = userList.get(position).getName();
         final String userEmail = userList.get(position).getEmail();
@@ -56,11 +56,11 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         holder.mNameTv.setText(userName);
         holder.mEmailTv.setText(userEmail);
         holder.mPhoneTv.setText(userPhone);
-        try{
+        try {
             Picasso.get().load(userImage)
                     .placeholder(R.drawable.ic_default_img)
                     .into(holder.mAvatarIv);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -69,33 +69,15 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
             @Override
             public void onClick(View view) {
                 //show dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setItems(new String[]{"Profile", "Chat"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            //profile clocked
-                            //Click user from user list to start chatting/messaging
-                            //Start activity by putting UID of receiver
-                            //we will use that UID to identify the user we are gonna chat
+                //chat clicked
+                //Click user from user list to start chatting/messaging
+                //Start activity by putting UID of receiver
+                //we will use that UID to identify the user we are gonna chat
 
-                            Intent intent = new Intent(context, UserProfileActivity.class);
-                            intent.putExtra("uid", hisUID);
-                            context.startActivity(intent);
-                        }
-                        if (which == 1) {
-                            //chat clicked
-                            //Click user from user list to start chatting/messaging
-                            //Start activity by putting UID of receiver
-                            //we will use that UID to identify the user we are gonna chat
+                Intent intent = new Intent(context, ChatActivity.class);
+                intent.putExtra("hisUid", hisUID);
+                context.startActivity(intent);
 
-                            Intent intent = new Intent(context, ChatActivity.class);
-                            intent.putExtra("hisUid", hisUID);
-                            context.startActivity(intent);
-                        }
-                    }
-                });
-                builder.create().show();
             }
         });
 
@@ -107,12 +89,12 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
     }
 
     //view holder class
-    class MyHolder extends RecyclerView.ViewHolder{
+    class MyHolder extends RecyclerView.ViewHolder {
 
         ImageView mAvatarIv;
         TextView mNameTv, mEmailTv, mPhoneTv;
 
-        public MyHolder(@NonNull View itemView){
+        public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             //init views
