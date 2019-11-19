@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
 
         //recycler view and its properties
         peopleSuggestionRecyclerView = view.findViewById(R.id.peopleRecyclerView);
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         //set layout to recycler view
         peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,18 +41,25 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
         final String uid = peopleList.get(position).getUid();
-        String name = peopleList.get(position).getuName();
-        String udp = peopleList.get(position).getuDp();
+        String name = peopleList.get(position).getName();
+        String image = peopleList.get(position).getImage();
 
         //set the data
         holder.profileNameTv.setText(name);
 
         //set user profile
         try {
-            Picasso.get().load(udp).placeholder(R.drawable.ic_default_img).into(holder.profileImageIv);
+            Picasso.get().load(image).placeholder(R.drawable.ic_default_img).into(holder.profileImageIv);
         } catch (Exception e) {
 
         }
+
+        holder.followBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Followed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

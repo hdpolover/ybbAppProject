@@ -2,16 +2,16 @@ package com.hdpolover.ybbproject.models;
 
 public class ModelPeopleSuggestion {
 
-    String uid, uDp, uName;
-
-    public ModelPeopleSuggestion(String uid, String uDp, String uName) {
-        this.uid = uid;
-        this.uDp = uDp;
-        this.uName = uName;
-    }
+    String uid, image, name;
 
     public ModelPeopleSuggestion() {
 
+    }
+
+    public ModelPeopleSuggestion(String uid, String image, String name) {
+        this.uid = uid;
+        this.image = image;
+        this.name = name;
     }
 
     public String getUid() {
@@ -22,19 +22,19 @@ public class ModelPeopleSuggestion {
         this.uid = uid;
     }
 
-    public String getuDp() {
-        return uDp;
+    public String getImage() {
+        return image;
     }
 
-    public void setuDp(String uDp) {
-        this.uDp = uDp;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getuName() {
-        return uName;
+    public String getName() {
+        return name;
     }
 
-    public void setuName(String uName) {
-        this.uName = uName;
+    public void setName(String name) {
+        this.name = name;
     }
 }
