@@ -86,8 +86,10 @@ public class ContactActivity extends AppCompatActivity {
                     ModelUser modelUser = ds.getValue(ModelUser.class);
 
                     //get all users except currently signed in user
-                    if (!modelUser.getUid().equals(fUser.getUid())) {
-                        userList.add(modelUser);
+                    if (modelUser.getUid() != null) {
+                        if (!modelUser.getUid().equals(fUser.getUid())) {
+                            userList.add(modelUser);
+                        }
                     }
 
                     //adapter
