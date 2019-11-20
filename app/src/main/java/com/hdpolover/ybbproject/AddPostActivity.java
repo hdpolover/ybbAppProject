@@ -67,12 +67,12 @@ public class AddPostActivity extends AppCompatActivity {
     String[] storagePermissions;
 
     //views
-    EditText titleEt, descEt;
+    EditText descEt;
     ImageView imageIv;
     Button uploadBtn;
 
     //info of post to be edited
-    String editTitle, editDesc, editImage;
+    String editDesc, editImage;
 
     //user info
     String name, email, uid, dp;
@@ -83,13 +83,16 @@ public class AddPostActivity extends AppCompatActivity {
     //progress bar
     ProgressDialog pd;
 
+    String isUpdateKey = "";
+    String editPostId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Add A New Post");
+        actionBar.setTitle("Add New Post");
         //enable back button in action bar
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -104,28 +107,22 @@ public class AddPostActivity extends AppCompatActivity {
         checkUserStatus();
 
         //init views
-        titleEt = findViewById(R.id.pTitleEt);
         descEt = findViewById(R.id.pDescEt);
         imageIv = findViewById(R.id.pImageIv);
-        uploadBtn = findViewById(R.id.pUploadBtn);
 
         //get data through intent from previous activity's adapter
         Intent intent = getIntent();
-        final String isUpdtateKey = ""+intent.getStringExtra("key");
-        final String editPostId = ""+intent.getStringExtra("editPostId");
+        isUpdateKey = ""+intent.getStringExtra("key");
+        editPostId = ""+intent.getStringExtra("editPostId");
         //validate if we came here to update post ie came from adapterpost
-        if(isUpdtateKey.equals("editPost")) {
+        if(isUpdateKey.equals("editPost")) {
             //update
             actionBar.setTitle("Update Post");
-            uploadBtn.setText("Update");
             loadPostData(editPostId);
         } else {
             //add
-            actionBar.setTitle("Add a New Post");
-            uploadBtn.setText("Upload");
+            actionBar.setTitle("Add New Post");
         }
-
-        actionBar.setSubtitle(email);
 
         //get info from current user
         userDbRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -153,56 +150,31 @@ public class AddPostActivity extends AppCompatActivity {
                 showImagePickDialog();
             }
         });
-
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //get data
-                String title = titleEt.getText().toString().trim();
-                String desc = descEt.getText().toString().trim();
-                if (TextUtils.isEmpty(title)) {
-                    Toast.makeText(AddPostActivity.this, "Enter title...", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(desc)) {
-                    Toast.makeText(AddPostActivity.this, "Enter description...", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (isUpdtateKey.equals("editPost")) {
-                    beginUpdate(title, desc, editPostId);
-                } else {
-                    uploadData(title, desc);
-                }
-            }
-        });
-
     }
 
-    private void beginUpdate(String title, String desc, String editPostId) {
+    private void beginUpdate(String desc, String editPostId) {
         pd.setMessage("Updating Post...");
         pd.show();
 
         if (!editImage.equals("noImage")) {
             //without image
-            updateWasWithImage(title, desc, editPostId);
+            updateWasWithImage(desc, editPostId);
         } else if (imageIv.getDrawable() != null){
             //with image
-            updateWithNowImage(title, desc, editPostId);
+            updateWithNowImage(desc, editPostId);
         } else {
             //without image
-            updateWithoutImage(title, desc, editPostId);
+            updateWithoutImage(desc, editPostId);
         }
     }
 
-    private void updateWithoutImage(String title, String desc, String editPostId) {
+    private void updateWithoutImage(String desc, String editPostId) {
         HashMap<String, Object> hashMap = new HashMap<>();
         //put post info
         hashMap.put("uid", uid);
         hashMap.put("uName", name);
         hashMap.put("uEmail", email);
         hashMap.put("uDp", dp);
-        hashMap.put("pTitle", title);
         hashMap.put("pDesc", desc);
         hashMap.put("pImage", "noImage");
 
@@ -213,7 +185,7 @@ public class AddPostActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         pd.dismiss();
-                        Toast.makeText(AddPostActivity.this, "Updated...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                         startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
                     }
@@ -227,7 +199,7 @@ public class AddPostActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateWithNowImage(final String title, final String desc, final String editPostId) {
+    private void updateWithNowImage(final String desc, final String editPostId) {
         String timeStamp = String.valueOf(System.currentTimeMillis());
         String filePathAndName = "Posts/" + "post_" + timeStamp;
 
@@ -256,7 +228,6 @@ public class AddPostActivity extends AppCompatActivity {
                             hashMap.put("uName", name);
                             hashMap.put("uEmail", email);
                             hashMap.put("uDp", dp);
-                            hashMap.put("pTitle", title);
                             hashMap.put("pDesc", desc);
                             hashMap.put("pImage", downloadUri);
 
@@ -267,7 +238,7 @@ public class AddPostActivity extends AppCompatActivity {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             pd.dismiss();
-                                            Toast.makeText(AddPostActivity.this, "Updated...", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
                                         }
@@ -292,7 +263,7 @@ public class AddPostActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateWasWithImage(final String title, final String desc, final String editPostId) {
+    private void updateWasWithImage(final String desc, final String editPostId) {
         //post is with image, delete previous image first
         StorageReference mPictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(editImage);
         mPictureRef.delete()
@@ -329,7 +300,6 @@ public class AddPostActivity extends AppCompatActivity {
                                             hashMap.put("uName", name);
                                             hashMap.put("uEmail", email);
                                             hashMap.put("uDp", dp);
-                                            hashMap.put("pTitle", title);
                                             hashMap.put("pDesc", desc);
                                             hashMap.put("pImage", downloadUri);
 
@@ -340,7 +310,7 @@ public class AddPostActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
                                                             pd.dismiss();
-                                                            Toast.makeText(AddPostActivity.this, "Updated...", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddPostActivity.this, "Post successfully Updated...", Toast.LENGTH_SHORT).show();
 
                                                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
                                                         }
@@ -383,12 +353,10 @@ public class AddPostActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     //get data
-                    editTitle = ""+ds.child("pTitle").getValue();
                     editDesc = ""+ds.child("pDesc").getValue();
                     editImage = ""+ds.child("pImage").getValue();
 
                     //set data to views
-                    titleEt.setText(editTitle);
                     descEt.setText(editDesc);
 
                     //set image
@@ -409,7 +377,7 @@ public class AddPostActivity extends AppCompatActivity {
         });
     }
 
-    private void uploadData(final String title, final String desc) {
+    private void uploadData(final String desc) {
         pd.setMessage("Publishing post...");
         pd.show();
 
@@ -448,7 +416,6 @@ public class AddPostActivity extends AppCompatActivity {
                                     hashMap.put("uEmail", email);
                                     hashMap.put("uDp", dp);
                                     hashMap.put("pId", timeStamp);
-                                    hashMap.put("pTitle", title);
                                     hashMap.put("pDesc", desc);
                                     hashMap.put("pImage", downloadUri);
                                     hashMap.put("pTime", timeStamp);
@@ -466,7 +433,6 @@ public class AddPostActivity extends AppCompatActivity {
                                                     Toast.makeText(AddPostActivity.this, "Post published...", Toast.LENGTH_SHORT).show();
 
                                                     //reset views
-                                                    titleEt.setText("");
                                                     descEt.setText("");
                                                     imageIv.setImageURI(null);
                                                     image_rui = null;
@@ -502,7 +468,6 @@ public class AddPostActivity extends AppCompatActivity {
             hashMap.put("uEmail", email);
             hashMap.put("uDp", dp);
             hashMap.put("pId", timeStamp);
-            hashMap.put("pTitle", title);
             hashMap.put("pDesc", desc);
             hashMap.put("pImage", "noImage");
             hashMap.put("pTime", timeStamp);
@@ -520,7 +485,6 @@ public class AddPostActivity extends AppCompatActivity {
                             Toast.makeText(AddPostActivity.this, "Post published...", Toast.LENGTH_SHORT).show();
 
                             //reset views
-                            titleEt.setText("");
                             descEt.setText("");
                             imageIv.setImageURI(null);
                             image_rui = null;
@@ -699,21 +663,30 @@ public class AddPostActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+    getMenuInflater().inflate(R.menu.menu_post, menu);
 
-        menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
-        return super.onCreateOptionsMenu(menu);
-    }
+    return super.onCreateOptionsMenu(menu);
+}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
+        if (id == R.id.action_publish_post) {
+            //get data
+            String desc = descEt.getText().toString().trim();
+            if (TextUtils.isEmpty(desc)) {
+                Toast.makeText(AddPostActivity.this, "Write something here...", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            if (isUpdateKey.equals("editPost")) {
+                beginUpdate(desc, editPostId);
+            } else {
+                uploadData(desc);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

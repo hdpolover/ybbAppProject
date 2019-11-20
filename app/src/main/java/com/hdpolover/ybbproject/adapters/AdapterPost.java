@@ -82,7 +82,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         String uName = postList.get(position).getuName();
         String uDp = postList.get(position).getuDp();
         final String pId = postList.get(position).getpId();
-        String pTitle = postList.get(position).getpTitle();
         String pDesc = postList.get(position).getpDesc();
         final String pImage = postList.get(position).getpImage();
         String pTimestamp = postList.get(position).getpTime();
@@ -97,7 +96,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         //set data
         myHolder.uNameTv.setText(uName);
         myHolder.pTimeTv.setText(pTime);
-        myHolder.pTitleTv.setText(pTitle);
         myHolder.pDescTv.setText(pDesc);
         myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
         myHolder.pCommentsTv.setText(pComments + " comments");
@@ -179,6 +177,15 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @Override
             public void onClick(View v) {
                //start postdetailactivity
+                Intent intent = new Intent(context, PostDetailActivity.class);
+                intent.putExtra("postId", pId);
+                context.startActivity(intent);
+            }
+        });
+        myHolder.pImageIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start postdetailactivity
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("postId", pId);
                 context.startActivity(intent);
@@ -356,7 +363,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_post.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv, pCommentsTv;
+        TextView uNameTv, pTimeTv, pDescTv, pUpvotesTv, pCommentsTv;
         ImageButton moreBtn;
         Button upvoteBtn, commentBtn;
         LinearLayout profileLayout;
@@ -368,7 +375,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             uPictureIv = itemView.findViewById(R.id.uPictureIv);
             pImageIv = itemView.findViewById(R.id.pImageIv);
             uNameTv = itemView.findViewById(R.id.uNameTv);
-            pTitleTv = itemView.findViewById(R.id.pTitleTv);
             pDescTv = itemView.findViewById(R.id.pDescTv);
             pTimeTv = itemView.findViewById(R.id.pTimeTv);
             pUpvotesTv = itemView.findViewById(R.id.pUpvotesTv);

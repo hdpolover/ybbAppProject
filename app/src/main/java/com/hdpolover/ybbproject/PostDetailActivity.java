@@ -62,7 +62,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     //views
     ImageView uPictureIv, pImageIv;
-    TextView uNameTv, pTimeTv, pTitleTv, pDescTv, pUpvotesTv, pCommentsTv;
+    TextView uNameTv, pTimeTv, pDescTv, pUpvotesTv, pCommentsTv;
     ImageButton moreBtn;
     Button upvoteBtn;
     LinearLayout profileLayout;
@@ -99,7 +99,6 @@ public class PostDetailActivity extends AppCompatActivity {
         pDescTv = findViewById(R.id.pDescTv);
         pUpvotesTv = findViewById(R.id.pUpvotesTv);
         pCommentsTv = findViewById(R.id.pCommentsTv);
-        pTitleTv = findViewById(R.id.pTitleTv);
         moreBtn = findViewById(R.id.moreBtn);
         upvoteBtn = findViewById(R.id.upvoteBtn);
         profileLayout = findViewById(R.id.profileLayout);
@@ -477,7 +476,6 @@ public class PostDetailActivity extends AppCompatActivity {
                 //keep checking the post untill get the required post
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     //get data
-                    String pTitle = ""+ds.child("pTitle").getValue();
                     String pDesc = ""+ds.child("pDesc").getValue();
                     pUpvotes = ""+ds.child("pUpvotes").getValue();
                     String pTimeStamp = ""+ds.child("pTime").getValue();
@@ -494,7 +492,6 @@ public class PostDetailActivity extends AppCompatActivity {
                     String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
                     //set data
-                    pTitleTv.setText(pTitle);
                     pDescTv.setText(pDesc);
                     pUpvotesTv.setText(pUpvotes);
                     pTimeTv.setText(pTime);

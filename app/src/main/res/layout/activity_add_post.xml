@@ -13,26 +13,6 @@
         android:layout_margin="2dp"
         android:orientation="vertical">
 
-<!--        edit text for post title-->
-        <EditText
-            android:id="@+id/pTitleEt"
-            android:background="@drawable/edittextstyle"
-            android:padding="10dp"
-            android:hint="Enter Title"
-            android:singleLine="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-<!--        Image view for post image-->
-        <ImageView
-            android:id="@+id/pImageIv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@color/primaryColor"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
-
         <!--        edit text for post description-->
         <EditText
             android:id="@+id/pDescEt"
@@ -45,14 +25,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <!--        button to post-->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pUploadBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="@string/addpost"
-            android:layout_gravity="end"/>
+            <!--        Image view for post image-->
+            <ImageView
+                android:id="@+id/pImageIv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:maxHeight="150dp"
+                android:maxWidth="150dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_image"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
+
 
     </LinearLayout>
 

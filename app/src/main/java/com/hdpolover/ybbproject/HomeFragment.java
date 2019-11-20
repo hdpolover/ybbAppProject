@@ -154,8 +154,7 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     ModelPost modelPost = ds.getValue(ModelPost.class);
 
-                    if (modelPost.getpTitle().toLowerCase().contains(searchQuery.toLowerCase()) ||
-                    modelPost.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
+                    if (modelPost.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
                         postList.add(modelPost);
                     }
 

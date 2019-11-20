@@ -2,16 +2,15 @@ package com.hdpolover.ybbproject.models;
 
 public class ModelPost {
 
-    String pId, pTitle, pDesc, pUpvotes, pComments,
+    String pId, pDesc, pUpvotes, pComments,
             pImage, pTime, uid, uEmail, uDp, uName;
 
     public ModelPost() {
 
     }
 
-    public ModelPost(String pId, String pTitle, String pDesc, String pUpvotes, String pComments, String pImage, String pTime, String uid, String uEmail, String uDp, String uName) {
+    public ModelPost(String pId, String pDesc, String pUpvotes, String pComments, String pImage, String pTime, String uid, String uEmail, String uDp, String uName) {
         this.pId = pId;
-        this.pTitle = pTitle;
         this.pDesc = pDesc;
         this.pUpvotes = pUpvotes;
         this.pComments = pComments;
@@ -29,14 +28,6 @@ public class ModelPost {
 
     public void setpId(String pId) {
         this.pId = pId;
-    }
-
-    public String getpTitle() {
-        return pTitle;
-    }
-
-    public void setpTitle(String pTitle) {
-        this.pTitle = pTitle;
     }
 
     public String getpDesc() {

@@ -62,21 +62,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/pTitleTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_margin="3dp"
-            android:text="Title"
-            android:autoLink="all"/>
-
-        <TextView
             android:id="@+id/pDescTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
-            android:layout_margin="3dp"
+            android:layout_margin="5dp"
             android:textColor="@color/colorBlack"
             android:autoLink="all"/>
 
@@ -86,6 +76,7 @@
             android:layout_height="wrap_content"
             android:src="@color/colorWhite"
             android:adjustViewBounds="true"
+            android:maxWidth="250dp"
             android:scaleType="fitCenter"/>
 
         <LinearLayout

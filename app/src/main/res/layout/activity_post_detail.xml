@@ -78,19 +78,11 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/pTitleTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:text="Title"
-                        android:autoLink="all"/>
-
-                    <TextView
                         android:id="@+id/pDescTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Description"
+                        android:layout_margin="5dp"
                         android:textColor="#000"
                         android:autoLink="all"/>
 
