@@ -12,16 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Cover Photo-->
-            <ImageView
-                android:id="@+id/coverIv"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="fitXY"
-                android:background="@color/primaryDarkColor">
-
-            </ImageView>
-
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
