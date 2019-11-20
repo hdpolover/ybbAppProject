@@ -1,90 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1EDED">
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/appbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#FFF">-->
 
-        <RelativeLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="150dp"
+            android:background="#F5F5F5"
+            android:contentDescription="For more ui/ux visit www.materialuiux.com"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="120dp">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/avatarIv"
+                <RelativeLayout
+                    android:id="@+id/id_ProfileImage_RelativeLayout"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@drawable/ic_default_img_white"
-                    android:padding="5dp"
-                    android:background="@color/primaryColor"
-                    android:layout_marginLeft="20dp"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="26dp">
+
+                    <!--  Profile Image -->
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/id_Profile_Image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_default_img"
+                        app:civ_border_color="#EEEEEE"
+                        app:civ_border_width="4dp"
+                        app:civ_shadow="true"
+                        app:civ_shadow_color="#f4f5f9"
+                        app:civ_shadow_radius="10" />
+
+                    <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                        android:id="@+id/profileIv"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_default_img"
+                        app:c_background_color="#F1EDED"/>
+
+
+                    <!--  Change Image -->
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="20dp"
+                        android:src="@drawable/ic_photo_camera" />
+
+                </RelativeLayout>
+
 
                 <LinearLayout
+                    android:id="@+id/id_Info_RelativeLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="#77000000">
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="vertical">
 
+                    <!-- User Name  -->
                     <TextView
                         android:id="@+id/nameTv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:textSize="25sp"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="10dp"/>
-
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="8dp"
+                        android:text="Full Name"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/emailTv"
-                        android:layout_width="match_parent"
+                        android:id="@+id/usernameTv"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_below="@+id/nameTv"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="8dp"
+                        android:text="Username"
+                        android:textColor="@color/primaryDarkColor"
+                        android:textSize="16sp" />
 
+                        <TextView
+                            android:id="@+id/emailTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/usernameTv"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="4dp"
+                            android:text="Email"
+                            android:textColor="@color/primaryDarkColor"
+                            android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/phoneTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:textColor="#fff"
-                        android:layout_marginLeft="10dp"/>
-
+                        <TextView
+                            android:id="@+id/phoneTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="4dp"
+                            android:text="Phone"
+                            android:textColor="@color/primaryDarkColor"
+                            android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <!--                recycler view for user specific posts-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_posts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/linearLayout"/>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:tabBackground="@android:color/transparent"
+            app:tabIndicatorColor="#ff9e7f"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/primaryDarkColor"
+            app:tabTextAppearance="@style/MyCustomTextAppearance"
+            app:tabTextColor="@color/primaryLightColor"
+            android:layout_below="@+id/collapsing_toolbar"/>
 
-        </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+<!--    </androidx.appcompat.widget.Toolbar>-->
 
-<!--    Floating action button-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit_black"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        android:layout_alignParentRight="true"/>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_below="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    </androidx.viewpager.widget.ViewPager>
 </RelativeLayout>

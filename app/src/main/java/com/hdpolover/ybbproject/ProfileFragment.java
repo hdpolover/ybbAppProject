@@ -31,11 +31,13 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
+import com.hdpolover.ybbproject.adapters.AdapterProfile;
 import com.hdpolover.ybbproject.models.ModelPost;
 import com.squareup.picasso.Picasso;
 
@@ -98,6 +101,10 @@ public class ProfileFragment extends Fragment {
     //for checking profile of cover photo
     String profileOrCoverPhoto;
 
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    AdapterProfile viewAdapterProfile;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -126,6 +133,19 @@ public class ProfileFragment extends Fragment {
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
 
         pd = new ProgressDialog(getActivity());
+
+
+        /////*     initialize view   */////
+        viewPager = view.findViewById(R.id.viewPager);
+
+        /////*     initialize ViewPager   */////
+        viewAdapterProfile = new AdapterProfile(getFragmentManager());
+
+        /////*     add adapter to ViewPager  */////
+        viewPager.setAdapter(viewAdapterProfile);
+        tabLayout = view.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabRippleColor(null);
 
         //we have to get info of currently signed in user
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
@@ -172,19 +192,19 @@ public class ProfileFragment extends Fragment {
             }
         });
         
-        //fab button click
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showEditProfileDialog();
-            }
-        });
+//        //fab button click
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showEditProfileDialog();
+//            }
+//        });
 
         postList = new ArrayList<>();
 
         checkUserStatus();
 
-        loadMyPosts();
+        //loadMyPosts();
 
         return view;
     }
@@ -726,34 +746,36 @@ public class ProfileFragment extends Fragment {
         inflater.inflate(R.menu.menu_main, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
+
+        item.setVisible(false);
         //searchview
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //called when user press search button
-                if (!TextUtils.isEmpty(query)) {
-                    //search
-                    searchMyPosts(query);
-                } else {
-                    loadMyPosts();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //called when user press search button
-                if (!TextUtils.isEmpty(newText)) {
-                    //search
-                    searchMyPosts(newText);
-                } else {
-                    loadMyPosts();
-                }
-                return false;
-            }
-        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                //called when user press search button
+//                if (!TextUtils.isEmpty(query)) {
+//                    //search
+//                    searchMyPosts(query);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                //called when user press search button
+//                if (!TextUtils.isEmpty(newText)) {
+//                    //search
+//                    searchMyPosts(newText);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
