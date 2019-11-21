@@ -54,7 +54,7 @@
                 android:id="@+id/userStatusTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="online"
+                android:text="userStatus"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="6dp"
                 android:textStyle="bold"/>

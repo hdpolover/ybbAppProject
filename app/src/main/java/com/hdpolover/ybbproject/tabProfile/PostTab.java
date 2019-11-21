@@ -21,12 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +41,7 @@ public class PostTab extends Fragment {
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    StorageReference storageReference;
 
     RecyclerView postsRecyclerView;
 
@@ -56,9 +60,15 @@ public class PostTab extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_tab, container, false);
 
+        firebaseAuth = firebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        firebaseDatabase = firebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
 
         postList = new ArrayList<>();
+
         loadMyPosts();
 
         return view;
