@@ -39,7 +39,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
-    FloatingActionButton fab;
+    FloatingActionButton fab_add_post;
 
     RecyclerView postRecyclerView;
     List<ModelPost> postList;
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         //init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
-        fab = view.findViewById(R.id.fab);
+        fab_add_post = view.findViewById(R.id.fab_add_post);
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -83,6 +83,13 @@ public class HomeFragment extends Fragment {
 
         loadPeople();
         loadPosts();
+
+        fab_add_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddPostActivity.class));
+            }
+        });
 
         return view;
     }
@@ -204,6 +211,7 @@ public class HomeFragment extends Fragment {
 
         //hide logout
         menu.findItem(R.id.action_logout).setVisible(false);
+        menu.findItem(R.id.action_add_post).setVisible(false);
 
         //search view to search post by post title/desc
         MenuItem item = menu.findItem(R.id.action_search);
@@ -247,9 +255,13 @@ public class HomeFragment extends Fragment {
             firebaseAuth.signOut();
             checkUserStatus();
         }
-        if (id == R.id.action_add_post) {
-            startActivity(new Intent(getActivity(), AddPostActivity.class));
+        if (id == R.id.action_notif) {
+            Toast.makeText(getActivity(), "Notif", Toast.LENGTH_SHORT).show();
         }
+//        if (id == R.id.action_add_post) {
+//            startActivity(new Intent(getActivity(), AddPostActivity.class));
+//        }
+
 
         return super.onOptionsItemSelected(item);
     }

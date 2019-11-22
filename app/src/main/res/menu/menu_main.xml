@@ -16,6 +16,10 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_add"/>
 
+    <item android:id="@+id/action_notif"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_notif"/>
+
 <!--    <item android:id="@+id/action_back"-->
 <!--        android:title="@string/back"-->
 <!--        app:showAsAction="always"-->

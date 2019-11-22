@@ -69,7 +69,6 @@ public class AddPostActivity extends AppCompatActivity {
     //views
     EditText descEt;
     ImageView imageIv;
-    Button uploadBtn;
 
     //info of post to be edited
     String editDesc, editImage;
