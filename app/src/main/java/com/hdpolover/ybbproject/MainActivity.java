@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -15,6 +16,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     EditText mEmailEt, mPasswordEt;
     TextView notHaveAccountTv, mForgotPasswordTv;
     Button mLoginBtn;
-    SignInButton mGoogleLoginBtn;
+    ImageButton mGoogleLoginBtn;
 
     //Declare an instance of FirebaseAuth
     private FirebaseAuth mAuth;
@@ -60,11 +62,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        //for changing status bar icon colors
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+        setContentView(R.layout.activity_main);
 //        Actionbar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("YBB Project");
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setTitle("YBB Project");
 //        Enable back button
 //        actionBar.setDisplayShowHomeEnabled(true);
 //        actionBar.setDisplayHomeAsUpEnabled(true);

@@ -97,6 +97,7 @@ public class ChatActivity extends AppCompatActivity {
     String hisImage;
 
     APIService apiService;
+
     boolean notify = false;
 
     //permission constants
@@ -644,7 +645,6 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     //for notification
     private void sendNotification(final String hisUid, final String name, final String message) {
