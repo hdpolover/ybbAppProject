@@ -32,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_weight="1"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp"
@@ -40,6 +39,17 @@
                 android:text="His Message"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
+
+
+            <ImageView
+                android:id="@+id/messageIv"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:adjustViewBounds="true"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image_black"
+                android:background="@drawable/bg_sender"/>
 
             <TextView
                 android:id="@+id/timeTv"

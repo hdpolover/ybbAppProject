@@ -55,7 +55,7 @@ public class MessagesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_messages, container, false);
+        View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
         fab = view.findViewById(R.id.fab);
 
@@ -72,7 +72,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChatlist chatlist = ds.getValue(ModelChatlist.class);
                     chatList.add(chatlist);
                 }
@@ -118,10 +118,10 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelUser user = ds.getValue(ModelUser.class);
-                    for (ModelChatlist chatlist: chatList){
-                        if(user.getUid() != null && user.getUid().equals(chatlist.getId())){
+                    for (ModelChatlist chatlist : chatList) {
+                        if (user.getUid() != null && user.getUid().equals(chatlist.getId())) {
                             userList.add(user);
                             break;
                         }
@@ -131,7 +131,7 @@ public class MessagesFragment extends Fragment {
                     //set adapter
                     recyclerView.setAdapter(adapterChatlist);
                     //set last message
-                    for(int i = 0; i < userList.size(); i++){
+                    for (int i = 0; i < userList.size(); i++) {
                         lastMessage(userList.get(i).getUid());
                     }
                 }
@@ -150,22 +150,26 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String theLastMessage = "default";
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChat chat = ds.getValue(ModelChat.class);
-                    if(chat == null){
+                    if (chat == null) {
                         continue;
                     }
                     String sender = chat.getSender();
                     String receiver = chat.getReceiver();
-                    if(sender == null || receiver == null){
+                    if (sender == null || receiver == null) {
                         continue;
                     }
-                    if(chat.getReceiver().equals(currentUser.getUid()) &&
+                    if (chat.getReceiver().equals(currentUser.getUid()) &&
                             chat.getSender().equals(userId) ||
                             chat.getReceiver().equals(userId) &&
-                            chat.getSender().equals(currentUser.getUid())){
-                        theLastMessage = chat.getMessage();
+                                    chat.getSender().equals(currentUser.getUid())) {
 
+                        if (chat.getType().equals("image")) {
+                            theLastMessage = "Sent a photo";
+                        } else {
+                            theLastMessage = chat.getMessage();
+                        }
                     }
                 }
 

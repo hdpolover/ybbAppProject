@@ -125,10 +125,7 @@ public class ProfileFragment extends Fragment {
 
         //init views
         avatarIv = view.findViewById(R.id.avatarIv);
-        coverIv = view.findViewById(R.id.coverIv);
         nameTv = view.findViewById(R.id.nameTv);
-        emailTv = view.findViewById(R.id.emailTv);
-        phoneTv = view.findViewById(R.id.phoneTv);
         fab = view.findViewById(R.id.fab);
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
 
@@ -157,19 +154,10 @@ public class ProfileFragment extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     String name = "" + ds.child("name").getValue();
-                    String email = "" + ds.child("email").getValue();
-                    String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
 
                     //set data
                     nameTv.setText(name);
-                    emailTv.setText(email);
-
-                    if (phone == "") {
-                        phoneTv.setText("Phone  Null");
-                    } else {
-                        phoneTv.setText(phone);
-                    }
 
                     try {
                         //if image is received then set

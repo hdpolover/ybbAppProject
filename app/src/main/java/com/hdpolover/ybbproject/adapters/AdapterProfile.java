@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.hdpolover.ybbproject.tabProfile.AboutTab;
+import com.hdpolover.ybbproject.tabProfile.DashboardTab;
 import com.hdpolover.ybbproject.tabProfile.PostTab;
 import com.hdpolover.ybbproject.tabProfile.ScheduleTab;
 
@@ -19,10 +20,14 @@ public class AdapterProfile extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new PostTab();
+                return new DashboardTab();
             case 1:
-                return new ScheduleTab();
+                return new PostTab();
             case 2:
+                return new ScheduleTab();
+            case 3:
+                return new AboutTab();
+            case 4:
                 return new AboutTab();
             default:
                 return null;
@@ -31,17 +36,21 @@ public class AdapterProfile extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 5;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Post";
+                return "Dashboard";
             case 1:
-                return "Schedule";
+                return "Post";
             case 2:
+                return "Schedule";
+            case 3:
+                return "About";
+            case 4:
                 return "About";
             default:
                 return null;

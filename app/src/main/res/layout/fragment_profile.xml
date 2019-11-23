@@ -8,23 +8,29 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:id="@+id/appbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="#FFF">-->
+    <!--    <androidx.appcompat.widget.Toolbar-->
+    <!--        android:id="@+id/appbar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="#FFF">-->
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#F5F5F5"
-            android:contentDescription="For more ui/ux visit www.materialuiux.com"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#F5F5F5"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+        <LinearLayout
+            android:id="@+id/wrapperLL"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -34,12 +40,11 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginLeft="26dp">
+                    android:layout_marginTop="24dp">
 
                     <!--  Profile Image -->
                     <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/id_Profile_Image"
+                        android:id="@+id/profileIv"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
@@ -50,13 +55,13 @@
                         app:civ_shadow_color="#f4f5f9"
                         app:civ_shadow_radius="10" />
 
-                    <com.blogspot.atifsoftwares.circularimageview.CircularImageView
-                        android:id="@+id/profileIv"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_default_img"
-                        app:c_background_color="#F1EDED"/>
+<!--                    <com.blogspot.atifsoftwares.circularimageview.CircularImageView-->
+<!--                        android:id="@+id/profileIv"-->
+<!--                        android:layout_width="100dp"-->
+<!--                        android:layout_height="100dp"-->
+<!--                        android:scaleType="centerCrop"-->
+<!--                        android:src="@drawable/ic_default_img"-->
+<!--                        app:c_background_color="#F1EDED" />-->
 
 
                     <!--  Change Image -->
@@ -72,83 +77,135 @@
 
                 </RelativeLayout>
 
-
                 <LinearLayout
-                    android:id="@+id/id_Info_RelativeLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <!-- User Name  -->
-                    <TextView
-                        android:id="@+id/nameTv"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/id_Info_RelativeLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="8dp"
-                        android:text="Full Name"
-                        android:textColor="@color/primaryTextColor"
-                        android:textSize="20sp" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="14dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/usernameTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nameTv"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="8dp"
-                        android:text="Username Null"
-                        android:textColor="@color/primaryDarkColor"
-                        android:textSize="16sp" />
+                        <!-- User Name  -->
+                        <TextView
+                            android:id="@+id/nameTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="8dp"
+                            android:text="Full Name"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/emailTv"
+                            android:id="@+id/usernameTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/nameTv"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="8dp"
+                            android:text="jrg.pisang"
+                            android:textColor="@color/primaryDarkColor"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/professionTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/usernameTv"
                             android:layout_centerInParent="true"
                             android:layout_marginTop="4dp"
-                            android:text="Email"
+                            android:text="Software Engineer"
                             android:textColor="@color/primaryDarkColor"
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/phoneTv"
+                            android:id="@+id/locationTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:layout_marginTop="4dp"
-                            android:text="Phone"
+                            android:layout_marginTop="16dp"
+                            android:paddingBottom="14dp"
+                            android:text="Malang, Indonesia"
                             android:textColor="@color/primaryDarkColor"
                             android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_edit_black" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:tabBackground="@android:color/transparent"
-            app:tabIndicatorColor="#ff9e7f"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/primaryDarkColor"
-            app:tabTextAppearance="@style/MyCustomTextAppearance"
-            app:tabTextColor="@color/primaryLightColor"
-            android:layout_below="@+id/collapsing_toolbar"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp">
 
-<!--    </androidx.appcompat.widget.Toolbar>-->
+                <TextView
+                    android:id="@+id/followerTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 Follower"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="1dp" />
+
+                <TextView
+                    android:id="@+id/followingTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 Following"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@+id/collapsing_toolbar"
+        app:tabBackground="@android:color/transparent"
+        app:tabIndicatorColor="@color/primaryColor"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primaryDarkColor"
+        app:tabTextAppearance="@style/MyCustomTextAppearance"
+        app:tabTextColor="@color/primaryLightColor" />
+
+    <!--    </androidx.appcompat.widget.Toolbar>-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
-        android:layout_below="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/sliding_tabs"
         android:layout_marginTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
