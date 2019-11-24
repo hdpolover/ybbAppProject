@@ -34,7 +34,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_register_hero"
+                    android:src="@drawable/ic_undraw_hang_out"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"/>
             </RelativeLayout>
@@ -133,6 +133,7 @@
                 android:gravity="center"
                 android:layout_marginTop="20dp">
                 <ImageView
+                    android:id="@+id/facebookLoginBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_facebook"/>
@@ -140,19 +141,12 @@
                     android:id="@+id/googleLoginBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_google_plus"
+                    android:src="@drawable/ic_google"
                     android:background="@android:color/transparent"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-    <View
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="11dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_side_bg"/>
 
 </RelativeLayout>

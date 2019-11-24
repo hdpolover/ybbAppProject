@@ -12,8 +12,10 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +28,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -34,12 +40,18 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mEmailEt, mPasswordEt;
     Button mRegisterBtn;
     TextView mHaveAccountTv;
+    ImageButton backBtn;
+    Spinner countrySp, citySp;
 
     //    progressbar to display while registering user
     ProgressDialog progressDialog;
 
     //    Declare as instance of FirebaseAuth
     private FirebaseAuth mAuth;
+
+    //Menginisialisasi Menu Item pada Variable Array
+    private String[] Item = {"Indonesia", "Malaysia", "Brunei Darusalam", "Thailand"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
 
         changeStatusBarColor();
 
-//        Actionbar
-        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setTitle("Create Account");
-//        Enable back button
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
 //    Init
         mEmailEt = findViewById(R.id.emailEt);
         mPasswordEt = findViewById(R.id.passwordEt);
         mRegisterBtn = findViewById(R.id.registerBtn);
         mHaveAccountTv = findViewById(R.id.have_account);
+        backBtn = findViewById(R.id.backBtn);
+        countrySp = findViewById(R.id.countrySp);
+        citySp = findViewById(R.id.citySp);
 
         //In the onCreate() method, initialize the FirebaseAuth instance.
         // Initialize Firebase Auth
@@ -67,6 +75,27 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering user...");
+
+        //Spinner
+        //Inisialiasi Array Adapter dengan memasukkan String Array
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item,Item);
+
+        //Memasukan Adapter pada Spinner
+        countrySp.setAdapter(adapter);
+
+        //Mengeset listener untuk mengetahui event/aksi saat item dipilih
+        countrySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),"Saya Milih Negara "+adapter.getItem(i), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 //        handle resgister btn click
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +123,15 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+
+
+        //click button to back
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 
