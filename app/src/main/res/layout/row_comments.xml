@@ -19,7 +19,7 @@
             android:layout_height="40dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:src="@drawable/ic_default_img"/>
+            android:src="@drawable/ic_undraw_profile_pic"/>
 
         <TextView
             android:id="@+id/nameTv"

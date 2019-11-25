@@ -194,7 +194,7 @@ public class ChatActivity extends AppCompatActivity {
                     nameTv.setText(name);
                     try{
                         //image received set it to imageview in toolbar
-                        Picasso.get().load(hisImage).placeholder(R.drawable.ic_default_img_white).into(profileIv);
+                        Picasso.get().load(hisImage).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     }
                     catch (Exception e){
                         //there is exception getting picture, set default picture
@@ -552,7 +552,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_rui);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         byte[] data = baos.toByteArray(); //convert image to bytes
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(fileNameAndPath);
         ref.putBytes(data)
@@ -655,7 +655,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name+" : "+message, "New Message", hisUid, R.drawable.ic_default_img);
+                    Data data = new Data(myUid, name+" : "+message, "New Message", hisUid, R.drawable.ic_chat_black_24dp);
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)

@@ -447,14 +447,16 @@ public class PostDetailActivity extends AppCompatActivity {
 
                     //set data
                     try {
+
+                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(uPictureIv);
                         //if image is received then set
-                        Picasso.get().load(myDp)
-                                .placeholder(R.drawable.ic_default_img)
-                                .fit()
-                                .centerInside()
-                                .into(cAvatarIv);
+//                        Picasso.get().load(myDp)
+//                                .placeholder(R.drawable.ic_undraw_profile_pic)
+//                                .fit()
+//                                .centerInside()
+//                                .into(cAvatarIv);
                     } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_default_img).into(cAvatarIv);
+                        //Picasso.get().load(R.drawable.ic_undraw_profile_pic).into(cAvatarIv);
                     }
                 }
             }
@@ -518,9 +520,9 @@ public class PostDetailActivity extends AppCompatActivity {
 
                     //set user image in comment part
                     try {
-                        Picasso.get().load(hisDp).placeholder(R.drawable.ic_default_img).into(uPictureIv);
+                        Picasso.get().load(hisDp).placeholder(R.drawable.ic_undraw_profile_pic).into(uPictureIv);
                     } catch (Exception e) {
-                        Picasso.get().load(R.drawable.ic_default_img).into(uPictureIv);
+                        //Picasso.get().load(R.drawable.ic_default_img).into(uPictureIv);
                     }
                 }
             }

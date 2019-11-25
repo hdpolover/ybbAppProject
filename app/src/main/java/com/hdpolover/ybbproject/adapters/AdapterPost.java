@@ -36,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.AddPostActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
+import com.hdpolover.ybbproject.ProfileFragment;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelPost;
@@ -104,10 +105,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         //set user dp
         try {
-            Picasso.get().load(uDp)
-                    .placeholder(R.drawable.ic_default_img)
-                    .centerInside()
-                    .into(myHolder.uPictureIv);
+            Picasso.get().load(uDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(myHolder.uPictureIv);
+//            Picasso.get().load(uDp)
+//                    .placeholder(R.drawable.ic_undraw_profile_pic)
+//                    .centerInside()
+//                    .into(myHolder.uPictureIv);
         } catch (Exception e) {
 
         }

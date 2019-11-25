@@ -44,7 +44,7 @@
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_default_img"/>
+                            android:src="@drawable/ic_undraw_profile_pic"/>
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -185,7 +185,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/cAvatarIv"
-            android:src="@drawable/ic_default_img"/>
+            android:src="@drawable/ic_undraw_profile_pic"/>
 
         <EditText
             android:id="@+id/commentEt"

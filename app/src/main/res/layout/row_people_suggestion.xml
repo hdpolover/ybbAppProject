@@ -26,7 +26,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/profileImageIv"
-                android:src="@drawable/ic_default_img"/>
+                android:src="@drawable/ic_undraw_profile_pic"/>
 
             <TextView
                 android:layout_width="match_parent"

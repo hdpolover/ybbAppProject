@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
     String storagePath = "Users_Profile_Cover_Imgs/";
 
     //views from xml
-    ImageView avatarIv, coverIv;
+    ImageView avatarIv;
     TextView nameTv, emailTv, phoneTv;
     FloatingActionButton fab;
     RecyclerView postsRecyclerView;

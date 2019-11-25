@@ -17,7 +17,7 @@
 
         <com.blogspot.atifsoftwares.circularimageview.CircularImageView
             android:id="@+id/avatarIv"
-            android:src="@drawable/ic_default_img"
+            android:src="@drawable/ic_undraw_profile_pic"
             android:layout_width="70dp"
             android:layout_height="70dp"/>
 

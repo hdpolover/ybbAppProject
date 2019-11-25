@@ -58,7 +58,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         holder.mPhoneTv.setText(userPhone);
         try {
             Picasso.get().load(userImage)
-                    .placeholder(R.drawable.ic_default_img)
+                    .placeholder(R.drawable.ic_undraw_profile_pic)
                     .into(holder.mAvatarIv);
         } catch (Exception e) {
 

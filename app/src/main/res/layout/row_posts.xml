@@ -7,8 +7,7 @@
     app:cardElevation="3dp"
     app:contentPadding="5dp"
     app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="@color/cardview_light_background"
-    >
+    app:cardBackgroundColor="@color/cardview_light_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +25,7 @@
                 android:id="@+id/uPictureIv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_default_img"/>
+                android:src="@drawable/ic_undraw_profile_pic"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

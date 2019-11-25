@@ -35,14 +35,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 100 ;
+    private static final int RC_SIGN_IN = 100;
     GoogleSignInClient mGoogleSignInClient;
     boolean doubleBackToExit = false;
 
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Declare an instance of FirebaseAuth
     private FirebaseAuth mAuth;
+    DatabaseReference databaseReference;
 
     //Progress dialog
     ProgressDialog progressDialog;
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //for changing status bar icon colors
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //In the onCreate() method, initialize the FirebaseAuth instance
         // Initialize Firebase Auth
@@ -102,12 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 //input data
                 String email = mEmailEt.getText().toString();
                 String password = mPasswordEt.getText().toString().trim();
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     //invalid
                     mEmailEt.setError("Invalid email");
                     mEmailEt.setFocusable(true);
-                }
-                else{
+                } else {
                     //valid email
                     loginUser(email, password);
                 }
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         emailEt.setMinEms(16);
 
         linearLayout.addView(emailEt);
-        linearLayout.setPadding(10,10,10,10);
+        linearLayout.setPadding(10, 10, 10, 10);
 
         builder.setView(linearLayout);
 
@@ -200,10 +205,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Email sent!", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(MainActivity.this, "Failed...",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Failed...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
                 //get and show proper error messager
-                Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -265,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this,""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -283,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             //if user is signin in first time then get and show user info from google account
-                            if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                 //Get user email and uid from auth
                                 String email = user.getEmail();
                                 String uid = user.getUid();
@@ -295,14 +300,13 @@ public class MainActivity extends AppCompatActivity {
                                 //using hashmap
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put info in hasmap
-                                hashMap.put("email",email);
-                                hashMap.put("uid",uid);
-                                hashMap.put("name",name); //will add later
-                                hashMap.put("onlineStatus","online"); //will add later
-                                hashMap.put("typingTo","noOne"); //will add later
-                                hashMap.put("phone",""); //will add later
-                                hashMap.put("image",""); //will add later
-                                hashMap.put("cover",""); //will add later
+                                hashMap.put("email", email);
+                                hashMap.put("uid", uid);
+                                hashMap.put("name", name); //will add later
+                                hashMap.put("onlineStatus", "online"); //will add later
+                                hashMap.put("typingTo", "noOne"); //will add later
+                                hashMap.put("phone", ""); //will add later
+                                hashMap.put("image", ""); //will add later
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -312,15 +316,45 @@ public class MainActivity extends AppCompatActivity {
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            //show user email in toast
-                            Toast.makeText(MainActivity.this,""+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            //after logged in
-                            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                            finish();
-                            //updateUI(user);
+                            //new by ronald
+                            Query query = databaseReference.orderByChild("uid").equalTo(user.getUid());
+                            query.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    //check until required data get
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        //get data
+                                        String phone = "" + ds.child("phone").getValue();
+                                        String email = "" + ds.child("email").getValue();
+
+                                        if (phone == "") {
+                                            //new user
+                                            //show user email in toast
+                                            Toast.makeText(MainActivity.this, "" + email, Toast.LENGTH_SHORT).show();
+                                            //after logged in
+                                            startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
+                                            finish();
+                                            //updateUI(user);
+                                        } else {
+                                            //show user email in toast
+                                            Toast.makeText(MainActivity.this, "" + email, Toast.LENGTH_SHORT).show();
+                                            //after logged in
+                                            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                            finish();
+                                            //updateUI(user);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this,"Login Failed...",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
 
@@ -329,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 //get and show error message
-                Toast.makeText(MainActivity.this,""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -337,19 +371,19 @@ public class MainActivity extends AppCompatActivity {
     //double back to exit
     @Override
     public void onBackPressed() {
-        if(doubleBackToExit){
+        if (doubleBackToExit) {
             super.onBackPressed();
             return;
         }
 
         this.doubleBackToExit = true;
-        Toast.makeText(MainActivity.this, "Click back again to exit",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Click back again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 doubleBackToExit = false;
             }
-        },2000);
+        }, 2000);
     }
 }

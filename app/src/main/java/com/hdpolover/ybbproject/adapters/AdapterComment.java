@@ -71,7 +71,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
 
         //set user dp
         try {
-            Picasso.get().load(image).placeholder(R.drawable.ic_default_img).into(holder.avatarIv);
+            Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.avatarIv);
         } catch (Exception e) {
 
         }
