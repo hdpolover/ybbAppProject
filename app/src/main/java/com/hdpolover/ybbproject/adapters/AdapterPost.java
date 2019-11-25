@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,8 +54,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     String myUid;
 
-    private DatabaseReference upvotesRef; //for upvotes datavase node
-    private  DatabaseReference postsRef;
+    FirebaseUser firebaseUser;
 
     boolean mProcessUpvote = false;
 
@@ -62,13 +62,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         this.context = context;
         this.postList = postList;
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
     }
 
     @NonNull
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public AdapterPost.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //inflate layout row_post.xml
         View view = LayoutInflater.from(context).inflate(R.layout.row_posts, viewGroup, false);
 
@@ -77,35 +75,32 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder myHolder, final int position) {
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final ModelPost post = postList.get(position);
+
         //get data
-        final String uid = postList.get(position).getUid();
-        String uEmail = postList.get(position).getuEmail();
-        String uName = postList.get(position).getuName();
-        String uDp = postList.get(position).getuDp();
-        final String pId = postList.get(position).getpId();
-        String pDesc = postList.get(position).getpDesc();
+        final String uid = post.getUid();
+        final String pId = post.getpId();
         final String pImage = postList.get(position).getpImage();
-        String pTimestamp = postList.get(position).getpTime();
-        String pUpvotes = postList.get(position).getpUpvotes();
-        String pComments = postList.get(position).getpComments();
 
         //convert timestamp to dd/mm/yyy hh:mm am/pm
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(pTimestamp));
+        calendar.setTimeInMillis(Long.parseLong(post.getpTime()));
         String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 
         //set data
-        myHolder.uNameTv.setText(uName);
+        myHolder.uNameTv.setText(post.getuName());
         myHolder.pTimeTv.setText(pTime);
-        myHolder.pDescTv.setText(pDesc);
-        myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
-        myHolder.pCommentsTv.setText(pComments + " comments");
+        myHolder.pDescTv.setText(post.getpDesc());
+        //myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
+        //myHolder.pCommentsTv.setText(pComments + " comments");
         //set upvotes for each post
-        setUpvotes(myHolder, pId);
+        //setUpvotes(myHolder, pId);
 
         //set user dp
         try {
-            Picasso.get().load(uDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(myHolder.uPictureIv);
+            Picasso.get().load(post.getuDp()).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(myHolder.uPictureIv);
 //            Picasso.get().load(uDp)
 //                    .placeholder(R.drawable.ic_undraw_profile_pic)
 //                    .centerInside()
@@ -124,12 +119,43 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             myHolder.pImageIv.setVisibility(View.VISIBLE);
 
             try {
-                Picasso.get().load(pImage)
+                Picasso.get().load(post.getpImage())
                         .into(myHolder.pImageIv);
             } catch (Exception e) {
 
             }
         }
+
+
+        //publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPublisher());
+        isUpvoted(post.getpId(), myHolder.upvoteIv);
+        setCountText(myHolder.upvoteTv, myHolder.commentTv, post.getpId());
+        //getCommetns(post.getPostid(), holder.comments);
+
+        myHolder.upvoteIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (myHolder.upvoteIv.getTag().equals("upvote")) {
+                    FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getpId())
+                            .child("Upvotes")
+                            .child(firebaseUser.getUid()).setValue(true);
+                    //addNotification(post.getPublisher(), post.getPostid());
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getpId())
+                            .child("Upvotes")
+                            .child(firebaseUser.getUid()).removeValue();
+                }
+            }
+        });
+        myHolder.commentIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //start postdetailactivity
+                Intent intent = new Intent(context, PostDetailActivity.class);
+                intent.putExtra("postId", pId);
+                context.startActivity(intent);
+            }
+        });
 
         //handle button clicks
         myHolder.moreBtn.setOnClickListener(new View.OnClickListener() {
@@ -139,51 +165,51 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 showMoreOptions(myHolder.moreBtn, uid, myUid, pId, pImage);
             }
         });
-        myHolder.upvoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //get total number of upvotes for the post, whose like buton is clicked
-                //if currently signed in user has not liked it before
-                //increase value by 1, otherwose decrease value by 1
-                final int pUpvotes = Integer.parseInt(postList.get(position).getpUpvotes());
-                mProcessUpvote = true;
-                //get id of the post clicked
-                final String postIde = postList.get(position).getpId();
-                upvotesRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (mProcessUpvote) {
-                            if (dataSnapshot.child(postIde).hasChild(myUid)) {
-                                //already upvoted, so remove upvote
-                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes-1));
-                                upvotesRef.child(postIde).child(myUid).removeValue();
-                                mProcessUpvote = false;
-                            }
-                             else {
-                                 //not upvotes, upvte it
-                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes+1));
-                                upvotesRef.child(postIde).child(myUid).setValue("Upvotes");
-                                mProcessUpvote = false;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
-        myHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               //start postdetailactivity
-                Intent intent = new Intent(context, PostDetailActivity.class);
-                intent.putExtra("postId", pId);
-                context.startActivity(intent);
-            }
-        });
+//        myHolder.upvoteBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //get total number of upvotes for the post, whose like buton is clicked
+//                //if currently signed in user has not liked it before
+//                //increase value by 1, otherwose decrease value by 1
+//                final int pUpvotes = Integer.parseInt(postList.get(position).getpUpvotes());
+//                mProcessUpvote = true;
+//                //get id of the post clicked
+//                final String postIde = postList.get(position).getpId();
+//                upvotesRef.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if (mProcessUpvote) {
+//                            if (dataSnapshot.child(postIde).hasChild(myUid)) {
+//                                //already upvoted, so remove upvote
+//                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes-1));
+//                                upvotesRef.child(postIde).child(myUid).removeValue();
+//                                mProcessUpvote = false;
+//                            }
+//                             else {
+//                                 //not upvotes, upvte it
+//                                postsRef.child(postIde).child("pUpvotes").setValue(""+(pUpvotes+1));
+//                                upvotesRef.child(postIde).child(myUid).setValue("Upvotes");
+//                                mProcessUpvote = false;
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//        });
+//        myHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               //start postdetailactivity
+//                Intent intent = new Intent(context, PostDetailActivity.class);
+//                intent.putExtra("postId", pId);
+//                context.startActivity(intent);
+//            }
+//        });
         myHolder.pImageIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,34 +231,95 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         });
     }
 
-    private void setUpvotes(final MyHolder holder, final String postKey) {
+    private void setCountText(final TextView upvotes, final TextView comments, String postId){
+        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Upvotes");
         upvotesRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(postKey).hasChild(myUid)) {
-                    //user has liked this post
-//                    to indicate that the post is liked by this signedin user
-//                            change drawable left icon of upvote button
-//                            change text of upvote button from upvote to upvoted
-                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
-                    holder.upvoteBtn.setText("Upvoted");
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    upvotes.setText("Upvote");
                 } else {
-                    //user has not liked this post
-                    //to indicate that the post is not liked by this signedin user
-                    //change drawable left icon of upvote button
-                    //change text of upvote button from upvoted to upvote
-                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
-                    holder.upvoteBtn.setText("Upvotes");
+                    upvotes.setText(dataSnapshot.getChildrenCount() + "");
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Comments");
+        commentsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    comments.setText("Comment");
+                } else {
+                    comments.setText(dataSnapshot.getChildrenCount() + "");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+    private void isUpvoted(final String postid, final ImageView imageView){
+
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("Posts").child(postid).child("Upvotes");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
+                    imageView.setImageResource(R.drawable.ic_upvote_filled);
+                    imageView.setTag("upvoted");
+                } else{
+                    imageView.setImageResource(R.drawable.ic_upvote);
+                    imageView.setTag("upvote");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+//    private void setUpvotes(final MyHolder holder, final String postKey) {
+//        upvotesRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child(postKey).hasChild(myUid)) {
+//                    //user has liked this post
+////                    to indicate that the post is liked by this signedin user
+////                            change drawable left icon of upvote button
+////                            change text of upvote button from upvote to upvoted
+//                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
+//                    holder.upvoteBtn.setText("Upvoted");
+//                } else {
+//                    //user has not liked this post
+//                    //to indicate that the post is not liked by this signedin user
+//                    //change drawable left icon of upvote button
+//                    //change text of upvote button from upvoted to upvote
+//                    holder.upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
+//                    holder.upvoteBtn.setText("Upvotes");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void showMoreOptions(ImageButton moreBtn, String uid, final String myUid, final String pId, final String pImage) {
@@ -365,10 +452,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_post.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pDescTv, pUpvotesTv, pCommentsTv;
+        TextView uNameTv, pTimeTv, pDescTv;
         ImageButton moreBtn;
-        Button upvoteBtn, commentBtn;
+        //Button upvoteBtn, commentBtn;
         LinearLayout profileLayout;
+        ImageView upvoteIv, commentIv;
+        TextView upvoteTv, commentTv;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -379,12 +468,17 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             uNameTv = itemView.findViewById(R.id.uNameTv);
             pDescTv = itemView.findViewById(R.id.pDescTv);
             pTimeTv = itemView.findViewById(R.id.pTimeTv);
-            pUpvotesTv = itemView.findViewById(R.id.pUpvotesTv);
-            pCommentsTv = itemView.findViewById(R.id.pCommentsTv);
+            //pUpvotesTv = itemView.findViewById(R.id.pUpvotesTv);
+            //pCommentsTv = itemView.findViewById(R.id.pCommentsTv);
             moreBtn = itemView.findViewById(R.id.moreBtn);
-            upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
-            commentBtn = itemView.findViewById(R.id.commentBtn);
+            //upvoteBtn = itemView.findViewById(R.id.upvoteBtn);
+            //commentBtn = itemView.findViewById(R.id.commentBtn);
             profileLayout = itemView.findViewById(R.id.profileLayout);
+
+            upvoteIv = itemView.findViewById(R.id.upvoteIv);
+            commentIv = itemView.findViewById(R.id.commentIv);
+            upvoteTv = itemView.findViewById(R.id.upvoteTv);
+            commentTv = itemView.findViewById(R.id.commentTv);
         }
     }
 }

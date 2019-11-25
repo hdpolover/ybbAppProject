@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="3dp"
-    app:cardElevation="3dp"
-    app:contentPadding="5dp"
+    app:cardElevation="2dp"
+    app:contentPadding="8dp"
     app:cardUseCompatPadding="true"
     app:cardBackgroundColor="@color/cardview_light_background">
 
@@ -79,30 +79,31 @@
             android:maxWidth="250dp"
             android:scaleType="fitCenter"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:id="@+id/pUpvotesTv"
-                android:text="1.2K"
-                android:layout_weight="1"
-                android:textColor="@color/primaryColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <TextView-->
+<!--                android:id="@+id/pUpvotesTv"-->
+<!--                android:text="1.2K"-->
+<!--                android:layout_weight="1"-->
+<!--                android:textColor="@color/primaryColor"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <TextView
-                android:id="@+id/pCommentsTv"
-                android:text="1.2K"
-                android:layout_weight="1"
-                android:textAlignment="textEnd"
-                android:gravity="end"
-                android:textColor="@color/primaryColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <TextView-->
+<!--                android:id="@+id/pCommentsTv"-->
+<!--                android:text="1.2K"-->
+<!--                android:layout_weight="1"-->
+<!--                android:textAlignment="textEnd"-->
+<!--                android:gravity="end"-->
+<!--                android:textColor="@color/primaryColor"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -111,55 +112,64 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="3dp">
 
-<!--            <ImageView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:src="@drawable/ic_notif"/>-->
+            <ImageView
+                android:id="@+id/upvoteIv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_upvote"/>
 
-<!--            <TextView-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_gravity="bottom"-->
-<!--                android:textSize="15sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:text="Upvote"/>-->
+            <TextView
+                android:id="@+id/upvoteTv"
+                android:layout_width="70dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:text="Upvote"/>
 
-<!--            <ImageView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:src="@drawable/ic_notif"/>-->
+            <ImageView
+                android:id="@+id/commentIv"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_comment"/>
 
-<!--            <TextView-->
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
-<!--                android:layout_gravity="bottom"-->
-<!--                android:textSize="15sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:text="Comment"/>-->
+            <TextView
+                android:id="@+id/commentTv"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:text="Comment"/>
 
-            <Button
-                android:id="@+id/upvoteBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/ic_upvote"
-                android:drawableLeft="@drawable/ic_upvote"
-                android:drawablePadding="5dp"
-                android:text="Upvotes" />
+<!--            <Button-->
+<!--                android:id="@+id/upvoteBtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@null"-->
+<!--                android:layout_weight="1"-->
+<!--                android:drawableStart="@drawable/ic_upvote"-->
+<!--                android:drawableLeft="@drawable/ic_upvote"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:text="Upvotes" />-->
 
-            <Button
-                android:id="@+id/commentBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_comment"
-                android:drawableLeft="@drawable/ic_comment"
-                android:drawablePadding="5dp"
-                android:text="Comments" />
+<!--            <Button-->
+<!--                android:id="@+id/commentBtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@null"-->
+<!--                android:drawableStart="@drawable/ic_comment"-->
+<!--                android:drawableLeft="@drawable/ic_comment"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:text="Comments" />-->
 
         </LinearLayout>
 

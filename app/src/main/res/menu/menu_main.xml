@@ -18,7 +18,8 @@
 
     <item android:id="@+id/action_notif"
         app:showAsAction="always"
-        android:icon="@drawable/ic_notif"/>
+        android:icon="@drawable/ic_notif"
+        android:title="Notiification" />
 
 <!--    <item android:id="@+id/action_back"-->
 <!--        android:title="@string/back"-->

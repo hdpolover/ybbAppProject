@@ -133,11 +133,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:drawableLeft="@drawable/ic_upvote"
+                            android:background="@null"
                             android:drawableStart="@drawable/ic_upvote"
+                            android:drawableLeft="@drawable/ic_upvote"
                             android:drawablePadding="5dp"
-                            android:text="Upvotes"
-                            android:background="@null"/>
+                            android:text="Upvotes" />
 
                         <Button
                             android:id="@+id/commentBtn"
