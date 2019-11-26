@@ -3,108 +3,92 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="3dp"
     app:cardElevation="2dp"
-    app:contentPadding="8dp"
     app:cardUseCompatPadding="true"
+    app:contentPadding="3dp"
     app:cardBackgroundColor="@color/cardview_light_background">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/profileLayout"
+            android:id="@+id/mainLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <com.blogspot.atifsoftwares.circularimageview.CircularImageView
-                android:id="@+id/uPictureIv"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_undraw_profile_pic"/>
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/profileLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/uNameTv"
-                    android:text="Name"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+                    android:id="@+id/uPictureIv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_undraw_profile_pic"/>
 
-                <TextView
-                    android:id="@+id/pTimeTv"
-                    android:text="33 min"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/uNameTv"
+                        android:text="Name"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/pTimeTv"
+                        android:text="33 min"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/moreBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_more_vert"/>
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/moreBtn"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/pDescTv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_more_vert"/>
+                android:text="Description"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:textColor="@color/colorBlack"
+                android:autoLink="all"/>
+
+            <ImageView
+                android:id="@+id/pImageIv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@color/colorWhite"
+                android:adjustViewBounds="true"
+                android:maxWidth="200dp"
+                android:scaleType="fitCenter"
+                />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/pDescTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:layout_marginTop="10dp"
-            android:layout_margin="5dp"
-            android:textColor="@color/colorBlack"
-            android:autoLink="all"/>
-
-        <ImageView
-            android:id="@+id/pImageIv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@color/colorWhite"
-            android:adjustViewBounds="true"
-            android:maxWidth="250dp"
-            android:scaleType="fitCenter"/>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/pUpvotesTv"-->
-<!--                android:text="1.2K"-->
-<!--                android:layout_weight="1"-->
-<!--                android:textColor="@color/primaryColor"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/pCommentsTv"-->
-<!--                android:text="1.2K"-->
-<!--                android:layout_weight="1"-->
-<!--                android:textAlignment="textEnd"-->
-<!--                android:gravity="end"-->
-<!--                android:textColor="@color/primaryColor"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"/>-->
-
-<!--        </LinearLayout>-->
-
         <View
+            android:layout_below="@+id/mainLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#f5f0f0"/>
@@ -113,19 +97,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="3dp">
+            android:layout_marginLeft="8dp"
+            android:layout_below="@+id/mainLinearLayout"
+            android:padding="5dp">
 
             <ImageView
                 android:id="@+id/upvoteIv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/ic_upvote"/>
 
             <TextView
                 android:id="@+id/upvoteTv"
                 android:layout_width="70dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:textSize="15sp"
@@ -136,43 +123,22 @@
                 android:id="@+id/commentIv"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/ic_comment"/>
 
             <TextView
                 android:id="@+id/commentTv"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="9dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:text="Comment"/>
 
-<!--            <Button-->
-<!--                android:id="@+id/upvoteBtn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@null"-->
-<!--                android:layout_weight="1"-->
-<!--                android:drawableStart="@drawable/ic_upvote"-->
-<!--                android:drawableLeft="@drawable/ic_upvote"-->
-<!--                android:drawablePadding="5dp"-->
-<!--                android:text="Upvotes" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/commentBtn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@null"-->
-<!--                android:drawableStart="@drawable/ic_comment"-->
-<!--                android:drawableLeft="@drawable/ic_comment"-->
-<!--                android:drawablePadding="5dp"-->
-<!--                android:text="Comments" />-->
-
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

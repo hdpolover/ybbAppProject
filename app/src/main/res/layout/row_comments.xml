@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="1dp"
+    android:layout_margin="2dp"
     app:contentPadding="2dp"
-    app:cardBackgroundColor="#fff">
+    app:cardBackgroundColor="@color/colorWhite">
 
     <RelativeLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.blogspot.atifsoftwares.circularimageview.CircularImageView
             android:id="@+id/avatarIv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/ic_undraw_profile_pic"/>
@@ -25,9 +26,10 @@
             android:id="@+id/nameTv"
             android:layout_toRightOf="@id/avatarIv"
             android:text="User"
-            android:textColor="#000"
+            android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:layout_marginLeft="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -38,6 +40,7 @@
             android:layout_below="@+id/nameTv"
             android:layout_toEndOf="@+id/avatarIv"
             android:text="This is the comment"
+            android:layout_marginLeft="3dp"
             android:layout_toRightOf="@+id/avatarIv"
             android:textColor="#000"/>
 
@@ -47,9 +50,17 @@
             android:layout_below="@+id/commentTv"
             android:layout_toEndOf="@+id/avatarIv"
             android:layout_toRightOf="@id/avatarIv"
+            android:layout_marginLeft="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+    <View
+        android:layout_below="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="1dp"
+        android:background="#f5f0f0"/>
+
+</RelativeLayout>

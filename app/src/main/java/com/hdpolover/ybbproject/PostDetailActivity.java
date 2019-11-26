@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,21 +53,24 @@ public class PostDetailActivity extends AppCompatActivity {
 
     //to get detail of user and post
     String hisUid, myUid, myEmail, myName, myDp,
-    postId, pUpvotes, hisDp, hisName, pImage;
+    postId, hisDp, hisName, pImage;
 
     boolean mProcessComment = false;
-    boolean mProcessUpvote = false;
 
     //progress bar
     ProgressDialog pd;
 
     //views
     ImageView uPictureIv, pImageIv;
-    TextView uNameTv, pTimeTv, pDescTv, pUpvotesTv, pCommentsTv;
+    TextView uNameTv, pTimeTv, pDescTv;
     ImageButton moreBtn;
-    Button upvoteBtn;
+
+    TextView upvoteTv, commentTv;
+    ImageView upvoteIv, commentIv;
     LinearLayout profileLayout;
     RecyclerView recyclerView;
+
+    MaterialCardView upvotersCard;
 
     List<ModelComment> commentList;
     AdapterComment adapterComment;
@@ -76,6 +80,8 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageButton sendBtn;
     ImageView cAvatarIv;
 
+    FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +89,14 @@ public class PostDetailActivity extends AppCompatActivity {
 
         //action bar and its propertoes
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Post Detail");
+        actionBar.setTitle("Detail");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //get id of post using intent
         Intent intent = getIntent();
         postId = intent.getStringExtra("postId");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //init views
         uPictureIv = findViewById(R.id.uPictureIv);
@@ -97,10 +104,12 @@ public class PostDetailActivity extends AppCompatActivity {
         uNameTv = findViewById(R.id.uNameTv);
         pTimeTv = findViewById(R.id.pTimeTv);
         pDescTv = findViewById(R.id.pDescTv);
-        pUpvotesTv = findViewById(R.id.pUpvotesTv);
-        pCommentsTv = findViewById(R.id.pCommentsTv);
+        upvoteIv = findViewById(R.id.upvoteIv);
+        commentIv = findViewById(R.id.commentIv);
+        upvoteTv = findViewById(R.id.upvoteTv);
+        commentTv = findViewById(R.id.commentTv);
+
         moreBtn = findViewById(R.id.moreBtn);
-        upvoteBtn = findViewById(R.id.upvoteBtn);
         profileLayout = findViewById(R.id.profileLayout);
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -108,16 +117,17 @@ public class PostDetailActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
         cAvatarIv = findViewById(R.id.cAvatarIv);
 
+        upvotersCard = findViewById(R.id.upvotersCard);
+
         loadPostInfo();
 
         checkUserStatus();
 
         loadUserInfo();
 
-        setUpvotes();
-
-        //set subtitle of actionar
-        actionBar.setSubtitle("Signed in as:" + myEmail);
+        //setUpvotes();
+        isUpvoted(postId, upvoteIv);
+        setCountText(upvoteTv, commentTv, postId);
 
         loadComments();
         
@@ -129,11 +139,27 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        //upvote button click handle
-        upvoteBtn.setOnClickListener(new View.OnClickListener() {
+//        //upvote button click handle
+//        upvoteBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                upvotePost();
+//            }
+//        });
+
+        upvoteIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                upvotePost();
+            public void onClick(View view) {
+                if (upvoteIv.getTag().equals("upvote")) {
+                    FirebaseDatabase.getInstance().getReference().child("Posts").child(postId)
+                            .child("Upvotes")
+                            .child(firebaseUser.getUid()).setValue(true);
+                    //addNotification(post.getPublisher(), post.getPostid());
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("Posts").child(postId)
+                            .child("Upvotes")
+                            .child(firebaseUser.getUid()).removeValue();
+                }
             }
         });
 
@@ -143,6 +169,74 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showMoreOptions();
+            }
+        });
+
+        upvotersCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Upvters", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setCountText(final TextView upvotes, final TextView comments, String postId){
+        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Upvotes");
+        upvotesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    upvotes.setText("Upvote");
+                } else {
+                    upvotes.setText(dataSnapshot.getChildrenCount() + "");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Comments");
+        commentsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    comments.setText("Comment");
+                } else {
+                    comments.setText(dataSnapshot.getChildrenCount() + "");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void isUpvoted(final String postid, final ImageView imageView){
+
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("Posts").child(postid).child("Upvotes");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
+                    imageView.setImageResource(R.drawable.ic_upvote_filled);
+                    imageView.setTag("upvoted");
+                } else{
+                    imageView.setImageResource(R.drawable.ic_upvote);
+                    imageView.setTag("upvote");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -299,70 +393,70 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpvotes() {
-        //when the details of post is loading, also check if current user has liked it or not
-        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-
-        upvotesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(postId).hasChild(myUid)) {
-                    //user has liked this post
-//                    to indicate that the post is liked by this signedin user
-//                            change drawable left icon of upvote button
-//                            change text of upvote button from upvote to upvoted
-                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
-                    upvoteBtn.setText("Upvoted");
-                } else {
-                    //user has not liked this post
-                    //to indicate that the post is not liked by this signedin user
-                    //change drawable left icon of upvote button
-                    //change text of upvote button from upvoted to upvote
-                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
-                    upvoteBtn.setText("Upvotes");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void upvotePost() {
-        //get total number of upvotes for the post, whose like buton is clicked
-        //if currently signed in user has not liked it before
-        //increase value by 1, otherwose decrease value by 1
-        mProcessUpvote = true;
-        //get id of the post clicked
-        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-        final DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
-        upvotesRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (mProcessUpvote) {
-                    if (dataSnapshot.child(postId).hasChild(myUid)) {
-                        //already upvoted, so remove upvote
-                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)-1));
-                        upvotesRef.child(postId).child(myUid).removeValue();
-                        mProcessUpvote = false;
-                    }
-                    else {
-                        //not upvotes, upvte it
-                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)+1));
-                        upvotesRef.child(postId).child(myUid).setValue("Upvoted");
-                        mProcessUpvote = false;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void setUpvotes() {
+//        //when the details of post is loading, also check if current user has liked it or not
+//        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
+//
+//        upvotesRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child(postId).hasChild(myUid)) {
+//                    //user has liked this post
+////                    to indicate that the post is liked by this signedin user
+////                            change drawable left icon of upvote button
+////                            change text of upvote button from upvote to upvoted
+//                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
+//                    upvoteBtn.setText("Upvoted");
+//                } else {
+//                    //user has not liked this post
+//                    //to indicate that the post is not liked by this signedin user
+//                    //change drawable left icon of upvote button
+//                    //change text of upvote button from upvoted to upvote
+//                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
+//                    upvoteBtn.setText("Upvotes");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+//
+//    private void upvotePost() {
+//        //get total number of upvotes for the post, whose like buton is clicked
+//        //if currently signed in user has not liked it before
+//        //increase value by 1, otherwose decrease value by 1
+//        mProcessUpvote = true;
+//        //get id of the post clicked
+//        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
+//        final DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+//        upvotesRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (mProcessUpvote) {
+//                    if (dataSnapshot.child(postId).hasChild(myUid)) {
+//                        //already upvoted, so remove upvote
+//                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)-1));
+//                        upvotesRef.child(postId).child(myUid).removeValue();
+//                        mProcessUpvote = false;
+//                    }
+//                    else {
+//                        //not upvotes, upvte it
+//                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)+1));
+//                        upvotesRef.child(postId).child(myUid).setValue("Upvoted");
+//                        mProcessUpvote = false;
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     private void postComment() {
         pd = new ProgressDialog(this);
@@ -479,14 +573,12 @@ public class PostDetailActivity extends AppCompatActivity {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     //get data
                     String pDesc = ""+ds.child("pDesc").getValue();
-                    pUpvotes = ""+ds.child("pUpvotes").getValue();
                     String pTimeStamp = ""+ds.child("pTime").getValue();
                     pImage = ""+ds.child("pImage").getValue();
                     hisDp = ""+ds.child("uDp").getValue();
                     hisUid = ""+ds.child("uid").getValue();
                     String uEmail = ""+ds.child("uEmail").getValue();
                     hisName = ""+ds.child("uName").getValue();
-                    String commentCount = ""+ds.child("pComments").getValue();
 
                     //convert timestamp to dd/mm/yyy hh:mm am/pm
                     Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -495,9 +587,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
                     //set data
                     pDescTv.setText(pDesc);
-                    pUpvotesTv.setText(pUpvotes);
                     pTimeTv.setText(pTime);
-                    pCommentsTv.setText(commentCount + " comments");
 
                     uNameTv.setText(hisName);
 
@@ -551,27 +641,5 @@ public class PostDetailActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        //hide some menu items
-        menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(false);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //get item id
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut();
-            checkUserStatus();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
