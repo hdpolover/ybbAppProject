@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -34,6 +35,11 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        //action bar and its propertoes
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setIcon(R.drawable.ybb_white_cropped);
+        actionBar.setDisplayShowHomeEnabled(true);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
