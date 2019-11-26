@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="2dp"
+    app:contentPadding="2dp"
+    app:cardBackgroundColor="@color/colorWhite">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.blogspot.atifsoftwares.circularimageview.CircularImageView
+            android:id="@+id/upvoterAvatarIv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_undraw_profile_pic"/>
+
+        <TextView
+            android:id="@+id/upvoterNameTv"
+            android:layout_toRightOf="@id/avatarIv"
+            android:text="User"
+            android:textColor="@color/colorBlack"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="3dp"
+            android:layout_gravity="center"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/followUpvoterBtn"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:text="Follow"
+            android:background="@color/primaryLightColor"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_below="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="1dp"
+        android:background="#f5f0f0"/>
+
+</RelativeLayout>

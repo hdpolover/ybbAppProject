@@ -175,7 +175,9 @@ public class PostDetailActivity extends AppCompatActivity {
         upvotersCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Upvters", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PostDetailActivity.this, PostUpvoterDetailActivity.class);
+                intent.putExtra("postId", postId);
+                startActivity(intent);
             }
         });
     }

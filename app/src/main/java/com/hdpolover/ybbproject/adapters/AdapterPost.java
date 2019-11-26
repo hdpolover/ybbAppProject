@@ -56,8 +56,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     FirebaseUser firebaseUser;
 
-    boolean mProcessUpvote = false;
-
     public  AdapterPost(Context context, List<ModelPost> postList) {
         this.context = context;
         this.postList = postList;
