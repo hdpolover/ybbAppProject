@@ -209,10 +209,7 @@ public class HomeFragment extends Fragment {
         //inflating menu
         inflater.inflate(R.menu.menu_main, menu);
 
-        //hide logout
-        menu.findItem(R.id.action_logout).setVisible(false);
-        menu.findItem(R.id.action_add_post).setVisible(false);
-
+        menu.findItem(R.id.action_settings).setVisible(false);
         //search view to search post by post title/desc
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)MenuItemCompat.getActionView(item);
@@ -251,10 +248,10 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
+//        if (id == R.id.action_logout) {
+//            firebaseAuth.signOut();
+//            checkUserStatus();
+//        }
         if (id == R.id.action_notif) {
             Toast.makeText(getActivity(), "Notif", Toast.LENGTH_SHORT).show();
         }

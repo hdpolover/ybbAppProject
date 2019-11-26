@@ -2,27 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_logout"
-        android:title="@string/logout"/>
-
     <item android:id="@+id/action_search"
         android:title="@string/search"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"/>
 
-    <item android:id="@+id/action_add_post"
-        android:title="@string/addpost"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_add"/>
-
     <item android:id="@+id/action_notif"
         app:showAsAction="always"
         android:icon="@drawable/ic_notif"
-        android:title="Notiification" />
+        android:title="Notification" />
 
-<!--    <item android:id="@+id/action_back"-->
-<!--        android:title="@string/back"-->
-<!--        app:showAsAction="always"-->
-<!--        android:icon="@drawable/ic_menu_back"/>-->
+    <item android:id="@+id/action_settings"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+
 </menu>

@@ -337,10 +337,10 @@ public class MessagesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
+//        if (id == R.id.action_logout) {
+//            firebaseAuth.signOut();
+//            checkUserStatus();
+//        }
 
         return super.onOptionsItemSelected(item);
     }

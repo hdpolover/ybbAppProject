@@ -151,9 +151,6 @@ public class ContactActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //hide searchview, as we dont need it here
-        menu.findItem(R.id.action_logout).setVisible(false);
-        menu.findItem(R.id.action_add_post).setVisible(false);
 
         //searchView
         MenuItem item = menu.findItem(R.id.action_search);

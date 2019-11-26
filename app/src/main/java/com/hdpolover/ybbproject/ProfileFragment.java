@@ -727,9 +727,8 @@ public class ProfileFragment extends Fragment {
         //inflating menu
         inflater.inflate(R.menu.menu_main, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-
-        item.setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_notif).setVisible(false);
         //searchview
         //SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
@@ -768,13 +767,13 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
-        if (id == R.id.action_add_post) {
-            startActivity(new Intent(getActivity(), AddPostActivity.class));
-        }
+//        if (id == R.id.action_logout) {
+//            firebaseAuth.signOut();
+//            checkUserStatus();
+//        }
+//        if (id == R.id.action_add_post) {
+//            startActivity(new Intent(getActivity(), AddPostActivity.class));
+//        }
 
         return super.onOptionsItemSelected(item);
     }

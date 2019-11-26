@@ -751,8 +751,6 @@ public class ChatActivity extends AppCompatActivity {
         //menu.findItem(R.id.action_back).setVisible(true);
         //hide searchview, as we dont need it here
         menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_logout).setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -761,10 +759,10 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if(id == R.id.action_logout){
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
+//        if(id == R.id.action_logout){
+//            firebaseAuth.signOut();
+//            checkUserStatus();
+//        }
 
         return super.onOptionsItemSelected(item);
     }

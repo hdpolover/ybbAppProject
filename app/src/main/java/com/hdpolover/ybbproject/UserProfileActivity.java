@@ -224,9 +224,8 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_add_post).setVisible(false);
-        menu.findItem(R.id.action_logout).setVisible(false);
 
+        menu.findItem(R.id.action_notif).setVisible(false);
         MenuItem item = menu.findItem(R.id.action_search);
         //searchview
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -264,10 +263,10 @@ public class UserProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
+//        if (id == R.id.action_logout) {
+//            firebaseAuth.signOut();
+//            checkUserStatus();
+//        }
 
         return super.onOptionsItemSelected(item);
     }
