@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +44,8 @@ import com.hdpolover.ybbproject.adapters.AdapterComment;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -65,7 +68,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView uNameTv, pTimeTv, pDescTv;
     ImageButton moreBtn;
 
-    TextView upvoteTv, commentTv;
+    TextView upvoteTv, commentTv, upvotersCountTv;
     ImageView upvoteIv, commentIv;
     LinearLayout profileLayout;
     RecyclerView recyclerView;
@@ -81,6 +84,8 @@ public class PostDetailActivity extends AppCompatActivity {
     ImageView cAvatarIv;
 
     FirebaseUser firebaseUser;
+
+    int upvotersCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +123,7 @@ public class PostDetailActivity extends AppCompatActivity {
         cAvatarIv = findViewById(R.id.cAvatarIv);
 
         upvotersCard = findViewById(R.id.upvotersCard);
+        upvotersCountTv = findViewById(R.id.upvotersCountTv);
 
         loadPostInfo();
 
@@ -163,6 +169,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+
         //more button click handle
         moreBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -182,13 +189,17 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUpvoters() {
-        
+    private void checkUpvoters(MaterialCardView cardView) {
+        Log.d("a", upvotersCount + "");
+        if (upvotersCount == 0) {
+            cardView.setVisibility(View.GONE);
+        } else {
+            cardView.setVisibility(View.VISIBLE);
+
+            upvotersCountTv.setText(upvotersCount + " people upvoted this");
+        }
     }
 
-    private void setUpvotersText(final TextView text) {
-
-    }
 
     private void setCountText(final TextView upvotes, final TextView comments, String postId){
         DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId);
@@ -197,9 +208,13 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
                     upvotes.setText("Upvote");
+                    upvotersCount = 0;
                 } else {
                     upvotes.setText(dataSnapshot.getChildrenCount() + "");
+                    String a = dataSnapshot.getChildrenCount() + "";
+                    upvotersCount = Integer.parseInt(a);
                 }
+                checkUpvoters(upvotersCard);
             }
 
             @Override

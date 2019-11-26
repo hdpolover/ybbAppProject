@@ -167,6 +167,7 @@
                 app:cardElevation="2dp">
 
                 <TextView
+                    android:id="@+id/upvotersCountTv"
                     android:text="Polover and 9 others upvoted this"
                     android:textColor="#000"
                     android:layout_gravity="center"
