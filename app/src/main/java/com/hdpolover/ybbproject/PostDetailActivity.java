@@ -151,13 +151,13 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (upvoteIv.getTag().equals("upvote")) {
-                    FirebaseDatabase.getInstance().getReference().child("Posts").child(postId)
-                            .child("Upvotes")
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId)
+                            //.child("Upvotes")
                             .child(firebaseUser.getUid()).setValue(true);
                     //addNotification(post.getPublisher(), post.getPostid());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("Posts").child(postId)
-                            .child("Upvotes")
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId)
+                            //.child("Upvotes")
                             .child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -182,8 +182,16 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void checkUpvoters() {
+        
+    }
+
+    private void setUpvotersText(final TextView text) {
+
+    }
+
     private void setCountText(final TextView upvotes, final TextView comments, String postId){
-        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Upvotes");
+        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId);
         upvotesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -223,7 +231,7 @@ public class PostDetailActivity extends AppCompatActivity {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Posts").child(postid).child("Upvotes");
+                .child("PostUpvotes").child(postid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -395,70 +403,6 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-//    private void setUpvotes() {
-//        //when the details of post is loading, also check if current user has liked it or not
-//        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-//
-//        upvotesRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.child(postId).hasChild(myUid)) {
-//                    //user has liked this post
-////                    to indicate that the post is liked by this signedin user
-////                            change drawable left icon of upvote button
-////                            change text of upvote button from upvote to upvoted
-//                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote_filled, 0, 0, 0);
-//                    upvoteBtn.setText("Upvoted");
-//                } else {
-//                    //user has not liked this post
-//                    //to indicate that the post is not liked by this signedin user
-//                    //change drawable left icon of upvote button
-//                    //change text of upvote button from upvoted to upvote
-//                    upvoteBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upvote, 0, 0, 0);
-//                    upvoteBtn.setText("Upvotes");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-//
-//    private void upvotePost() {
-//        //get total number of upvotes for the post, whose like buton is clicked
-//        //if currently signed in user has not liked it before
-//        //increase value by 1, otherwose decrease value by 1
-//        mProcessUpvote = true;
-//        //get id of the post clicked
-//        final DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Upvotes");
-//        final DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
-//        upvotesRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (mProcessUpvote) {
-//                    if (dataSnapshot.child(postId).hasChild(myUid)) {
-//                        //already upvoted, so remove upvote
-//                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)-1));
-//                        upvotesRef.child(postId).child(myUid).removeValue();
-//                        mProcessUpvote = false;
-//                    }
-//                    else {
-//                        //not upvotes, upvte it
-//                        postsRef.child(postId).child("pUpvotes").setValue(""+(Integer.parseInt(pUpvotes)+1));
-//                        upvotesRef.child(postId).child(myUid).setValue("Upvoted");
-//                        mProcessUpvote = false;
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     private void postComment() {
         pd = new ProgressDialog(this);

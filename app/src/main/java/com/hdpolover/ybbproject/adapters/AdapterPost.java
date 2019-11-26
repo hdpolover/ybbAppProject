@@ -134,13 +134,13 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @Override
             public void onClick(View view) {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
-                    FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getpId())
-                            .child("Upvotes")
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
+                            //.child("Upvotes")
                             .child(firebaseUser.getUid()).setValue(true);
                     //addNotification(post.getPublisher(), post.getPostid());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getpId())
-                            .child("Upvotes")
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
+                            //.child("Upvotes")
                             .child(firebaseUser.getUid()).removeValue();
                 }
             }
@@ -230,7 +230,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     }
 
     private void setCountText(final TextView upvotes, final TextView comments, String postId){
-        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Upvotes");
+        DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId);
         upvotesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -270,7 +270,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Posts").child(postid).child("Upvotes");
+                .child("PostUpvotes").child(postid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

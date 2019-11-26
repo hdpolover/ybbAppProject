@@ -2,48 +2,39 @@ package com.hdpolover.ybbproject.models;
 
 public class ModelPostUptover {
 
-    String pId, upvoterId, upvoterName, upvoterImage;
+    String uid, name, image;
 
     public ModelPostUptover() {
 
     }
 
-    public ModelPostUptover(String pId, String upvoterId, String upvoterName, String upvoterImage) {
-        this.pId = pId;
-        this.upvoterId = upvoterId;
-        this.upvoterName = upvoterName;
-        this.upvoterImage = upvoterImage;
+    public ModelPostUptover(String uid, String name, String image) {
+        this.uid = uid;
+        this.name = name;
+        this.image = image;
     }
 
-    public String getpId() {
-        return pId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setpId(String pId) {
-        this.pId = pId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUpvoterId() {
-        return upvoterId;
+    public String getName() {
+        return name;
     }
 
-    public void setUpvoterId(String upvoterId) {
-        this.upvoterId = upvoterId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUpvoterName() {
-        return upvoterName;
+    public String getImage() {
+        return image;
     }
 
-    public void setUpvoterName(String upvoterName) {
-        this.upvoterName = upvoterName;
-    }
-
-    public String getUpvoterImage() {
-        return upvoterImage;
-    }
-
-    public void setUpvoterImage(String upvoterImage) {
-        this.upvoterImage = upvoterImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

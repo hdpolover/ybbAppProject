@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,16 +28,13 @@ import java.util.List;
 public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.MyHolder> {
 
     Context context;
-    List<ModelPostUptover> upvoterList;
-    String myUid, postId;
+    List<ModelUser> upvoterList;
 
     //contructor
 
-    public AdapterPostUpvoter(Context context, List<ModelPostUptover> upvoterList, String myUid, String postId) {
+    public AdapterPostUpvoter(Context context, List<ModelUser> upvoterList) {
         this.context = context;
         this.upvoterList = upvoterList;
-        this.myUid = myUid;
-        this.postId = postId;
     }
 
     @NonNull
@@ -51,9 +49,9 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
-        final String hisUID = upvoterList.get(position).getUpvoterId();
-        String userImage = upvoterList.get(position).getUpvoterImage();
-        String userName = upvoterList.get(position).getUpvoterName();
+        final String hisUID = upvoterList.get(position).getUid();
+        String userImage = upvoterList.get(position).getImage();
+        String userName = upvoterList.get(position).getName();
 
         //set data
         holder.upvoterNameTv.setText(userName);
@@ -103,7 +101,7 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
 
         ImageView upvoterAvatarIv;
         TextView upvoterNameTv;
-        MaterialButton followUpvoterBtn;
+        Button followUpvoterBtn;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
