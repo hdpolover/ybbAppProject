@@ -22,7 +22,8 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".AddEventActivity"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".PostUpvoterDetailActivity" />
         <activity
             android:name=".OtherMethodActivity"

@@ -1,5 +1,6 @@
 package com.hdpolover.ybbproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.hdpolover.ybbproject.adapters.AdapterSchedules;
 
@@ -19,6 +21,8 @@ public class SchedulesFragment extends Fragment {
     ViewPager viewPager;
     AdapterSchedules adapterSchedules;
 
+    FloatingActionButton fab_add_event;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,12 +30,21 @@ public class SchedulesFragment extends Fragment {
 
         viewPager = view.findViewById(R.id.scheduleViewPager);
 
+        fab_add_event = view.findViewById(R.id.fab_add_event);
+
         adapterSchedules = new AdapterSchedules(getFragmentManager());
 
         viewPager.setAdapter(adapterSchedules);
         tabLayout = view.findViewById(R.id.scheduleTabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabRippleColor(null);
+
+        fab_add_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddEventActivity.class));
+            }
+        });
 
         return view;
     }
