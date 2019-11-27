@@ -11,9 +11,10 @@
         app:tabBackground="@android:color/transparent"
         app:tabIndicatorColor="@color/primaryColor"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/primaryDarkColor"
+        app:tabSelectedTextColor="@color/primaryColor"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
-        app:tabTextColor="@color/colorBlack" />
+        app:tabTextColor="@color/colorBlack"
+        app:tabRippleColor="@color/primaryColor"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/scheduleViewPager"

@@ -12,10 +12,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.hdpolover.ybbproject.adapters.AdapterSchedules;
-import com.hdpolover.ybbproject.schedulesTab.MyEventsFragment;
-import com.hdpolover.ybbproject.schedulesTab.PastFragment;
-import com.hdpolover.ybbproject.schedulesTab.SchedulesViewPagerAdapter;
-import com.hdpolover.ybbproject.schedulesTab.UpcomingFragment;
 
 public class SchedulesFragment extends Fragment {
 
