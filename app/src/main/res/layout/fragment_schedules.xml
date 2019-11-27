@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SchedulesFragment"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/scheduleTabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        app:tabBackground="@android:color/transparent"
+        app:tabIndicatorColor="@color/primaryColor"
         app:tabMode="fixed"
-        />
+        app:tabSelectedTextColor="@color/primaryDarkColor"
+        app:tabTextAppearance="@style/MyCustomTextAppearance"
+        app:tabTextColor="@color/colorBlack" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/scheduleViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scheduleTabs"
+        android:layout_marginTop="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+    </androidx.viewpager.widget.ViewPager>
+
+</RelativeLayout>
