@@ -3,13 +3,13 @@ package com.hdpolover.ybbproject.models;
 public class ModelUser {
 
     //use same name as in firebase database
-    String name, email, search, phone, image, cover, uid, onlineStatus, typingTo;
+    String name, email, search, phone, image, cover, uid, onlineStatus, typingTo, country, city, username;
 
     public ModelUser(){
 
     }
 
-    public ModelUser(String name, String email, String search, String phone, String image, String cover, String uid, String onlineStatus, String typingTo) {
+    public ModelUser(String name, String email, String search, String phone, String image, String cover, String uid, String onlineStatus, String typingTo, String country, String city, String username) {
         this.name = name;
         this.email = email;
         this.search = search;
@@ -19,6 +19,9 @@ public class ModelUser {
         this.uid = uid;
         this.onlineStatus = onlineStatus;
         this.typingTo = typingTo;
+        this.country = country;
+        this.city = city;
+        this.username = username;
     }
 
     public String getName() {
@@ -91,5 +94,29 @@ public class ModelUser {
 
     public void setTypingTo(String typingTo) {
         this.typingTo = typingTo;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
