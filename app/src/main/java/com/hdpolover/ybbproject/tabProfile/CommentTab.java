@@ -14,10 +14,10 @@ import com.hdpolover.ybbproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScheduleTab extends Fragment {
+public class CommentTab extends Fragment {
 
 
-    public ScheduleTab() {
+    public CommentTab() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class ScheduleTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule_tab, container, false);
+        return inflater.inflate(R.layout.fragment_comment_tab, container, false);
     }
 
 }

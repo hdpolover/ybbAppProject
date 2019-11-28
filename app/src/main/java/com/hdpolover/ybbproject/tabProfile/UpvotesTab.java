@@ -14,10 +14,10 @@ import com.hdpolover.ybbproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AboutTab extends Fragment {
+public class UpvotesTab extends Fragment {
 
 
-    public AboutTab() {
+    public UpvotesTab() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class AboutTab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_tab, container, false);
+        return inflater.inflate(R.layout.fragment_upvotes_tab, container, false);
     }
 
 }
