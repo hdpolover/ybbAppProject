@@ -69,7 +69,7 @@ public class PostTab extends Fragment {
 
         postList = new ArrayList<>();
 
-        loadMyPosts();
+        //loadMyPosts();
 
         return view;
 

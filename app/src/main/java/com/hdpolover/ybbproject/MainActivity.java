@@ -307,6 +307,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("typingTo", "noOne"); //will add later
                                 hashMap.put("phone", ""); //will add later
                                 hashMap.put("image", ""); //will add later
+                                hashMap.put("country", "");
+                                hashMap.put("city", "");
+                                hashMap.put("username", "");
+                                hashMap.put("job", "");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -316,8 +320,11 @@ public class MainActivity extends AppCompatActivity {
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            //new by ronald
-                            Query query = databaseReference.orderByChild("uid").equalTo(user.getUid());
+                            //firebase database instance
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            //path to store user data name Users
+                            DatabaseReference reference = database.getReference("Users");
+                            Query query = reference.child("uid").equalTo(user.getUid());
                             query.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

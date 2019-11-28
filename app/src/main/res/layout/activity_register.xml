@@ -121,6 +121,20 @@
                             android:textColor="@color/primaryTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputJob"
+                        style="@style/parent"
+                        android:layout_marginTop="@dimen/loginViewsMargin">
+
+                        <EditText
+                            android:id="@+id/jobEt"
+                            style="@style/modifiedEditText"
+                            android:hint="Job"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <TextView
                         android:id="@+id/countryTv"
                         style="@style/parent"
@@ -141,16 +155,16 @@
                         android:text="City"
                         android:maxLines="1" />
 
-                    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                    <Button
                         android:id="@+id/registerBtn"
                         style="@style/loginButton"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:text="Register"
-                        app:initialCornerAngle="27dp"
-                        app:spinning_bar_color="#FFF"
-                        app:spinning_bar_padding="6dp"
-                        app:spinning_bar_width="4dp" />
+                        android:paddingLeft="40dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="40dp"
+                        android:text="Register"/>
 
                     <TextView
                         android:id="@+id/have_account"

@@ -57,8 +57,8 @@ public class DashboardTab extends Fragment {
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference(); //firebase storage refence
 
-        emailTv = view.findViewById(R.id.emailTv);
-        phoneTv = view.findViewById(R.id.phoneTv);
+//        emailTv = view.findViewById(R.id.emailTv);
+//        phoneTv = view.findViewById(R.id.phoneTv);
 
 
         //we have to get info of currently signed in user
@@ -74,13 +74,13 @@ public class DashboardTab extends Fragment {
                     String phone = "" + ds.child("phone").getValue();
 
                     //set data
-                    emailTv.setText(email);
+//                    emailTv.setText(email);
 
-                    if (phone == "") {
-                        phoneTv.setText("086213253142");
-                    } else {
-                        phoneTv.setText(phone);
-                    }
+//                    if (phone == "") {
+//                        phoneTv.setText("086213253142");
+//                    } else {
+//                        phoneTv.setText(phone);
+//                    }
                 }
             }
 

@@ -45,9 +45,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     //    View
-    EditText mEmailEt, mPasswordEt, mUsernameEt, mPhoneEt;
+    EditText mEmailEt, mPasswordEt, mUsernameEt, mPhoneEt, mJobEt;
     Button mRegisterBtn;
     TextView mHaveAccountTv, countryTv, cityTv;
     ImageButton backBtn;
@@ -98,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         mPasswordEt = findViewById(R.id.passwordEt);
         mUsernameEt = findViewById(R.id.usernameEt);
         mPhoneEt = findViewById(R.id.phoneEt);
+        mJobEt = findViewById(R.id.jobEt);
         mRegisterBtn = findViewById(R.id.registerBtn);
         mHaveAccountTv = findViewById(R.id.have_account);
         backBtn = findViewById(R.id.backBtn);
@@ -110,7 +114,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering user...");
-
 
         //location
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -125,34 +128,59 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Query queryEmail = databaseReference.child("Users").orderByChild("email");
-                Query queryUsername = databaseReference.child("Users").orderByChild("username");
-
-                String username = mUsernameEt.getText().toString().trim();
-                String email = mEmailEt.getText().toString().trim();
-                String password = mPasswordEt.getText().toString().trim();
+                final String username = mUsernameEt.getText().toString().trim();
+                final String email = mEmailEt.getText().toString().trim();
+                final String password = mPasswordEt.getText().toString().trim();
+                final String phone = mPhoneEt.getText().toString().trim();
+                final String job = mJobEt.getText().toString().trim();
                 //Validate
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (username.equals("")) {
                     //set error
-                    mEmailEt.setError("Invalid Email!");
+                    mUsernameEt.setError("Username cannot be empty");
+                    mUsernameEt.setFocusable(true);
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    //set error
+                    mEmailEt.setError("Invalid email!");
                     mEmailEt.setFocusable(true);
                 } else if (password.length() < 6) {
                     //set error
                     mPasswordEt.setError("Password length at least 6 characters");
                     mPasswordEt.setFocusable(true);
+                } else if (phone.equals("")) {
+                    //set error
+                    mPhoneEt.setError("Phone number cannot be empty");
+                    mPhoneEt.setFocusable(true);
+                } else if (job.equals("")) {
+                    //set error
+                    mJobEt.setError("Job cannot be empty");
+                    mJobEt.setFocusable(true);
                 } else {
-                    if (queryEmail.equals(email)) {
-                        //set error
-                        mEmailEt.setError("Email already exists!");
-                        mEmailEt.setFocusable(true);
-                    } else if (queryUsername.equals(username)) {
-                        //set error
-                        mEmailEt.setError("Username already exists!");
-                        mEmailEt.setFocusable(true);
-                    } else {
-                        registerUser(email, password); //register user
-                    }
+                    //check if email same
+                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                if (ds.child(username).exists()) {
+                                    //set error
+                                    mEmailEt.setError("Username already exists!");
+                                    mEmailEt.setFocusable(true);
+                                }else if(ds.child(email).exists()){
+                                    //set error
+                                    mEmailEt.setError("Email already exists!");
+                                    mEmailEt.setFocusable(true);
+                                }else{
+                                    registerUser(email, password); //register user
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
         });
@@ -262,12 +290,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     }
 
     public void onLocationChanged(Location location) {
-        String msg = "Updated Location : " +
-                (location.getLatitude()) + "," +
-                (location.getLongitude());
         countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
         cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
         //create a LatLng Object for use with maps
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -337,6 +361,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
                             String username = mUsernameEt.getText().toString();
                             String phone = mPhoneEt.getText().toString();
+                            String job = mJobEt.getText().toString();
 
                             //substring for get name
                             String subName = "@";
@@ -355,6 +380,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("country", country);
                             hashMap.put("city", city);
                             hashMap.put("username", username);
+                            hashMap.put("job", job);
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -364,7 +390,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             reference.child(uid).setValue(hashMap);
 
                             Toast.makeText(RegisterActivity.this, "Registered . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
+                            startActivity(new Intent(RegisterActivity.this, UploadProfileActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

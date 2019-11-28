@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
+import com.hdpolover.ybbproject.adapters.AdapterProfile;
 import com.hdpolover.ybbproject.models.ModelPost;
 import com.squareup.picasso.Picasso;
 
@@ -38,19 +41,22 @@ public class UserProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
     //views from xml
-    ImageView avatarIv, coverIv;
-    TextView nameTv, emailTv, phoneTv;
+    ImageView profileIv;
+    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv;
     RecyclerView postsRecyclerView;
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
     String uid;
 
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    AdapterProfile viewAdapterProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.fragment_profile);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Profile");
@@ -58,14 +64,28 @@ public class UserProfileActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //init views
-        avatarIv = findViewById(R.id.avatarIv);
-        coverIv = findViewById(R.id.coverIv);
         nameTv = findViewById(R.id.nameTv);
         emailTv = findViewById(R.id.emailTv);
         phoneTv = findViewById(R.id.phoneTv);
+        profileIv = findViewById(R.id.profileIv);
+        usernameTv = findViewById(R.id.usernameTv);
+        jobTv = findViewById(R.id.jobTv);
+        cityTv = findViewById(R.id.cityTv);
+        countryTv = findViewById(R.id.countryTv);
 
         postsRecyclerView = findViewById(R.id.recyclerview_posts);
 
+        /////*     initialize view   */////
+        viewPager = findViewById(R.id.viewPager);
+
+        /////*     initialize ViewPager   */////
+        viewAdapterProfile = new AdapterProfile(getSupportFragmentManager());
+
+        /////*     add adapter to ViewPager  */////
+        viewPager.setAdapter(viewAdapterProfile);
+        tabLayout = findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabRippleColor(null);
         firebaseAuth = firebaseAuth.getInstance();
 
         //get uid of clicked user
@@ -85,28 +105,26 @@ public class UserProfileActivity extends AppCompatActivity {
                     String email = "" + ds.child("email").getValue();
                     String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
-                    String cover = "" + ds.child("cover").getValue();
+                    String username = "" + ds.child("username").getValue();
+                    String job = "" + ds.child("job").getValue();
+                    String city = "" + ds.child("city").getValue();
+                    String country = "" + ds.child("country").getValue();
 
                     //set data
                     nameTv.setText(name);
-                    emailTv.setText(email);
-                    phoneTv.setText(phone);
+//                    emailTv.setText(email);
+//                    phoneTv.setText(phone);
+                    usernameTv.setText(username);
+                    jobTv.setText(job);
+                    cityTv.setText(city);
+                    countryTv.setText(country);
 
                     try {
                         //if image is received then set
-                        Picasso.get().load(image).into(avatarIv);
+                        Picasso.get().load(image).into(profileIv);
                     } catch (Exception e) {
                         //if there is any exception while getting image then set default
-                        Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);
-                    }
-
-                    //for cover
-                    try {
-                        //if image is received then set
-                        Picasso.get().load(cover).into(coverIv);
-                    } catch (Exception e) {
-                        //if there is any exception while getting image then set default
-//                        Picasso.get().load(R.drawable.ic_default_img_white).into(coverIv);
+                        //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);
                     }
                 }
             }
@@ -117,10 +135,10 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        postList = new ArrayList<>();
+        //postList = new ArrayList<>();
 
-        checkUserStatus();
-        loadHistPosts();
+        //checkUserStatus();
+        //loadHistPosts();
 
     }
 

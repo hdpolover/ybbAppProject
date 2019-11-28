@@ -48,8 +48,7 @@
                 android:adjustViewBounds="true"
                 android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_image_black"
-                android:background="@drawable/bg_sender"/>
+                android:src="@drawable/ic_picture"/>
 
             <TextView
                 android:id="@+id/timeTv"

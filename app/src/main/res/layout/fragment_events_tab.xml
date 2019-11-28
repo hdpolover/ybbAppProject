@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tabProfile.PostTab"
-    android:background="@color/colorWhite">
+    tools:context=".tabProfile.EventsTab"
+    android:background="@color/colorWhite"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true">
 
     <TextView
         android:layout_marginTop="20dp"

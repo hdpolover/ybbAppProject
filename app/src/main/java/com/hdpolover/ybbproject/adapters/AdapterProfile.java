@@ -5,10 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.hdpolover.ybbproject.tabProfile.AboutTab;
+import com.hdpolover.ybbproject.tabProfile.EventsTab;
+import com.hdpolover.ybbproject.tabProfile.UpvotesTab;
 import com.hdpolover.ybbproject.tabProfile.DashboardTab;
 import com.hdpolover.ybbproject.tabProfile.PostTab;
-import com.hdpolover.ybbproject.tabProfile.ScheduleTab;
+import com.hdpolover.ybbproject.tabProfile.CommentTab;
 
 public class AdapterProfile extends FragmentPagerAdapter {
 
@@ -24,11 +25,11 @@ public class AdapterProfile extends FragmentPagerAdapter {
             case 1:
                 return new PostTab();
             case 2:
-                return new ScheduleTab();
+                return new CommentTab();
             case 3:
-                return new AboutTab();
+                return new UpvotesTab();
             case 4:
-                return new AboutTab();
+                return new EventsTab();
             default:
                 return null;
         }
@@ -45,13 +46,13 @@ public class AdapterProfile extends FragmentPagerAdapter {
             case 0:
                 return "Dashboard";
             case 1:
-                return "Post";
+                return "Posts";
             case 2:
-                return "Schedule";
+                return "Comments";
             case 3:
-                return "About";
+                return "Upvotes";
             case 4:
-                return "About";
+                return "Events";
             default:
                 return null;
         }

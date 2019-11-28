@@ -5,9 +5,9 @@
     android:id="@+id/cl_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="center"
     android:gravity="center"
+    android:orientation="vertical"
     tools:ignore="HardcodedText">
 
     <!--    <androidx.appcompat.widget.Toolbar-->
@@ -34,24 +34,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <RelativeLayout
                     android:id="@+id/id_ProfileImage_RelativeLayout"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginLeft="-20dp"
+                    android:layout_marginTop="16dp">
 
                     <!--  Profile Image -->
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/profileIv"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="160dp"
+                        android:layout_height="160dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_undraw_profile_pic"
                         app:civ_border_color="#EEEEEE"
@@ -71,13 +71,13 @@
 
                     <!--  Change Image -->
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="4dp"
                         android:src="@drawable/ic_photo_camera" />
 
                 </RelativeLayout>
@@ -95,7 +95,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="14dp"
-                        android:layout_marginRight="20dp"
                         android:orientation="vertical">
 
                         <!-- User Name  -->
@@ -121,7 +120,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/professionTv"
+                            android:id="@+id/jobTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/usernameTv"
@@ -131,28 +130,38 @@
                             android:textColor="@color/primaryDarkColor"
                             android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/locationTv"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:paddingBottom="14dp"
-                            android:text="Malang, Indonesia"
-                            android:textColor="@color/primaryDarkColor"
-                            android:textSize="16sp" />
+                            android:orientation="horizontal">
 
-                    </LinearLayout>
+                            <TextView
+                                android:id="@+id/cityTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Malang"
+                                android:textColor="@color/primaryDarkColor"
+                                android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text=", "
+                                android:textColor="@color/primaryDarkColor"
+                                android:textSize="16sp" />
 
-                        <ImageButton
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_edit_black" />
+                            <TextView
+                                android:id="@+id/countryTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Indonesia"
+                                android:textColor="@color/primaryDarkColor"
+                                android:textSize="16sp" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -165,34 +174,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/profileBtn"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:text="Message"
-                    android:textColor="@color/black"
+                    android:backgroundTint="@color/primaryLightColor"
+                    android:text="Edit Profile"
+                    android:textColor="@color/whiteTextColor"
                     android:textSize="14sp"
-                    android:theme="@style/buttonStyle" />
-
-                <View
-                    android:layout_width="20dp"
-                    android:layout_height="1dp" />
-
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/messageBtn"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:backgroundTint="@color/primaryLightColor"
                     android:text="Message"
-                    android:textColor="@color/black"
+                    android:textColor="@color/whiteTextColor"
                     android:textSize="14sp"
-                    android:theme="@style/buttonStyle" />
+                    android:layout_marginRight="20dp"/>
 
+                <Button
+                    android:id="@+id/followBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/primaryLightColor"
+                    android:text="Follow"
+                    android:textColor="@color/whiteTextColor"
+                    android:textSize="14sp" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/whiteTextColor" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -206,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 Follower"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <View
@@ -218,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 Following"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -234,9 +254,10 @@
         app:tabBackground="@android:color/transparent"
         app:tabIndicatorColor="@color/primaryColor"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/primaryDarkColor"
+        app:tabSelectedTextColor="@color/primaryColor"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
-        app:tabTextColor="@color/primaryLightColor" />
+        app:tabTextColor="@color/colorBlack"
+        app:tabRippleColor="@color/primaryColor" />
 
     <!--    </androidx.appcompat.widget.Toolbar>-->
 

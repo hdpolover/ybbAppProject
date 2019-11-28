@@ -8,10 +8,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.hdpolover.ybbproject.schedulesTab.MyEventsFragment;
 import com.hdpolover.ybbproject.schedulesTab.PastFragment;
 import com.hdpolover.ybbproject.schedulesTab.UpcomingFragment;
-import com.hdpolover.ybbproject.tabProfile.AboutTab;
-import com.hdpolover.ybbproject.tabProfile.DashboardTab;
-import com.hdpolover.ybbproject.tabProfile.PostTab;
-import com.hdpolover.ybbproject.tabProfile.ScheduleTab;
 
 public class AdapterSchedules extends FragmentPagerAdapter {
 
