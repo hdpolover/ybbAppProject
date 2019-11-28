@@ -1,9 +1,6 @@
 package com.hdpolover.ybbproject.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.hdpolover.ybbproject.ChatActivity;
 import com.hdpolover.ybbproject.R;
-import com.hdpolover.ybbproject.UserProfileActivity;
-import com.hdpolover.ybbproject.models.ModelPostUptover;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 

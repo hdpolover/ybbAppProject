@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.squareup.picasso.Picasso;
@@ -71,8 +72,8 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_people_suggestion.xml
         ImageView profileImageIv;
-        TextView profileNameTv;
-        Button followBtn;
+        TextView profileNameTv, userDescTv;
+        MaterialButton followBtn;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +81,7 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
             //init views
             profileImageIv = itemView.findViewById(R.id.profileImageIv);
             profileNameTv = itemView.findViewById(R.id.profileNameTv);
+            userDescTv = itemView.findViewById(R.id.userDescTv);
             followBtn = itemView.findViewById(R.id.followBtn);
         }
     }

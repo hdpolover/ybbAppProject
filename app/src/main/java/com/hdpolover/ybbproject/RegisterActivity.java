@@ -126,8 +126,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             @Override
             public void onClick(View view) {
 
-                Query queryEmail = databaseReference.orderByChild("email");
-                Query queryUsername = databaseReference.orderByChild("username");
+                Query queryEmail = databaseReference.child("Users").orderByChild("email");
+                Query queryUsername = databaseReference.child("Users").orderByChild("username");
 
                 String username = mUsernameEt.getText().toString().trim();
                 String email = mEmailEt.getText().toString().trim();

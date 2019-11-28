@@ -15,6 +15,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+<!--            <TextView-->
+<!--                android:id="@+id/peopleTv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:text="People with the same interests"/>-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/peopleRecyclerView"
             android:layout_width="match_parent"

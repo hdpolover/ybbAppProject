@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class PostUpvoterDetailActivity extends AppCompatActivity {
 
     ImageView upvoterAvatarIv;
     TextView upvoterNameTv;
-    MaterialButton followUpvoterBtn;
+    Button followUpvoterBtn;
 
     RecyclerView recyclerView;
 

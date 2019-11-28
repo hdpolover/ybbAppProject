@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEventActivity">
+    tools:context=".AddEventActivity"
+    android:layout_margin="10dp">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventTitle"
+        style="@style/parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/titleEt"
+            style="@style/modifiedEditText"
+            android:hint="Title"
+            android:maxLines="1"
+            android:textColor="@color/primaryTextColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventDesc"
+        style="@style/parent"
+        android:layout_below="@+id/eventTitle">
+
+        <EditText
+            android:id="@+id/DescEt"
+            style="@style/modifiedEditText"
+            android:hint="Description"
+            android:textColor="@color/primaryTextColor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Halo"/>
+        android:layout_below="@+id/eventDesc"/>
 
-</LinearLayout>
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/categorySpinner"/>
+
+</RelativeLayout>
