@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
     tools:ignore="HardcodedText">
 
     <!--    <androidx.appcompat.widget.Toolbar-->
@@ -17,7 +19,7 @@
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/collapsing_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="260dp"
         android:background="#F5F5F5"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -26,11 +28,14 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -55,13 +60,13 @@
                         app:civ_shadow_color="#f4f5f9"
                         app:civ_shadow_radius="10" />
 
-<!--                    <com.blogspot.atifsoftwares.circularimageview.CircularImageView-->
-<!--                        android:id="@+id/profileIv"-->
-<!--                        android:layout_width="100dp"-->
-<!--                        android:layout_height="100dp"-->
-<!--                        android:scaleType="centerCrop"-->
-<!--                        android:src="@drawable/ic_default_img"-->
-<!--                        app:c_background_color="#F1EDED" />-->
+                    <!--                    <com.blogspot.atifsoftwares.circularimageview.CircularImageView-->
+                    <!--                        android:id="@+id/profileIv"-->
+                    <!--                        android:layout_width="100dp"-->
+                    <!--                        android:layout_height="100dp"-->
+                    <!--                        android:scaleType="centerCrop"-->
+                    <!--                        android:src="@drawable/ic_default_img"-->
+                    <!--                        app:c_background_color="#F1EDED" />-->
 
 
                     <!--  Change Image -->
@@ -89,8 +94,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginRight="20dp"
                         android:layout_marginTop="14dp"
+                        android:layout_marginRight="20dp"
                         android:orientation="vertical">
 
                         <!-- User Name  -->
@@ -155,12 +160,46 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/profileBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="Message"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:theme="@style/buttonStyle" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="1dp" />
+
+
+                <Button
+                    android:id="@+id/messageBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="Message"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:theme="@style/buttonStyle" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/followerTv"

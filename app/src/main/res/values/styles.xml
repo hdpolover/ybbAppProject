@@ -77,4 +77,9 @@
         <item name="android:paddingLeft">5dp</item>
     </style>
 
+    <style name="buttonStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/design_default_color_primary</item>
+        <item name="colorButtonNormal">@color/design_default_color_primary_dark</item>
+    </style>
+
 </resources>
