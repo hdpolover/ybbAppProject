@@ -47,6 +47,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     //    View
     EditText mEmailEt, mPasswordEt, mUsernameEt, mPhoneEt;
@@ -68,6 +69,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     //    Declare as instance of FirebaseAuth
     private FirebaseAuth mAuth;
+    FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
 
     //location
@@ -77,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private LocationManager mLocationManager;
     private LocationRequest mLocationRequest;
     private com.google.android.gms.location.LocationListener listener;
-    private long UPDATE_INTERVAL = 2*1000; //10 SECOND
+    private long UPDATE_INTERVAL = 2 * 1000; //10 SECOND
     private long FASTEST_INTERVAL = 2000; //2 SECOND
     private LocationManager locationManager;
 
@@ -121,8 +125,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Query queryEmail = databaseReference.orderByChild("email");
+                Query queryUsername = databaseReference.orderByChild("username");
+
                 String username = mUsernameEt.getText().toString().trim();
-                String phone = mPhoneEt.getText().toString().trim();
                 String email = mEmailEt.getText().toString().trim();
                 String password = mPasswordEt.getText().toString().trim();
                 //Validate
@@ -135,7 +142,17 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     mPasswordEt.setError("Password length at least 6 characters");
                     mPasswordEt.setFocusable(true);
                 } else {
-                    registerUser(email, password, username, phone); //register user
+                    if (queryEmail.equals(email)) {
+                        //set error
+                        mEmailEt.setError("Email already exists!");
+                        mEmailEt.setFocusable(true);
+                    } else if (queryUsername.equals(username)) {
+                        //set error
+                        mEmailEt.setError("Username already exists!");
+                        mEmailEt.setFocusable(true);
+                    } else {
+                        registerUser(email, password); //register user
+                    }
                 }
             }
         });
@@ -169,7 +186,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             if (addresses != null && !addresses.isEmpty()) {
                 location.add(addresses.get(0).getCountryName());
                 location.add(addresses.get(0).getSubLocality());
-                return(location);
+                return (location);
             }
             return null;
         } catch (IOException ignored) {
@@ -180,9 +197,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
+                PackageManager.PERMISSION_GRANTED) {
 
 
             return;
@@ -190,30 +207,30 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         startLocationUpdates();
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if(mLocation == null){
+        if (mLocation == null) {
             startLocationUpdates();
         }
-        if(mLocation != null){
+        if (mLocation != null) {
             countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
             cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
-        }else{
+        } else {
             Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void onConnectionSuspended(int i){
+    public void onConnectionSuspended(int i) {
         Log.i(TAG, "Connection Suspended");
         mGoogleApiClient.connect();
     }
 
-    public void onConnectionFailed(ConnectionResult connectionResult){
-        Log.i(TAG, "Connection failed. Error : "+connectionResult.getErrorCode());
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed. Error : " + connectionResult.getErrorCode());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(mGoogleApiClient != null) {
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
     }
@@ -221,7 +238,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     @Override
     protected void onStop() {
         super.onStop();
-        if(mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -233,20 +250,20 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 .setInterval(UPDATE_INTERVAL)
                 .setFastestInterval(FASTEST_INTERVAL);
         //Request location update
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
+                PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        Log.d("reque","--->");
+        Log.d("reque", "--->");
     }
 
-    public void onLocationChanged(Location location){
-        String msg = "Updated Location : "+
-                (location.getLatitude())+ "," +
+    public void onLocationChanged(Location location) {
+        String msg = "Updated Location : " +
+                (location.getLatitude()) + "," +
                 (location.getLongitude());
         countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
         cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
@@ -257,7 +274,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     }
 
     private boolean checkLocation() {
-        if(!isLocationEnabled())
+        if (!isLocationEnabled())
             showAlert();
         return isLocationEnabled();
     }
@@ -281,7 +298,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         dialog.show();
     }
 
-    private boolean isLocationEnabled(){
+    private boolean isLocationEnabled() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -296,7 +313,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         }
     }
 
-    private void registerUser(String email, String password, String username, String phone) {
+    private void registerUser(String email, String password) {
         //email and password pattern is valid
         progressDialog.show();
 
@@ -328,16 +345,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             //using hashmap
                             HashMap<Object, String> hashMap = new HashMap<>();
                             //put info in hasmap
-                            hashMap.put("email",email);
-                            hashMap.put("uid",uid);
-                            hashMap.put("name",name); //will add later
-                            hashMap.put("onlineStatus","online"); //will add later
-                            hashMap.put("typingTo","noOne"); //will add later
-                            hashMap.put("phone",phone); //will add later
-                            hashMap.put("image",""); //will add later
-                            hashMap.put("country",country);
-                            hashMap.put("city",city);
-                            hashMap.put("username",username);
+                            hashMap.put("email", email);
+                            hashMap.put("uid", uid);
+                            hashMap.put("name", name); //will add later
+                            hashMap.put("onlineStatus", "online"); //will add later
+                            hashMap.put("typingTo", "noOne"); //will add later
+                            hashMap.put("phone", phone); //will add later
+                            hashMap.put("image", ""); //will add later
+                            hashMap.put("country", country);
+                            hashMap.put("city", city);
+                            hashMap.put("username", username);
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
