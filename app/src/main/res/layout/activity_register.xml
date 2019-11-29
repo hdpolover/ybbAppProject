@@ -137,16 +137,6 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
-                        android:id="@+id/countryTv"
-                        style="@style/parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:maxLines="1"
-                        android:text="Country" />
-
-                    <TextView
                         android:id="@+id/cityTv"
                         style="@style/parent"
                         android:layout_width="match_parent"
@@ -155,6 +145,16 @@
                         android:layout_marginTop="@dimen/loginViewsMargin"
                         android:maxLines="1"
                         android:text="City" />
+
+                    <TextView
+                        android:id="@+id/countryTv"
+                        style="@style/parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginTop="@dimen/loginViewsMargin"
+                        android:maxLines="1"
+                        android:text="Country" />
 
                     <Button
                         android:id="@+id/registerBtn"

@@ -10,7 +10,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,12 +54,17 @@ public class MessagesFragment extends Fragment {
     AdapterChatlist adapterChatlist;
     FloatingActionButton fab;
 
+    ImageView chatIv;
+    TextView chatTv;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
         fab = view.findViewById(R.id.fab);
+        chatTv = view.findViewById(R.id.chatTv);
+        chatIv = view.findViewById(R.id.chatIv);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -76,7 +83,14 @@ public class MessagesFragment extends Fragment {
                     ModelChatlist chatlist = ds.getValue(ModelChatlist.class);
                     chatList.add(chatlist);
                 }
-                loadChats();
+                if (chatList.size() > 0) {
+                    loadChats();
+                    chatTv.setVisibility(View.GONE);
+                    chatIv.setVisibility(View.GONE);
+                } else {
+                    chatTv.setVisibility(View.VISIBLE);
+                    chatIv.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

@@ -60,7 +60,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         }
 
         try{
-            Picasso.get().load(userImage).placeholder(R.drawable.ic_default_img).into(holder.profileIv);
+            Picasso.get().load(userImage).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.profileIv);
         }
         catch (Exception e){
             //Picasso.get().load(R.drawable.ic_default_img).into(holder.profileIv);

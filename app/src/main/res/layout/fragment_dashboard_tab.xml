@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tabProfile.DashboardTab"
-    android:background="@color/colorWhite">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@color/colorWhite"
+    tools:context=".tabProfile.DashboardTab">
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -16,37 +19,11 @@
         android:textColor="@color/primaryColor"/>
 
     <ImageView
+        android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_undraw_no_data"/>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/emailTv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:text="Email"-->
-<!--            android:textColor="@color/primaryDarkColor"-->
-<!--            android:textSize="16sp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/phoneTv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:text="Phone"-->
-<!--            android:textColor="@color/primaryDarkColor"-->
-<!--            android:textSize="16sp" />-->
-
-<!--    </LinearLayout>-->
 
 </FrameLayout>

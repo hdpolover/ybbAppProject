@@ -215,7 +215,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             ArrayList<String> location = new ArrayList<>();
             if (addresses != null && !addresses.isEmpty()) {
                 location.add(addresses.get(0).getCountryName());
-                location.add(addresses.get(0).getSubLocality());
+                location.add(addresses.get(0).getLocality());
                 return (location);
             }
             return null;
