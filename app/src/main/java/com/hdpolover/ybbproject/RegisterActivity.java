@@ -57,12 +57,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
     //    View
-    EditText mEmailEt, mPasswordEt, mUsernameEt, mPhoneEt, mJobEt;
+    EditText mEmailEt, mPasswordEt, mFullnameEt, mPhoneEt, mJobEt;
     Button mRegisterBtn;
     TextView mHaveAccountTv, countryTv, cityTv;
     ImageButton backBtn;
@@ -99,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 //    Init
         mEmailEt = findViewById(R.id.emailEt);
         mPasswordEt = findViewById(R.id.passwordEt);
-        mUsernameEt = findViewById(R.id.usernameEt);
+        mFullnameEt = findViewById(R.id.fullnameEt);
         mPhoneEt = findViewById(R.id.phoneEt);
         mJobEt = findViewById(R.id.jobEt);
         mRegisterBtn = findViewById(R.id.registerBtn);
@@ -128,16 +129,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = mUsernameEt.getText().toString().trim();
+                final String fullname = mFullnameEt.getText().toString().trim();
                 final String email = mEmailEt.getText().toString().trim();
                 final String password = mPasswordEt.getText().toString().trim();
                 final String phone = mPhoneEt.getText().toString().trim();
                 final String job = mJobEt.getText().toString().trim();
                 //Validate
-                if (username.equals("")) {
+                if (fullname.equals("")) {
                     //set error
-                    mUsernameEt.setError("Username cannot be empty");
-                    mUsernameEt.setFocusable(true);
+                    mFullnameEt.setError("Full name cannot be empty");
+                    mFullnameEt.setFocusable(true);
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     //set error
                     mEmailEt.setError("Invalid email!");
@@ -155,32 +156,33 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     mJobEt.setError("Job cannot be empty");
                     mJobEt.setFocusable(true);
                 } else {
-                    //check if email same
-                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users");
-
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                if (ds.child(username).exists()) {
-                                    //set error
-                                    mEmailEt.setError("Username already exists!");
-                                    mEmailEt.setFocusable(true);
-                                }else if(ds.child(email).exists()){
-                                    //set error
-                                    mEmailEt.setError("Email already exists!");
-                                    mEmailEt.setFocusable(true);
-                                }else{
-                                    registerUser(email, password); //register user
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    registerUser(email, password); //register user
+//                    //check if email same
+//                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users");
+//
+//                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                                if (ds.child(username).exists()) {
+//                                    //set error
+//                                    mEmailEt.setError("Username already exists!");
+//                                    mEmailEt.setFocusable(true);
+//                                }else if(ds.child(email).exists()){
+//                                    //set error
+//                                    mEmailEt.setError("Email already exists!");
+//                                    mEmailEt.setFocusable(true);
+//                                }else{
+//                                    registerUser(email, password); //register user
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
                 }
             }
         });
@@ -355,24 +357,28 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             String email = user.getEmail();
                             String uid = user.getUid();
 
+                            //get username based on first 5 letters of uid
+                            String username = "ybb" + uid.substring(0, 5);
+
                             //get Textview location
                             String country = countryTv.getText().toString();
                             String city = cityTv.getText().toString();
 
-                            String username = mUsernameEt.getText().toString();
+                            String fullName = mFullnameEt.getText().toString();
                             String phone = mPhoneEt.getText().toString();
                             String job = mJobEt.getText().toString();
 
                             //substring for get name
-                            String subName = "@";
-                            String name = email.substring(0, email.indexOf(subName));
+                            //String subName = "@";
+                            //String name = email.substring(0, email.indexOf(subName));
+
                             //when user is registered store user info in firebase realtime database too
                             //using hashmap
                             HashMap<Object, String> hashMap = new HashMap<>();
                             //put info in hasmap
                             hashMap.put("email", email);
                             hashMap.put("uid", uid);
-                            hashMap.put("name", name); //will add later
+                            hashMap.put("name", fullName); //will add later
                             hashMap.put("onlineStatus", "online"); //will add later
                             hashMap.put("typingTo", "noOne"); //will add later
                             hashMap.put("phone", phone); //will add later
@@ -408,6 +414,23 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             }
         });
     }
+
+//    private String getRandomUsername() {
+//        String username = "";
+//        String salt = "";
+//
+//        Random rnd = new Random();
+//        int numLetters = 5;
+//
+//        String randomLetters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+//
+//        for (int n=0; n<numLetters; n++) {
+//            salt += randomLetters.charAt(rnd.nextInt(randomLetters.length()));
+//        }
+//
+//        username = "ybb" + salt;
+//        return username;
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     EditText mEmailEt, mPasswordEt;
     TextView notHaveAccountTv, mForgotPasswordTv;
     Button mLoginBtn;
-    ImageButton mGoogleLoginBtn;
+    ImageButton mGoogleLoginBtn, mFacebookLoginBtn;
 
     //Declare an instance of FirebaseAuth
     private FirebaseAuth mAuth;
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Progress dialog
     ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         notHaveAccountTv = findViewById(R.id.not_have_account);
         mForgotPasswordTv = findViewById(R.id.forgot_password);
         mGoogleLoginBtn = findViewById(R.id.googleLoginBtn);
+        mFacebookLoginBtn = findViewById(R.id.facebookLoginBtn);
 
         //login button click
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +145,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
+
+        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Facebook login clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         //init progress dialog
         progressDialog = new ProgressDialog(this);

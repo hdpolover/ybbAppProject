@@ -94,11 +94,9 @@
                 android:id="@+id/not_have_account"
                 style="@style/parent"
                 android:layout_marginTop="@dimen/loginViewsMargin"
-                android:text="New user? Register Now"
+                android:text="New user? register now"
                 android:textAlignment="center"
-                android:textColor="@color/primaryColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@color/primaryColor"/>
 
 
             <LinearLayout
@@ -119,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:text="Use other Methods"
+                    android:text="Use other methods"
                     android:textAlignment="center"
                     android:textSize="12sp" />
 
@@ -137,10 +135,11 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/facebookLoginBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:src="@drawable/ic_facebook" />
 
                 <ImageButton

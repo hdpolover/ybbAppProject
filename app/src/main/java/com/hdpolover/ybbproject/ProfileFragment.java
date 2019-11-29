@@ -175,7 +175,7 @@ public class ProfileFragment extends Fragment {
                     String email = "" + ds.child("email").getValue();
                     String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
-                    String username = "" + ds.child("username").getValue();
+                    String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();
                     String city = "" + ds.child("city").getValue();
                     String coutry = "" + ds.child("country").getValue();

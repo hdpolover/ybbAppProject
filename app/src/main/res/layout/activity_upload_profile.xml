@@ -18,7 +18,7 @@
             android:id="@+id/photoTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Your Photo Profile!"
+            android:text="Upload your profile photo"
             android:textColor="@color/primaryColor"
             android:textSize="30sp" />
 
@@ -83,7 +83,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="skip >"
+            android:text="Not now"
             android:textSize="20sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

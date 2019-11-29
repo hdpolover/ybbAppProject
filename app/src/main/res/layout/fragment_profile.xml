@@ -20,21 +20,18 @@
         android:id="@+id/collapsing_toolbar"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:background="#F5F5F5"
+        android:background="@color/colorWhite"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
         <LinearLayout
             android:id="@+id/wrapperLL"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -42,17 +39,14 @@
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="-20dp"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp">
 
                     <!--  Profile Image -->
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/profileIv"
                         android:layout_width="160dp"
                         android:layout_height="160dp"
-                        android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_undraw_profile_pic"
                         app:civ_border_color="#EEEEEE"
                         app:civ_border_width="4dp"
@@ -91,10 +85,8 @@
                         android:id="@+id/id_Info_RelativeLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
                         <!-- User Name  -->
@@ -114,10 +106,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/nameTv"
                             android:layout_centerInParent="true"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="5dp"
                             android:text="jrg.pisang"
-                            android:textColor="@color/primaryDarkColor"
-                            android:textSize="16sp" />
+                            android:textColor="@color/colorGray" />
 
                         <TextView
                             android:id="@+id/jobTv"
@@ -125,16 +116,15 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/usernameTv"
                             android:layout_centerInParent="true"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:text="Software Engineer"
                             android:textColor="@color/primaryDarkColor"
-                            android:textSize="16sp" />
+                            android:textSize="15sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:paddingBottom="14dp"
+                            android:layout_marginTop="35dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -169,79 +159,93 @@
 
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="25dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/profileBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/primaryLightColor"
                     android:text="Edit Profile"
                     android:textColor="@color/whiteTextColor"
-                    android:textSize="14sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/messageBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/primaryLightColor"
                     android:text="Message"
-                    android:textColor="@color/whiteTextColor"
-                    android:textSize="14sp"
-                    android:layout_marginRight="20dp"/>
+                    android:textColor="@color/whiteTextColor" />
 
                 <Button
                     android:id="@+id/followBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/primaryLightColor"
                     android:text="Follow"
-                    android:textColor="@color/whiteTextColor"
-                    android:textSize="14sp" />
+                    android:textColor="@color/whiteTextColor" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/whiteTextColor" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:background="@color/whiteTextColor" />-->
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/followerTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 Follower"
+                    android:text="999 Followers"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorBlack"/>
 
                 <View
-                    android:layout_width="100dp"
-                    android:layout_height="1dp" />
+                    android:layout_width="1dp"
+                    android:background="@color/colorGray"
+                    android:layout_height="match_parent" />
 
                 <TextView
+                    android:layout_weight="1"
                     android:id="@+id/followingTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 Following"
+                    android:text="999 Followings"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/colorBlack"
+                    android:gravity="center"/>
 
             </LinearLayout>
+
+            <View
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorGray"
+                android:layout_height="1dp" />
+
 
         </LinearLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -257,7 +261,7 @@
         app:tabSelectedTextColor="@color/primaryColor"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
         app:tabTextColor="@color/colorBlack"
-        app:tabRippleColor="@color/primaryColor" />
+        app:tabRippleColor="@color/primaryColor"/>
 
     <!--    </androidx.appcompat.widget.Toolbar>-->
 
@@ -266,7 +270,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/sliding_tabs"
-        android:layout_marginTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.viewpager.widget.ViewPager>

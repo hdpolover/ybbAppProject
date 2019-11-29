@@ -6,6 +6,8 @@
     <color name="primaryLightColor">#67beff</color>
     <color name="primaryDarkColor">#0061b7</color>
     <color name="primaryTextColor">#000000</color>
+    <color name="placeholder_bg">#dddddd</color>
+    <color name="colorGray">#808080</color>
 
 <!--    FOR LOGIN-->
     <color name="colorPrimary">#FFFFFF</color>
