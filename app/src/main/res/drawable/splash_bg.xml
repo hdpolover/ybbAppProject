@@ -11,7 +11,7 @@
 
         <bitmap
             android:gravity="fill_horizontal|fill_vertical"
-            android:src="@drawable/logo_ybb" />
+            android:src="@drawable/ybb_white_full" />
 
     </item>
 </layer-list>

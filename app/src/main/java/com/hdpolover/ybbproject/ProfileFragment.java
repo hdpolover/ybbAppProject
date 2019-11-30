@@ -192,7 +192,7 @@ public class ProfileFragment extends Fragment {
 
                     try {
                         //if image is received then set
-                        Picasso.get().load(image).into(profileIv);
+                        Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
                         //if there is any exception while getting image then set default
                         //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);

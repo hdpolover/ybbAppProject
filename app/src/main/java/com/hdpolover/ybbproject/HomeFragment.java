@@ -253,7 +253,7 @@ public class HomeFragment extends Fragment {
 //            checkUserStatus();
 //        }
         if (id == R.id.action_notif) {
-            Toast.makeText(getActivity(), "Notif", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), NotificationActivity.class));
         }
 //        if (id == R.id.action_add_post) {
 //            startActivity(new Intent(getActivity(), AddPostActivity.class));
