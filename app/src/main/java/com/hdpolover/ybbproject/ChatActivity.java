@@ -548,7 +548,7 @@ public class ChatActivity extends AppCompatActivity {
 
         final String timeStamp = ""+System.currentTimeMillis();
 
-        String fileNameAndPath = "ChatImages/"+"post_"+timeStamp;
+        String fileNameAndPath = "ChatImages/"+"chat_image_"+timeStamp;
 
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_rui);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
