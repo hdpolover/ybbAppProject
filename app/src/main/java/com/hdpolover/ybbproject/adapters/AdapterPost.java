@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -177,11 +178,17 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         myHolder.profileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //will be used to go to userprofileactivity
-                //with uid to show user's posts
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", uid);
-                context.startActivity(intent);
+                //if post user is me, then go to profile
+                if (uid.equals(myUid)) {
+                    ((FragmentActivity)context).getSupportFragmentManager()
+                            .beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                } else {
+                    //will be used to go to userprofileactivity
+                    //with myUid to show user's posts
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("myUid", uid);
+                    context.startActivity(intent);
+                }
             }
         });
         myHolder.postCard.setOnClickListener(new View.OnClickListener() {

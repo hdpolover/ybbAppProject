@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
 
     //views from xml
     ImageView profileIv;
-    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv;
+    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv, followersTv, followingsTv;
     RecyclerView postsRecyclerView;
     Button messageBtn, followBtn, profileBtn;
 
@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
-    String uid;
+    String uid, email;
 
     //image picked will be the same in this uri
     Uri image_rui = null;
@@ -137,11 +137,13 @@ public class ProfileFragment extends Fragment {
         jobTv = view.findViewById(R.id.jobTv);
         cityTv = view.findViewById(R.id.cityTv);
         countryTv = view.findViewById(R.id.countryTv);
-        postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
+        followersTv = view.findViewById(R.id.followersTv);
+        followingsTv = view.findViewById(R.id.followingsTv);
         messageBtn = view.findViewById(R.id.messageBtn);
         followBtn = view.findViewById(R.id.followBtn);
         profileBtn = view.findViewById(R.id.profileBtn);
 
+        postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
         pd = new ProgressDialog(getActivity());
 
         /////*     initialize view   */////
@@ -161,6 +163,7 @@ public class ProfileFragment extends Fragment {
         profileBtn.setVisibility(View.VISIBLE);
 
         checkUserStatus();
+        setUserFollows(followersTv, followingsTv);
 
         //we have to get info of currently signed in user
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
@@ -220,6 +223,44 @@ public class ProfileFragment extends Fragment {
         //loadMyPosts();
 
         return view;
+    }
+
+    private void setUserFollows(final TextView followersTv, final TextView followingsTv){
+        DatabaseReference followersRef = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(uid).child("Followers");
+        followersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    followersTv.setText("0 Followers");
+                } else {
+                    followersTv.setText(dataSnapshot.getChildrenCount() + " Followers");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference followingsRef = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(uid).child("Followings");
+        followingsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    followingsTv.setText("0 Followings");
+                } else {
+                    followingsTv.setText(dataSnapshot.getChildrenCount() + " Followings");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //image new
@@ -512,7 +553,7 @@ public class ProfileFragment extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             uid = user.getUid();
-
+            email = user.getEmail();
         } else {
             //user not signed in, go to welcome
             startActivity(new Intent(getActivity(), MainActivity.class));

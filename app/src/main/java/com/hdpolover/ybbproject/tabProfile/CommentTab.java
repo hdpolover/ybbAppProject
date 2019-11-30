@@ -16,7 +16,6 @@ import com.hdpolover.ybbproject.R;
  */
 public class CommentTab extends Fragment {
 
-
     public CommentTab() {
         // Required empty public constructor
     }

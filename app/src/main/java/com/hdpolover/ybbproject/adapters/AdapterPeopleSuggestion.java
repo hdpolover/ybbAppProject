@@ -8,15 +8,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.hdpolover.ybbproject.MainActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +31,8 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
 
     Context context;
     List<ModelPeopleSuggestion> peopleList;
+
+    String myUid;
 
     public AdapterPeopleSuggestion(Context context, List<ModelPeopleSuggestion> peopleList) {
         this.context = context;
@@ -42,9 +49,12 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        myUid = firebaseUser.getUid();
+
         //get data
-        final String uid = peopleList.get(position).getUid();
+        final String hisUid = peopleList.get(position).getUid();
         String name = peopleList.get(position).getName();
         String image = peopleList.get(position).getImage();
 
@@ -61,7 +71,48 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
         holder.followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Followed", Toast.LENGTH_SHORT).show();
+                if (holder.followBtn.getText().toString().equals("Follow")) {
+                    FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                            .child("Followings").child(hisUid).setValue(true);
+                    FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                            .child("Followers").child(myUid).setValue(true);
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                            .child("Followings").child(hisUid).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                            .child("Followers").child(myUid).removeValue();
+                }
+            }
+        });
+
+        holder.profileImageIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("myUid", hisUid);
+                context.startActivity(intent);
+            }
+        });
+
+        isFollowing(hisUid, holder.followBtn);
+    }
+
+    private void isFollowing(final String followerId, final Button followBtn) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("Follows").child(myUid).child("Followings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(followerId).exists()) {
+                    followBtn.setText("Following");
+                } else {
+                    followBtn.setText("Follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

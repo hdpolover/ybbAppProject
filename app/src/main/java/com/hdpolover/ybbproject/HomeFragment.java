@@ -79,6 +79,8 @@ public class HomeFragment extends Fragment {
         //set layout to recycler view
         peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
 
+        checkUserStatus();
+
         //init post list
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
@@ -107,7 +109,10 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     ModelPeopleSuggestion modelPeopleSuggestion = ds.getValue(ModelPeopleSuggestion.class);
 
-                    //make sure the user is not displayed in the people suggestion
+                    Log.e("uid", modelPeopleSuggestion.getUid());
+                    Log.e("myuid", uid);
+                    Log.e("loop & uid same?", "" +(modelPeopleSuggestion.getUid().equals(uid)));
+
                     if (!modelPeopleSuggestion.getUid().equals(uid)) {
                         peopleList.add(modelPeopleSuggestion);
                     }

@@ -4,21 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,17 +43,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileActivity extends AppCompatActivity {
-
     FirebaseAuth firebaseAuth;
 
     //views from xml
-    ImageView profileIv;
+    ImageView profileIv, cameraIv;
     TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv;
+    Button messageBtn, followBtn, profileBtn;
     RecyclerView postsRecyclerView;
+    LinearLayout followsLayout;
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
-    String uid;
+
+    String myUid, hisUid;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -72,6 +80,13 @@ public class UserProfileActivity extends AppCompatActivity {
         jobTv = findViewById(R.id.jobTv);
         cityTv = findViewById(R.id.cityTv);
         countryTv = findViewById(R.id.countryTv);
+        messageBtn = findViewById(R.id.messageBtn);
+        followBtn = findViewById(R.id.followBtn);
+        cameraIv = findViewById(R.id.cameraIv);
+        followsLayout = findViewById(R.id.followsLayout);
+
+        cameraIv.setVisibility(View.GONE);
+        followsLayout.setVisibility(View.GONE);
 
         postsRecyclerView = findViewById(R.id.recyclerview_posts);
 
@@ -88,12 +103,14 @@ public class UserProfileActivity extends AppCompatActivity {
         tabLayout.setTabRippleColor(null);
         firebaseAuth = firebaseAuth.getInstance();
 
+        checkUserStatus();
+
         //get uid of clicked user
         Intent intent = getIntent();
-        uid = intent.getStringExtra("uid");
+        hisUid = intent.getStringExtra("uid");
 
         //we have to get info of currently signed in user
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(uid);
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,7 +122,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     String email = "" + ds.child("email").getValue();
                     String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
-                    String username = "" + ds.child("username").getValue();
+                    String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();
                     String city = "" + ds.child("city").getValue();
                     String country = "" + ds.child("country").getValue();
@@ -121,7 +138,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                     try {
                         //if image is received then set
-                        Picasso.get().load(image).into(profileIv);
+                        Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
                         //if there is any exception while getting image then set default
                         //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);
@@ -135,11 +152,57 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        messageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtra("hisUid", hisUid);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        followBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (followBtn.getText().toString().equals("Follow")) {
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                                .child("Followings").child(hisUid).setValue(true);
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                                .child("Followers").child(myUid).setValue(true);
+                    } else {
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                                .child("Followings").child(hisUid).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                                .child("Followers").child(myUid).removeValue();
+                    }
+                }
+            });
+
+        isFollowing(hisUid, followBtn);
+
         //postList = new ArrayList<>();
-
-        //checkUserStatus();
         //loadHistPosts();
+    }
 
+    private void isFollowing(final String followerId, final Button followBtn) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("Follows").child(myUid).child("Followings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(followerId).exists()) {
+                    followBtn.setText("Following");
+                } else {
+                    followBtn.setText("Follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void loadHistPosts() {
@@ -153,7 +216,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //init post list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query query = ref.orderByChild("uid").equalTo(hisUid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -190,7 +253,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //init post list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query query = ref.orderByChild("uid").equalTo(hisUid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -222,10 +285,7 @@ public class UserProfileActivity extends AppCompatActivity {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            //user is signed in stay here
-            //set users of logged in user
-//            mMasukTv.setText(user.getEmail());
-
+            myUid = user.getUid();
         } else {
             //user not signed in, go to welcome
             startActivity(new Intent(this, MainActivity.class));
@@ -288,4 +348,5 @@ public class UserProfileActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

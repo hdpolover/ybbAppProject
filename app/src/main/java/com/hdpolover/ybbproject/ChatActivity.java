@@ -751,6 +751,8 @@ public class ChatActivity extends AppCompatActivity {
         //menu.findItem(R.id.action_back).setVisible(true);
         //hide searchview, as we dont need it here
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.action_notif).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
     }

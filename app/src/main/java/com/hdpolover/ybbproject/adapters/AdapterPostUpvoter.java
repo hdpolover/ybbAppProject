@@ -1,7 +1,7 @@
 package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +32,7 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
     Context context;
     List<ModelUser> upvoterList;
 
-    String uid;
+    String myUid;
     //contructor
 
     public AdapterPostUpvoter(Context context, List<ModelUser> upvoterList) {
@@ -53,10 +52,10 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        uid = firebaseUser.getUid();
+        myUid = firebaseUser.getUid();
 
         //get data
-        final String hisUID = upvoterList.get(position).getUid();
+        final String hisUid = upvoterList.get(position).getUid();
         String userImage = upvoterList.get(position).getImage();
         String userName = upvoterList.get(position).getName();
 
@@ -70,69 +69,42 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
 
         }
 
-        //handle item click
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.upvoterAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //show dialog
-                //chat clicked
-                //Click user from user list to start chatting/messaging
-                //Start activity by putting UID of receiver
-                //we will use that UID to identify the user we are gonna chat
-
-//                Intent intent = new Intent(context, ChatActivity.class);
-//                intent.putExtra("hisUid", hisUID);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-
-                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("myUid", hisUid);
+                context.startActivity(intent);
             }
         });
 
-        if (hisUID.equals(uid)) {
+        if (hisUid.equals(myUid)) {
             holder.followUpvoterBtn.setVisibility(View.GONE);
         } else {
             holder.followUpvoterBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (holder.followUpvoterBtn.getText().toString().equals("Follow")) {
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(uid)
-                                .child("Following").child(hisUID).setValue(true);
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(hisUID)
-                                .child("Follower").child(uid).setValue(true);
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                                .child("Followings").child(hisUid).setValue(true);
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                                .child("Followers").child(myUid).setValue(true);
                     } else {
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(uid)
-                                .child("Following").child(hisUID).removeValue();
-                        FirebaseDatabase.getInstance().getReference().child("Follow").child(hisUID)
-                                .child("Follower").child(uid).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
+                                .child("Followings").child(hisUid).removeValue();
+                        FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
+                                .child("Followers").child(myUid).removeValue();
                     }
                 }
             });
         }
 
-        isFollowing(hisUID, holder.followUpvoterBtn);
-
-//        holder.followUpvoterBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (holder.followUpvoterBtn.getText().toString().equals("Follow")) {
-//                    FirebaseDatabase.getInstance().getReference().child("Follow").child(uid)
-//                            .child("Following").child(hisUID).setValue(true);
-//                    FirebaseDatabase.getInstance().getReference().child("Follow").child(hisUID)
-//                            .child("Follower").child(uid).setValue(true);
-//                } else {
-//                    FirebaseDatabase.getInstance().getReference().child("Follow").child(uid)
-//                            .child("Following").child(hisUID).removeValue();
-//                    FirebaseDatabase.getInstance().getReference().child("Follow").child(hisUID)
-//                            .child("Follower").child(uid).removeValue();
-//                }
-//            }
-//        });
+        isFollowing(hisUid, holder.followUpvoterBtn);
     }
 
     private void isFollowing(final String followerId, final Button followBtn) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("Follow").child(uid).child("Following");
+                .child("Follows").child(myUid).child("Followings");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
