@@ -280,8 +280,6 @@ public class UploadProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 pd.dismiss();
-                                                //Toast.makeText(AddPostActivity.this, "Post published...", Toast.LENGTH_SHORT).show();
-
                                                 //reset views
                                                 image_rui = null;
 
