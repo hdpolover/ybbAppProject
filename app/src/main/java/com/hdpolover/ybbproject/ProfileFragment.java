@@ -78,8 +78,6 @@ public class ProfileFragment extends Fragment {
 
     //storage
     StorageReference storageReference;
-    //path where image of user profile and cover will be stored
-    String storagePath = "Users_Profile_Cover_Imgs/";
 
     //views from xml
     ImageView profileIv;
@@ -345,138 +343,19 @@ public class ProfileFragment extends Fragment {
 
                 profileIv.setImageURI(image_rui);
 
-                upProfilePic();
+                updateProfilePic();
             }
             else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
                 profileIv.setImageURI(image_rui);
 
-                upProfilePic();
+                updateProfilePic();
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-//    private void uploadProfilePhoto(Uri image_uri) throws IOException {
-//
-//        profilePhoto = "image";
-//        //show progress
-//        pd.show();
-//
-//        //path and name of image to be stored in firebase storage
-//        //e.g Users_Profile_Cover_Imgs/image_e112312412.jpg
-//        String filePathAndName = storagePath + "" + profilePhoto + "_" + user.getUid();
-//
-//        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), image_uri);
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-//        byte[] data = baos.toByteArray(); //convert image to bytes
-//        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
-//        ref.putBytes(data)
-////        StorageReference storageReference2nd = storageReference.child(filePathAndName);
-////        storageReference2nd.putFile(uri)
-//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-//                        while (!uriTask.isSuccessful()) ;
-//                        final Uri downloadUri = uriTask.getResult();
-//
-//                        //check if image is uploaded or not and url is received
-//                        if (uriTask.isSuccessful()) {
-//                            //image uplaoded
-//                            //add / update url iin user database
-//                            HashMap<String, Object> results = new HashMap<>();
-//                            results.put(profilePhoto, downloadUri.toString());
-//
-//                            databaseReference.child(user.getUid()).updateChildren(results)
-//                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//                                            //url is database of user is added successfully
-//                                            pd.dismiss();
-//                                            Toast.makeText(getActivity(), "Image Updated...", Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    }).addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    //error
-//                                    pd.dismiss();
-//                                    Toast.makeText(getActivity(), "Error Updating Image...", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//
-//                            //if user edit his name, also change it in his posts
-//                            if (profilePhoto.equals("image")) {
-//                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-//                                Query query = ref.orderByChild("uid").equalTo(uid);
-//                                query.addValueEventListener(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                                            String child = ds.getKey();
-//                                            dataSnapshot.getRef().child(child).child("uDp").setValue(downloadUri.toString());
-//
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                    }
-//                                });
-//
-//                                //update user image in current users comment on post
-//                                //updated name in current users comments on posts
-//                                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                                            String child = ds.getKey();
-//                                            if (dataSnapshot.child(child).hasChild("Comments")) {
-//                                                String child1 = "" + dataSnapshot.child(child).getKey();
-//                                                Query child2 = FirebaseDatabase.getInstance().getReference("Posts").child(child1).child("Comments").orderByChild("uid").equalTo(uid);
-//                                                child2.addValueEventListener(new ValueEventListener() {
-//                                                    @Override
-//                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                                                            String child = ds.getKey();
-//                                                            dataSnapshot.getRef().child(child).child("uDp").setValue(downloadUri.toString());
-//                                                        }
-//                                                    }
-//
-//                                                    @Override
-//                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                                    }
-//                                                });
-//                                            }
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                    }
-//                                });
-//                            }
-//                        } else {
-//                            //error
-//                            pd.dismiss();
-//                            Toast.makeText(getActivity(), "Some error occured", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                //there were some error
-//                pd.dismiss();
-//                Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
-    private void upProfilePic() {
+    private void updateProfilePic() {
         pd.setMessage("Updating profile picture...");
         pd.show();
 
@@ -491,7 +370,7 @@ public class ProfileFragment extends Fragment {
             Bitmap bitmap = ((BitmapDrawable) profileIv.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //image compress
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
             byte[] data = baos.toByteArray();
 
             //post with image

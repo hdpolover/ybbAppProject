@@ -125,9 +125,9 @@ public class PostDetailActivity extends AppCompatActivity {
         upvotersCard = findViewById(R.id.upvotersCard);
         upvotersCountTv = findViewById(R.id.upvotersCountTv);
 
-        loadPostInfo();
-
         checkUserStatus();
+
+        loadPostInfo();
 
         loadUserInfo();
 
@@ -199,7 +199,6 @@ public class PostDetailActivity extends AppCompatActivity {
             upvotersCountTv.setText(upvotersCount + " people upvoted this");
         }
     }
-
 
     private void setCountText(final TextView upvotes, final TextView comments, String postId){
         DatabaseReference upvotesRef = FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(postId);
@@ -418,7 +417,6 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-
     private void postComment() {
         pd = new ProgressDialog(this);
         pd.setMessage("Adding comment...");
@@ -442,6 +440,7 @@ public class PostDetailActivity extends AppCompatActivity {
         hashMap.put("comment", comment);
         hashMap.put("timestamp", timeStamp);
         hashMap.put("uid", myUid);
+        hashMap.put("uDp", myDp);
         hashMap.put("uEmail", myEmail);
         hashMap.put("uName", myName);
 
@@ -503,7 +502,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     //set data
                     try {
 
-                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(uPictureIv);
+                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(cAvatarIv);
                         //if image is received then set
 //                        Picasso.get().load(myDp)
 //                                .placeholder(R.drawable.ic_undraw_profile_pic)
