@@ -25,7 +25,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         //action bar and its propertoes
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Notification");
+        actionBar.setTitle("Notifications");
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 

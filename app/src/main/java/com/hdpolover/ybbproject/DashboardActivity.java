@@ -39,6 +39,7 @@ public class DashboardActivity extends AppCompatActivity {
         //action bar and its propertoes
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.ybb_white_cropped);
+        actionBar.setTitle("YBB");
         actionBar.setDisplayShowHomeEnabled(true);
 
         //init firebase

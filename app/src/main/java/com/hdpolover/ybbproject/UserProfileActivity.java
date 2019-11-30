@@ -304,35 +304,37 @@ public class UserProfileActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         menu.findItem(R.id.action_notif).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+
         MenuItem item = menu.findItem(R.id.action_search);
         //searchview
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //called when user press search button
-                if (!TextUtils.isEmpty(query)) {
-                    //search
-                    searchHistPosts(query);
-                } else {
-                    loadHistPosts();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //called when user press search button
-                if (!TextUtils.isEmpty(newText)) {
-                    //search
-                    searchHistPosts(newText);
-                } else {
-                    loadHistPosts();
-                }
-                return false;
-            }
-        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                //called when user press search button
+//                if (!TextUtils.isEmpty(query)) {
+//                    //search
+//                    searchHistPosts(query);
+//                } else {
+//                    loadHistPosts();
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                //called when user press search button
+//                if (!TextUtils.isEmpty(newText)) {
+//                    //search
+//                    searchHistPosts(newText);
+//                } else {
+//                    loadHistPosts();
+//                }
+//                return false;
+//            }
+//        });
 
         return super.onCreateOptionsMenu(menu);
     }

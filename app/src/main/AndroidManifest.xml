@@ -27,7 +27,8 @@
         <activity android:name=".UploadProfileActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".PostUpvoterDetailActivity" />
+        <activity
+            android:name=".PostUpvoterDetailActivity"/>
         <activity
             android:name=".OtherMethodActivity"
             android:theme="@style/AppThemeNo" />

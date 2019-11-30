@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -314,6 +315,10 @@ public class PostDetailActivity extends AppCompatActivity {
             popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
         }
 
+        popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
+        popupMenu.getMenu().add(Menu.NONE, 3, 0, "Share");
+
+
         //item click listener
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -330,7 +335,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     intent.putExtra("key", "editPost");
                     intent.putExtra("editPostId", postId);
                     startActivity(intent);
-                } 
+                } else if (id == 2) {
+                    Toast.makeText(getApplicationContext(), "Report clicked.", Toast.LENGTH_SHORT).show();
+                } else if (id == 3) {
+                    Toast.makeText(getApplicationContext(), "Share clicked.", Toast.LENGTH_SHORT).show();
+                }
 
                 return false;
             }

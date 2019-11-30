@@ -273,7 +273,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
             popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
         }
-        popupMenu.getMenu().add(Menu.NONE, 2, 0, "View Detail");
+
+        popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
+        popupMenu.getMenu().add(Menu.NONE, 3, 0, "Share");
 
         //item click listener
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -291,11 +293,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                     intent.putExtra("key", "editPost");
                     intent.putExtra("editPostId", pId);
                     context.startActivity(intent);
-                } else if  (id == 2){
-                    //start postdetailactivity
-                    Intent intent = new Intent(context, PostDetailActivity.class);
-                    intent.putExtra("postId", pId);
-                    context.startActivity(intent);
+                } else if (id == 2) {
+                    Toast.makeText(context, "Report clicked.", Toast.LENGTH_SHORT).show();
+                } else if (id == 3) {
+                    Toast.makeText(context, "Share clicked.", Toast.LENGTH_SHORT).show();
                 }
 
                 return false;

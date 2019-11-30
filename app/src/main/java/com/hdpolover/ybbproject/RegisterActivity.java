@@ -210,12 +210,13 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = null;
         try {
+           // 41.015137, 28.979530
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             Address result;
             ArrayList<String> location = new ArrayList<>();
             if (addresses != null && !addresses.isEmpty()) {
                 location.add(addresses.get(0).getCountryName());
-                location.add(addresses.get(0).getLocality());
+                location.add(addresses.get(0).getAdminArea());
                 return (location);
             }
             return null;
