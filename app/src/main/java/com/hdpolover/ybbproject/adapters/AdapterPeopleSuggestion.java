@@ -89,7 +89,7 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("myUid", hisUid);
+                intent.putExtra("uid", hisUid);
                 context.startActivity(intent);
             }
         });

@@ -80,7 +80,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final ModelPost post = postList.get(position);
 
         //get data
-        final String uid = post.getUid();
+        final String hisUid = post.getUid();
         final String pId = post.getpId();
         final String pImage = postList.get(position).getpImage();
 
@@ -162,7 +162,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                showMoreOptions(myHolder.moreBtn, uid, myUid, pId, pImage);
+                showMoreOptions(myHolder.moreBtn, hisUid, myUid, pId, pImage);
             }
         });
 
@@ -179,14 +179,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @Override
             public void onClick(View v) {
                 //if post user is me, then go to profile
-                if (uid.equals(myUid)) {
+                if (hisUid.equals(myUid)) {
                     ((FragmentActivity)context).getSupportFragmentManager()
                             .beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
                 } else {
                     //will be used to go to userprofileactivity
                     //with myUid to show user's posts
                     Intent intent = new Intent(context, UserProfileActivity.class);
-                    intent.putExtra("myUid", uid);
+                    intent.putExtra("uid", hisUid);
                     context.startActivity(intent);
                 }
             }
