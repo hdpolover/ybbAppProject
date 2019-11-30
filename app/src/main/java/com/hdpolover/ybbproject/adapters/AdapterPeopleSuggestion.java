@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseUser;
+import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.squareup.picasso.Picasso;

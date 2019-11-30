@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
     FirebaseAuth firebaseAuth;
     FloatingActionButton fab_add_post;
 
+    String uid;
+
     RecyclerView postRecyclerView;
     List<ModelPost> postList;
     AdapterPost adapterPost;
@@ -105,7 +107,10 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     ModelPeopleSuggestion modelPeopleSuggestion = ds.getValue(ModelPeopleSuggestion.class);
 
-                    peopleList.add(modelPeopleSuggestion);
+                    //make sure the user is not displayed in the people suggestion
+                    if (!modelPeopleSuggestion.getUid().equals(uid)) {
+                        peopleList.add(modelPeopleSuggestion);
+                    }
 
                     //adapter
                     adapterPeopleSuggestion = new AdapterPeopleSuggestion(getActivity(), peopleList);
@@ -185,10 +190,7 @@ public class HomeFragment extends Fragment {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            //user is signed in stay here
-            //set users of logged in user
-//            mMasukTv.setText(user.getEmail());
-
+            uid = user.getUid();
         } else {
             //user not signed in, go to welcome
             startActivity(new Intent(getActivity(), MainActivity.class));
