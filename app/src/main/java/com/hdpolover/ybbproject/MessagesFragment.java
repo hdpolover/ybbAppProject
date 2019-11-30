@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -296,20 +297,20 @@ public class MessagesFragment extends Fragment {
 
     //Inflate options menu
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        //inflating menu
-//        inflater.inflate(R.menu.menu_main, menu);
-//
-//        //hide searchview, as we dont need it here
-//       menu.findItem(R.id.action_logout).setVisible(false);
-//        menu.findItem(R.id.action_add_post).setVisible(false);
-//
-//        //searchView
-//        MenuItem item = menu.findItem(R.id.action_search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-//
-//        //search listener
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //inflating menu
+        inflater.inflate(R.menu.menu_main, menu);
+
+        //hide searchview, as we dont need it here
+        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_notif).setVisible(false);
+
+        //searchView
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
+        //search listener
 //        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 //            @Override
 //            public boolean onQueryTextSubmit(String s) {
@@ -341,9 +342,9 @@ public class MessagesFragment extends Fragment {
 //                return false;
 //            }
 //        });
-//
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     //handle menu item click
 

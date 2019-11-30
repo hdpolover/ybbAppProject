@@ -186,7 +186,55 @@ public class ChatActivity extends AppCompatActivity {
                             Calendar cal = Calendar.getInstance();
                             cal.setTimeInMillis(Long.parseLong(onlineStatus));
                             String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
-                            userStatusTv.setText("Last seen at "+dateTime);
+
+                            String month = "";
+                            String date = dateTime.substring(0, 2);
+                            String time = dateTime.substring(10);
+
+                            String b = dateTime.substring(3, 5);
+
+                            switch (b) {
+                                case "1":
+                                    month = "Jan";
+                                    break;
+                                case "2":
+                                    month = "Feb";
+                                    break;
+                                case "3":
+                                    month = "Mar";
+                                    break;
+                                case "4":
+                                    month = "Apr";
+                                    break;
+                                case "5":
+                                    month = "May";
+                                    break;
+                                case "6":
+                                    month = "June";
+                                    break;
+                                case "7":
+                                    month = "July";
+                                    break;
+                                case "8":
+                                    month = "Aug";
+                                    break;
+                                case "9":
+                                    month = "Sep";
+                                    break;
+                                case "10":
+                                    month = "Oct";
+                                    break;
+                                case "11":
+                                    month = "Nov";
+                                    break;
+                                case "12":
+                                    month = "Des";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            userStatusTv.setText("Last seen on "+ date + " " + month + " at" + time);
                         }
                     }
 

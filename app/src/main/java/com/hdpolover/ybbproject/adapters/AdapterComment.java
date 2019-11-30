@@ -64,10 +64,57 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         calendar.setTimeInMillis(Long.parseLong(timestamp));
         String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 
+        String month = "";
+        String date = pTime.substring(0, 2);
+        String time = pTime.substring(10);
+
+        String b = pTime.substring(3, 5);
+
+        switch (b) {
+            case "1":
+                month = "Jan";
+                break;
+            case "2":
+                month = "Feb";
+                break;
+            case "3":
+                month = "Mar";
+                break;
+            case "4":
+                month = "Apr";
+                break;
+            case "5":
+                month = "May";
+                break;
+            case "6":
+                month = "June";
+                break;
+            case "7":
+                month = "July";
+                break;
+            case "8":
+                month = "Aug";
+                break;
+            case "9":
+                month = "Sep";
+                break;
+            case "10":
+                month = "Oct";
+                break;
+            case "11":
+                month = "Nov";
+                break;
+            case "12":
+                month = "Des";
+                break;
+            default:
+                break;
+        }
+
         //set the data
         holder.nameTv.setText(name);
         holder.commentTv.setText(comment);
-        holder.timeTv.setText(pTime);
+        holder.timeTv.setText(date + " " + month + " at" + time);
 
         //set user dp
         try {

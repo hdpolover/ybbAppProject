@@ -3,21 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tabProfile.EventsTab"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
     android:background="@color/colorWhite"
-    android:layout_centerVertical="true"
-    android:layout_centerHorizontal="true">
+    tools:context=".tabProfile.EventsTab">
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="22sp"
-        android:text="Sorry, No Data"
+        android:textSize="20sp"
+        android:text="You have no events."
         android:textColor="@color/primaryColor"/>
 
     <ImageView
+        android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"

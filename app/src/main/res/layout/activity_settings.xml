@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/logoutBtn"
@@ -17,7 +18,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_edit_black"/>
+                android:src="@drawable/ic_logout"/>
 
             <TextView
                 android:layout_marginLeft="70dp"
@@ -29,27 +30,27 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/aboutBtn"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:contentPadding="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+<!--    <com.google.android.material.card.MaterialCardView-->
+<!--        android:id="@+id/aboutBtn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        app:contentPadding="5dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginBottom="8dp">-->
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_edit_black"/>
+<!--        <ImageView-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:src="@drawable/ic_edit_black"/>-->
 
-        <TextView
-            android:layout_marginLeft="70dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:textSize="25sp"
-            android:text="About"/>
+<!--        <TextView-->
+<!--            android:layout_marginLeft="70dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:textSize="25sp"-->
+<!--            android:text="About"/>-->
 
-    </com.google.android.material.card.MaterialCardView>
+<!--    </com.google.android.material.card.MaterialCardView>-->
 
 </LinearLayout>

@@ -116,7 +116,7 @@
                         <EditText
                             android:id="@+id/phoneEt"
                             style="@style/modifiedEditText"
-                            android:hint="Mobile Number"
+                            android:hint="Phone Number"
                             android:inputType="phone"
                             android:maxLines="1"
                             android:textColor="@color/primaryTextColor" />
@@ -130,7 +130,7 @@
                         <EditText
                             android:id="@+id/jobEt"
                             style="@style/modifiedEditText"
-                            android:hint="Job"
+                            android:hint="Occupation"
                             android:inputType="textAutoComplete"
                             android:maxLines="1"
                             android:textColor="@color/primaryTextColor" />
@@ -171,7 +171,7 @@
                         android:id="@+id/have_account"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:text="Already have an account?"
+                        android:text="Already have an account? Login here"
                         android:textAlignment="center"
                         android:textColor="@color/primaryColor" />
 

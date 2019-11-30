@@ -89,9 +89,56 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         calendar.setTimeInMillis(Long.parseLong(post.getpTime()));
         String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 
+        String month = "";
+        String date = pTime.substring(0, 2);
+        String time = pTime.substring(10);
+
+        String b = pTime.substring(3, 5);
+
+        switch (b) {
+            case "1":
+                month = "Jan";
+                break;
+            case "2":
+                month = "Feb";
+                break;
+            case "3":
+                month = "Mar";
+                break;
+            case "4":
+                month = "Apr";
+                break;
+            case "5":
+                month = "May";
+                break;
+            case "6":
+                month = "June";
+                break;
+            case "7":
+                month = "July";
+                break;
+            case "8":
+                month = "Aug";
+                break;
+            case "9":
+                month = "Sep";
+                break;
+            case "10":
+                month = "Oct";
+                break;
+            case "11":
+                month = "Nov";
+                break;
+            case "12":
+                month = "Des";
+                break;
+                default:
+                    break;
+        }
+
         //set data
         myHolder.uNameTv.setText(post.getuName());
-        myHolder.pTimeTv.setText(pTime);
+        myHolder.pTimeTv.setText(date + " " + month + " at" + time);
         myHolder.pDescTv.setText(post.getpDesc());
         //myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
         //myHolder.pCommentsTv.setText(pComments + " comments");

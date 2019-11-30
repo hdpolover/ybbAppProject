@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">YBBapp</string>
+    <string name="app_name">YBB</string>
     <string name="register_btn">Register</string>
     <string name="login_btn">Login</string>
     <string name="have_account">Have account? Login here!</string>
@@ -9,7 +9,7 @@
     <string name="sendpost">Publish</string>
     <string name="search">Search</string>
     <string name="back">Back</string>
-    <string name="forgot_password">Forgot Password? Recover</string>
+    <string name="forgot_password">Forgot Password? Recover now</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
 

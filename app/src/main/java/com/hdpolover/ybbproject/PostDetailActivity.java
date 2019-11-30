@@ -554,9 +554,56 @@ public class PostDetailActivity extends AppCompatActivity {
                     calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
                     String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
+                    String month = "";
+                    String date = pTime.substring(0, 2);
+                    String time = pTime.substring(10);
+
+                    String b = pTime.substring(3, 5);
+
+                    switch (b) {
+                        case "1":
+                            month = "Jan";
+                            break;
+                        case "2":
+                            month = "Feb";
+                            break;
+                        case "3":
+                            month = "Mar";
+                            break;
+                        case "4":
+                            month = "Apr";
+                            break;
+                        case "5":
+                            month = "May";
+                            break;
+                        case "6":
+                            month = "June";
+                            break;
+                        case "7":
+                            month = "July";
+                            break;
+                        case "8":
+                            month = "Aug";
+                            break;
+                        case "9":
+                            month = "Sep";
+                            break;
+                        case "10":
+                            month = "Oct";
+                            break;
+                        case "11":
+                            month = "Nov";
+                            break;
+                        case "12":
+                            month = "Des";
+                            break;
+                        default:
+                            break;
+                    }
+
                     //set data
                     pDescTv.setText(pDesc);
-                    pTimeTv.setText(pTime);
+                    pTimeTv.setText(date + " " + month + " at" + time);
 
                     uNameTv.setText(hisName);
 

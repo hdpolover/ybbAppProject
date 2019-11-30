@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         //init views
         logoutBtn = findViewById(R.id.logoutBtn);
-        aboutBtn = findViewById(R.id.aboutBtn);
+        //aboutBtn = findViewById(R.id.aboutBtn);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override

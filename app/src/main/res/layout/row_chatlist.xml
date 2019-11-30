@@ -64,7 +64,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="67dp"
         android:layout_height="1dp"
         android:layout_below="@+id/chatLayout"
         android:background="@color/placeholder_bg" />

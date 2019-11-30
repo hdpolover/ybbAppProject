@@ -26,6 +26,8 @@ public class DashboardActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     boolean doubleBackToExit = false;
 
+    ActionBar actionBar;
+
     //views
 //    TextView mMasukTv;
 
@@ -37,9 +39,9 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         //action bar and its propertoes
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setIcon(R.drawable.ybb_white_cropped);
-        actionBar.setTitle("YBB");
+        actionBar = getSupportActionBar();
+        //actionBar.setIcon(R.drawable.ybb_white_cropped);
+        //actionBar.setTitle("YBB");
         actionBar.setDisplayShowHomeEnabled(true);
 
         //init firebase
@@ -127,18 +129,23 @@ public class DashboardActivity extends AppCompatActivity {
 
             switch (menuItem.getItemId()) {
                 case R.id.nav_home:
+                    actionBar.setTitle("YBB");
                     selectedFragment = new HomeFragment();
                     break;
                 case R.id.nav_news:
+                    actionBar.setTitle("YBB News");
                     selectedFragment = new NewsFragment();
                     break;
                 case R.id.nav_messages:
+                    actionBar.setTitle("YBB Messages");
                     selectedFragment = new MessagesFragment();
                     break;
                 case R.id.nav_schedules:
+                    actionBar.setTitle("YBB Schedules");
                     selectedFragment = new SchedulesFragment();
                     break;
                 case R.id.nav_profile:
+                    actionBar.setTitle("YBB Profile");
                     selectedFragment = new ProfileFragment();
                     break;
             }
