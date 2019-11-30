@@ -25,22 +25,22 @@
         android:layout_below="@+id/eventTitle">
 
         <EditText
-            android:id="@+id/DescEt"
+            android:id="@+id/descEt"
             style="@style/modifiedEditText"
             android:hint="Description"
             android:textColor="@color/primaryTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Spinner
-        android:id="@+id/categorySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/eventDesc"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/eventDate"
+        style="@style/parent"
+        android:layout_below="@+id/eventDesc">
 
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/categorySpinner"/>
+        <EditText
+            android:id="@+id/dateEt"
+            style="@style/modifiedEditText"
+            android:hint="Description"
+            android:textColor="@color/primaryTextColor" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </RelativeLayout>
