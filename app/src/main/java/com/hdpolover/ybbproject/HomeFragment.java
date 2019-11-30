@@ -72,12 +72,14 @@ public class HomeFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         //set layput to recycler view
         postRecyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.setNestedScrollingEnabled(false);
 
         //recycler view and its properties
         peopleSuggestionRecyclerView = view.findViewById(R.id.peopleRecyclerView);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         //set layout to recycler view
         peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
+        peopleSuggestionRecyclerView.setNestedScrollingEnabled(false);
 
         checkUserStatus();
 
@@ -247,6 +249,24 @@ public class HomeFragment extends Fragment {
         });
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkUserStatus();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        checkUserStatus();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        checkUserStatus();
     }
 
     //handle menu item click

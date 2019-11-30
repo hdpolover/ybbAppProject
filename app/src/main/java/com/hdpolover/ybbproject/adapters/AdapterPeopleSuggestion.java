@@ -58,8 +58,16 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
         String name = peopleList.get(position).getName();
         String image = peopleList.get(position).getImage();
 
-        //set the data
-        holder.profileNameTv.setText(name);
+        int nameLength = name.length();
+
+        if (nameLength > 10) {
+            String shortName = name.substring(0, 10) + "...";
+            //set the data
+            holder.profileNameTv.setText(shortName);
+        } else {
+            //set the data
+            holder.profileNameTv.setText(name);
+        }
 
         //set user profile
         try {
