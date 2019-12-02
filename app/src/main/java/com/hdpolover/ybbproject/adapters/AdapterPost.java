@@ -1,7 +1,9 @@
 package com.hdpolover.ybbproject.adapters;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.text.format.DateFormat;
@@ -344,9 +346,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             //add items in menu
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
             popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
+        } else {
+            popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
         }
 
-        popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
         popupMenu.getMenu().add(Menu.NONE, 3, 0, "Share");
 
         //item click listener
@@ -356,9 +359,23 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 int id = item.getItemId();
                 if (id == 0) {
                     //delete is clicked
-                    beginDelete(pId, pImage);
-                }
-                else if (id == 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Delete Post")
+                            .setMessage("Are you sure to delete this post?\nThis action cannot be undone.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    beginDelete(pId, pImage);
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    builder.show();
+                } else if (id == 1) {
                     //edit is clicked
                     //start addpostactivity with key "edit post" and the id of the post clicked
                     Intent intent = new Intent(context, AddPostActivity.class);

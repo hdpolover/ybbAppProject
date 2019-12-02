@@ -309,9 +309,10 @@ public class PostDetailActivity extends AppCompatActivity {
             //add items in menu
             popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete");
             popupMenu.getMenu().add(Menu.NONE, 1, 0, "Edit");
+        } else {
+            popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
         }
 
-        popupMenu.getMenu().add(Menu.NONE, 2, 0, "Report");
         popupMenu.getMenu().add(Menu.NONE, 3, 0, "Share");
 
 
