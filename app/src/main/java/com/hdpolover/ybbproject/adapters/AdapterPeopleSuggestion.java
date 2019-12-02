@@ -57,9 +57,9 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
         final String hisUid = peopleList.get(position).getUid();
         String name = peopleList.get(position).getName();
         String image = peopleList.get(position).getImage();
+        String job = peopleList.get(position).getJob();
 
         int nameLength = name.length();
-
         if (nameLength > 10) {
             String shortName = name.substring(0, 10) + "...";
             //set the data
@@ -67,6 +67,16 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
         } else {
             //set the data
             holder.profileNameTv.setText(name);
+        }
+
+        int jobLength = job.length();
+        if (jobLength > 10) {
+            String shortJob = job.substring(0, 10) + "...";
+            //set the data
+            holder.userJobTv.setText(shortJob);
+        } else {
+            //set the data
+            holder.userJobTv.setText(job);
         }
 
         //set user profile
@@ -106,6 +116,16 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
             }
         });
 
+        holder.profileNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("uid", hisUid);
+                context.startActivity(intent);
+            }
+        });
+
+
         isFollowing(hisUid, holder.followBtn);
     }
 
@@ -138,7 +158,7 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_people_suggestion.xml
         ImageView profileImageIv;
-        TextView profileNameTv, userDescTv;
+        TextView profileNameTv, userJobTv;
         MaterialButton followBtn;
 
         public MyHolder(@NonNull View itemView) {
@@ -147,7 +167,7 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
             //init views
             profileImageIv = itemView.findViewById(R.id.profileImageIv);
             profileNameTv = itemView.findViewById(R.id.profileNameTv);
-            userDescTv = itemView.findViewById(R.id.userDescTv);
+            userJobTv = itemView.findViewById(R.id.userJobTv);
             followBtn = itemView.findViewById(R.id.followBtn);
         }
     }

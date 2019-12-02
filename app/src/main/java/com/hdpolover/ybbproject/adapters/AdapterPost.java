@@ -367,14 +367,14 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                                 public void onClick(DialogInterface dialog, int which) {
                                     beginDelete(pId, pImage);
                                 }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    dialog.dismiss();
                                 }
                             });
-                    builder.show();
+                    builder.create().show();
                 } else if (id == 1) {
                     //edit is clicked
                     //start addpostactivity with key "edit post" and the id of the post clicked

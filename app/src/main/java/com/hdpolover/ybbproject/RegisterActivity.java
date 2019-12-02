@@ -367,7 +367,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
                             String fullName = mFullnameEt.getText().toString();
                             String phone = mPhoneEt.getText().toString();
-                            String job = mJobEt.getText().toString();
+                            //capitalize the first letter
+                            String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
+                                    + mJobEt.getText().toString().substring(1);
 
                             //substring for get name
                             //String subName = "@";

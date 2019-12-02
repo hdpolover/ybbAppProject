@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         String name = commentList.get(position).getuName();
         String email = commentList.get(position).getuEmail();
         String image = commentList.get(position).getuDp();
+        //String image = getUserImage(uid);
         final String cid = commentList.get(position).getcId();
         String comment = commentList.get(position).getComment();
         String timestamp = commentList.get(position).getTimestamp();
@@ -118,9 +120,12 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
 
         //set user dp
         try {
-            Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.avatarIv);
+            Picasso.get().load(image)
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_undraw_profile_pic).into(holder.avatarIv);
         } catch (Exception e) {
-
+            Log.e("ee", e.toString());
         }
 
         //comment click listener
@@ -153,6 +158,28 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
                 }
             }
         });
+    }
+
+    private String getUserImage(String uid) {
+        final String[] image = {""};
+
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(uid).child("image");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                image[0] = dataSnapshot.getValue(String.class);
+                Log.e("i", dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return image[0];
     }
 
     private void deleteComment(String cid) {
