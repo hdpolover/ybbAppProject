@@ -33,6 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
+        checkUserStatus();
+
         //init views
         logoutBtn = findViewById(R.id.logoutBtn);
         //aboutBtn = findViewById(R.id.aboutBtn);
@@ -43,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
                 firebaseAuth.signOut();
                 //checkUserStatus();
                 startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+                finish();
             }
         });
 
