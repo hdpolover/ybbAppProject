@@ -179,7 +179,32 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         setCountText(myHolder.upvoteTv, myHolder.commentTv, post.getpId());
         //getCommetns(post.getPostid(), holder.comments);
 
-        myHolder.upvoteIv.setOnClickListener(new View.OnClickListener() {
+//        myHolder.upvoteIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (myHolder.upvoteIv.getTag().equals("upvote")) {
+//                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
+//                            //.child("Upvotes")
+//                            .child(firebaseUser.getUid()).setValue(true);
+//                    //addNotification(post.getPublisher(), post.getPostid());
+//                } else {
+//                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
+//                            //.child("Upvotes")
+//                            .child(firebaseUser.getUid()).removeValue();
+//                }
+//            }
+//        });
+//        myHolder.commentIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               //start postdetailactivity
+//                Intent intent = new Intent(context, PostDetailActivity.class);
+//                intent.putExtra("postId", pId);
+//                context.startActivity(intent);
+//            }
+//        });
+
+        myHolder.upvoteLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
@@ -194,10 +219,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 }
             }
         });
-        myHolder.commentIv.setOnClickListener(new View.OnClickListener() {
+        myHolder.commentLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //start postdetailactivity
+                //start postdetailactivity
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("postId", pId);
                 context.startActivity(intent);
@@ -448,6 +473,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         ImageView upvoteIv, commentIv;
         TextView upvoteTv, commentTv;
 
+        LinearLayout upvoteLayoutBtn, commentLayoutBtn;
+
         MaterialCardView postCard;
 
         public MyHolder(@NonNull View itemView) {
@@ -468,6 +495,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             commentTv = itemView.findViewById(R.id.commentTv);
 
             postCard = itemView.findViewById(R.id.postCard);
+
+            upvoteLayoutBtn = itemView.findViewById(R.id.upvoteLayoutBtn);
+            commentLayoutBtn = itemView.findViewById(R.id.commentLayoutBtn);
         }
     }
 }

@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
 
         //init progress dialog
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loggin in...");
+        progressDialog.setMessage("Logging in...");
 
         reqPermission();
 
@@ -186,8 +186,8 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
     @Override
     public void onShowSettings(final PermissionInterface permissionInterface, int requestCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("We need permissions for this app. Open setting screen?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage("We need permissions for this app. Open Settings?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 permissionInterface.onSettingsShown();
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
     public void onShowRationalDialog(final PermissionInterface permissionInterface, int requestCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("We need permissions for this app./n");
-        builder.setPositiveButton("oke", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 permissionInterface.onDialogShown();
@@ -213,12 +213,12 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
 
     @Override
     public void onPermissionsGranted(int requestCode) {
-        Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onPermissionsDenied(int requestCode) {
-        Toast.makeText(this, "Permissions Denied.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Permissions Denied.", Toast.LENGTH_LONG).show();
     }
 
     private void showRecoverPasswordDialog() {

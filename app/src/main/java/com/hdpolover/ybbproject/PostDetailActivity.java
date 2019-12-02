@@ -74,6 +74,7 @@ public class PostDetailActivity extends AppCompatActivity {
     LinearLayout profileLayout;
     RecyclerView recyclerView;
 
+    LinearLayout upvoteLayoutBtn, commentLayoutBtn;
     MaterialCardView upvotersCard;
 
     List<ModelComment> commentList;
@@ -126,6 +127,9 @@ public class PostDetailActivity extends AppCompatActivity {
         upvotersCard = findViewById(R.id.upvotersCard);
         upvotersCountTv = findViewById(R.id.upvotersCountTv);
 
+        upvoteLayoutBtn = findViewById(R.id.upvoteLayoutBtn);
+        commentLayoutBtn = findViewById(R.id.commentLayoutBtn);
+
         checkUserStatus();
 
         loadPostInfo();
@@ -146,15 +150,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-//        //upvote button click handle
-//        upvoteBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                upvotePost();
-//            }
-//        });
-
-        upvoteIv.setOnClickListener(new View.OnClickListener() {
+        upvoteLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (upvoteIv.getTag().equals("upvote")) {

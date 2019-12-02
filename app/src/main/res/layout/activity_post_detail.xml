@@ -117,41 +117,58 @@
                         android:layout_below="@+id/mainLinearLayout"
                         android:padding="5dp">
 
-                        <ImageView
-                            android:id="@+id/upvoteIv"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="4dp"
-                            android:src="@drawable/ic_upvote"/>
+                        <LinearLayout
+                            android:id="@+id/upvoteLayoutBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/primaryColor"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/upvoteTv"
-                            android:layout_width="70dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="9dp"
-                            android:layout_marginLeft="10dp"
-                            android:gravity="left"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            android:text="Upvote"/>
+                            <ImageView
+                                android:id="@+id/upvoteIv"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="4dp"
+                                android:src="@drawable/ic_upvote"/>
 
-                        <ImageView
-                            android:id="@+id/commentIv"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_marginTop="4dp"
-                            android:src="@drawable/ic_comment"/>
+                            <TextView
+                                android:id="@+id/upvoteTv"
+                                android:layout_width="70dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="9dp"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="left"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:text="Upvote"/>
 
-                        <TextView
-                            android:id="@+id/commentTv"
-                            android:layout_width="80dp"
-                            android:layout_height="25dp"
-                            android:layout_marginTop="9dp"
-                            android:layout_marginLeft="10dp"
-                            android:gravity="left"
-                            android:textSize="15sp"
-                            android:textStyle="bold"
-                            android:text="Comment"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/commentLayoutBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/commentIv"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginTop="4dp"
+                                android:src="@drawable/ic_comment"/>
+
+                            <TextView
+                                android:id="@+id/commentTv"
+                                android:layout_width="80dp"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="9dp"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="left"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:text="Comment"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
