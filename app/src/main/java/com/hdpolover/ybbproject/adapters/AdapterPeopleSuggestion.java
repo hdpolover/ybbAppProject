@@ -71,7 +71,11 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
 
         //set user profile
         try {
-            Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.profileImageIv);
+            Picasso.get().load(image)
+                    .placeholder(R.drawable.ic_undraw_profile_pic)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.profileImageIv);
         } catch (Exception e) {
 
         }
