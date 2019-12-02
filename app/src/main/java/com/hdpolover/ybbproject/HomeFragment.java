@@ -51,6 +51,8 @@ public class HomeFragment extends Fragment {
     List<ModelPeopleSuggestion> peopleList;
     AdapterPeopleSuggestion adapterPeopleSuggestion;
 
+    List<String> followedPeopleId;
+
     public HomeFragment() {
         //required empty constructor
     }
@@ -70,7 +72,7 @@ public class HomeFragment extends Fragment {
         //show newest post first, for this load from last
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
-        //set layput to recycler view
+        //set layout to recycler view
         postRecyclerView.setLayoutManager(layoutManager);
         postRecyclerView.setNestedScrollingEnabled(false);
 
@@ -86,6 +88,10 @@ public class HomeFragment extends Fragment {
         //init post list
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
+        followedPeopleId =  new ArrayList<>();
+
+        //get followed user id to be compared later
+        //setFollowedPeopleId();
 
         loadPeople();
         loadPosts();
@@ -100,6 +106,44 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void setFollowedPeopleId() {
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows")
+                    .child(uid).child("Followings");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //clear the list first before loading
+                    followedPeopleId.clear();
+
+                    for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                        Log.e("value", ""+ ds.getValue());
+                        followedPeopleId.add(ds.getKey());
+                        Log.e("id", "" + ds.getKey());
+                        Log.e("list size", "" + followedPeopleId.size());
+                    }
+
+//                if (dataSnapshot.child(uid).exists()) {
+//                    if (dataSnapshot.child(uid).child("Followings").exists()) {
+//                            for (DataSnapshot ds: dataSnapshot.getChildren()) {
+//                                Log.e("value", ""+ ds.getValue());
+//                                followedPeopleId.add(ds.getKey());
+//                                Log.e("id", "" + ds.getKey());
+//                                Log.e("list size", "" + followedPeopleId.size());
+//                            }
+//                    }
+//                } else {
+//                    Log.i("none", "user hasn't done anything in follows");
+//                }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+    }
+
     private void loadPeople() {
         //path of all posts
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
@@ -111,9 +155,18 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     ModelPeopleSuggestion modelPeopleSuggestion = ds.getValue(ModelPeopleSuggestion.class);
 
-                    Log.e("uid", modelPeopleSuggestion.getUid());
-                    Log.e("myuid", uid);
-                    Log.e("loop & uid same?", "" +(modelPeopleSuggestion.getUid().equals(uid)));
+//                        if (followedPeopleId.size() != 0) {
+//                            for (String followedUserId: followedPeopleId) {
+//                                if (!modelPeopleSuggestion.getUid().equals(uid)
+//                                        && !modelPeopleSuggestion.getUid().equals(followedUserId)) {
+//                                    peopleList.add(modelPeopleSuggestion);
+//                                }
+//                            }
+//                    } else {
+//                            if (!modelPeopleSuggestion.getUid().equals(uid))
+//                        {
+//                        peopleList.add(modelPeopleSuggestion);
+//                        }}
 
                     if (!modelPeopleSuggestion.getUid().equals(uid)) {
                         peopleList.add(modelPeopleSuggestion);
