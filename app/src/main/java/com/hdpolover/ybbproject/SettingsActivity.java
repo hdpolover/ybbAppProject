@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
             uid = firebaseUser.getUid();
         } else {
             startActivity(new Intent(SettingsActivity.this, MainActivity.class));
+            finish();
         }
     }
 
