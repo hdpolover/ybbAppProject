@@ -22,12 +22,14 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NotificationActivity"></activity>
+        <activity android:name=".UserFollowingsActivity"></activity>
+        <activity android:name=".UserFollowersActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".NotificationActivity" />
         <activity android:name=".UploadProfileActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity
-            android:name=".PostUpvoterDetailActivity"/>
+        <activity android:name=".PostUpvoterDetailActivity" />
         <activity
             android:name=".OtherMethodActivity"
             android:theme="@style/AppThemeNo" />
