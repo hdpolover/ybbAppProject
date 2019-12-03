@@ -9,15 +9,15 @@ public class JSONDataModel {
     private String excerpt;
     private String content;
 
-    public JSONDataModel(int id, String date, String link, String title, String jetpack_featured_media_url, String excerpt, String content) {
-        this.id = id;
-        this.date = date;
-        this.link = link;
-        this.title = title;
-        this.jetpack_featured_media_url = jetpack_featured_media_url;
-        this.excerpt = excerpt;
-        this.content = content;
-    }
+//    public JSONDataModel(int id, String date, String link, String title, String jetpack_featured_media_url, String excerpt, String content) {
+//        this.id = id;
+//        this.date = date;
+//        this.link = link;
+//        this.title = title;
+//        this.jetpack_featured_media_url = jetpack_featured_media_url;
+//        this.excerpt = excerpt;
+//        this.content = content;
+//    }
 
     public int getId() {
         return id;

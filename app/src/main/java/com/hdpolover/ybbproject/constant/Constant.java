@@ -2,7 +2,9 @@ package com.hdpolover.ybbproject.constant;
 
 public class Constant {
 
-    public static final String URL = "https://youthbreaktheboundaries.com/wp-json/wp/v2/posts?page=2&filter&_fields[]=author&_fields[]=id&_fields[]=excerpt&_fields[]=title&_fields[]=link";
+    //public static final String URL = "https://youthbreaktheboundaries.com/wp-json/wp/v2/posts?page=2&filter&_fields[]=author&_fields[]=id&_fields[]=excerpt&_fields[]=title&_fields[]=link";
+
+    public static final String URL = "http://youthbreaktheboundaries.com/wp-json/wp/v2/posts?_fields=id,title,excerpt,content,date,jetpack_featured_media_url,link";
 
     public static final String CATEGORIES_URL = "https://youthbreaktheboundaries.com/wp-json/wp/v2/categories?_fields[]=id&_fields[]=name&_fields[]=link&_fields[]=count";
 
