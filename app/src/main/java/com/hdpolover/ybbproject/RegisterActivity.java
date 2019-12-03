@@ -38,6 +38,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -89,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private long FASTEST_INTERVAL = 2000; //2 SECOND
     private LocationManager locationManager;
 
+    private static final int MY_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering user...");
+
+        setUpLocation();
 
         //location
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -202,7 +206,20 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 onBackPressed();
             }
         });
+    }
 
+    private void setUpLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestRuntimePermission();
+        }
+    }
+
+    private void requestRuntimePermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        }, MY_PERMISSION_REQUEST_CODE);
     }
 
     //location
@@ -210,7 +227,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = null;
         try {
-           // 41.015137, 28.979530
+            // 41.015137, 28.979530
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
             Address result;
             ArrayList<String> location = new ArrayList<>();
@@ -232,7 +249,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
 
-
             return;
         }
 
@@ -245,7 +261,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
             cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
         } else {
-            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location not Detected. Please Enable Your Location", Toast.LENGTH_SHORT).show();
         }
     }
 

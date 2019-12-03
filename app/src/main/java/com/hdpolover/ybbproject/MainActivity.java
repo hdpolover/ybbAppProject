@@ -47,15 +47,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.kishan.askpermission.AskPermission;
-import com.kishan.askpermission.ErrorCallback;
-import com.kishan.askpermission.PermissionCallback;
-import com.kishan.askpermission.PermissionInterface;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements PermissionCallback, ErrorCallback {
+public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
     GoogleSignInClient mGoogleSignInClient;
@@ -73,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
 
     //Progress dialog
     ProgressDialog progressDialog;
-
-    private static final int REQUEST_PERMISSIONS = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,54 +164,6 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Logging in...");
 
-        reqPermission();
-
-    }
-
-    private void reqPermission() {
-        new AskPermission.Builder(this).setPermissions(
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                .setCallback(this)
-                .setErrorCallback(this)
-                .request(REQUEST_PERMISSIONS);
-    }
-
-    @Override
-    public void onShowSettings(final PermissionInterface permissionInterface, int requestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("We need permissions for this app. Open Settings?");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                permissionInterface.onSettingsShown();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-    }
-
-    @Override
-    public void onShowRationalDialog(final PermissionInterface permissionInterface, int requestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("We need permissions for this app./n");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                permissionInterface.onDialogShown();
-            }
-        });
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode) {
-        //Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode) {
-        //Toast.makeText(this, "Permissions Denied.", Toast.LENGTH_LONG).show();
     }
 
     private void showRecoverPasswordDialog() {
@@ -248,16 +193,6 @@ public class MainActivity extends AppCompatActivity implements PermissionCallbac
             public void onClick(DialogInterface dialogInterface, int i) {
                 String email = emailEt.getText().toString().trim();
                 beginRecovery(email);
-            }
-        });
-
-
-        //button cancel
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //dismiss dialog
-                dialogInterface.dismiss();
             }
         });
 

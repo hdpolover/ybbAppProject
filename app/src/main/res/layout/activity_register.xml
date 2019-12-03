@@ -173,7 +173,8 @@
                         android:layout_marginTop="@dimen/loginViewsMargin"
                         android:text="Already have an account? Login here"
                         android:textAlignment="center"
-                        android:textColor="@color/primaryColor" />
+                        android:textColor="@color/primaryColor"
+                        android:padding="10dp"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
