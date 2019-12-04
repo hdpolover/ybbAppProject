@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelComment;
+import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -53,10 +54,6 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         //get data
         final String uid = commentList.get(position).getUid();
-        String name = commentList.get(position).getuName();
-        String email = commentList.get(position).getuEmail();
-        String image = commentList.get(position).getuDp();
-        //String image = getUserImage(uid);
         final String cid = commentList.get(position).getcId();
         String comment = commentList.get(position).getComment();
         String timestamp = commentList.get(position).getTimestamp();
@@ -113,20 +110,13 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
                 break;
         }
 
+        //set user data
+        getUserData(holder.avatarIv, holder.nameTv, uid);
+
         //set the data
-        holder.nameTv.setText(name);
+        //holder.nameTv.setText(name);
         holder.commentTv.setText(comment);
         holder.timeTv.setText(date + " " + month + " at" + time);
-
-        //set user dp
-        try {
-            Picasso.get().load(image)
-                    .fit()
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_undraw_profile_pic).into(holder.avatarIv);
-        } catch (Exception e) {
-            Log.e("ee", e.toString());
-        }
 
         //comment click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -160,17 +150,27 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         });
     }
 
-    private String getUserImage(String uid) {
-        final String[] image = {""};
-
+    private void getUserData(final ImageView userImage, final TextView username, String uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("Users")
-                .child(uid).child("image");
+                .child(uid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                image[0] = dataSnapshot.getValue(String.class);
-                Log.e("i", dataSnapshot.getValue(String.class));
+                ModelUser user = dataSnapshot.getValue(ModelUser.class);
+
+                //get user data
+                String image = user.getImage();
+                try {
+                    Picasso.get().load(image)
+                            .placeholder(R.drawable.ic_undraw_profile_pic)
+                            .into(userImage);
+                } catch (Exception e) {
+
+                }
+
+                String name = user.getName();
+                username.setText(name);
             }
 
             @Override
@@ -178,28 +178,11 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
 
             }
         });
-
-        return image[0];
     }
 
     private void deleteComment(String cid) {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts").child(postId);
-        ref.child("Comments").child(cid).removeValue(); //it will delete the comment
-
-        //now update the comments count
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String comments = ""+ dataSnapshot.child("pComments").getValue();
-                int newCommentVal = Integer.parseInt(comments) - 1;
-                ref.child("pComments").setValue(""+newCommentVal);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Comments").child(postId);
+        ref.child(cid).removeValue(); //it will delete the comment
     }
 
     @Override

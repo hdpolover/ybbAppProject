@@ -45,6 +45,7 @@ import com.hdpolover.ybbproject.ProfileFragment;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelPost;
+import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -58,12 +59,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     String myUid;
 
-    FirebaseUser firebaseUser;
-
     public  AdapterPost(Context context, List<ModelPost> postList) {
         this.context = context;
         this.postList = postList;
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @NonNull
@@ -77,25 +75,26 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder myHolder, final int position) {
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final ModelPost post = postList.get(position);
+        //get current user id
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         //get data
-        final String hisUid = post.getUid();
-        final String pId = post.getpId();
+        final String hisUid = postList.get(position).getUid();
+        final String pId = postList.get(position).getpId();
+        final String pDesc = postList.get(position).getpDesc();
         final String pImage = postList.get(position).getpImage();
+        final String pTime = postList.get(position).getpTime();
 
         //convert timestamp to dd/mm/yyy hh:mm am/pm
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(post.getpTime()));
-        String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
+        calendar.setTimeInMillis(Long.parseLong(pTime));
+        String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 
         String month = "";
-        String date = pTime.substring(0, 2);
-        String time = pTime.substring(10);
+        String date = convertedTime.substring(0, 2);
+        String time = convertedTime.substring(10);
 
-        String b = pTime.substring(3, 5);
+        String b = convertedTime.substring(3, 5);
 
         switch (b) {
             case "1":
@@ -138,25 +137,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                     break;
         }
 
+        //this is to get the user data
+        getUserData(myHolder.uPictureIv, myHolder.uNameTv, hisUid);
+
         //set data
-        myHolder.uNameTv.setText(post.getuName());
         myHolder.pTimeTv.setText(date + " " + month + " at" + time);
-        myHolder.pDescTv.setText(post.getpDesc());
-        //myHolder.pUpvotesTv.setText(pUpvotes + " upvotes");
-        //myHolder.pCommentsTv.setText(pComments + " comments");
-        //set upvotes for each post
-        //setUpvotes(myHolder, pId);
-
-        //set user dp
-        try {
-            Picasso.get().load(post.getuDp()).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(myHolder.uPictureIv);
-//            Picasso.get().load(uDp)
-//                    .placeholder(R.drawable.ic_undraw_profile_pic)
-//                    .centerInside()
-//                    .into(myHolder.uPictureIv);
-        } catch (Exception e) {
-
-        }
+        myHolder.pDescTv.setText(pDesc);
 
         //set post image
         //if no image then hide the imageview
@@ -168,56 +154,26 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             myHolder.pImageIv.setVisibility(View.VISIBLE);
 
             try {
-                Picasso.get().load(post.getpImage())
+                Picasso.get().load(pImage)
                         .into(myHolder.pImageIv);
             } catch (Exception e) {
 
             }
         }
 
-
-        //publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPublisher());
-        isUpvoted(post.getpId(), myHolder.upvoteIv);
-        setCountText(myHolder.upvoteTv, myHolder.commentTv, post.getpId());
-        //getCommetns(post.getPostid(), holder.comments);
-
-//        myHolder.upvoteIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (myHolder.upvoteIv.getTag().equals("upvote")) {
-//                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
-//                            //.child("Upvotes")
-//                            .child(firebaseUser.getUid()).setValue(true);
-//                    //addNotification(post.getPublisher(), post.getPostid());
-//                } else {
-//                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
-//                            //.child("Upvotes")
-//                            .child(firebaseUser.getUid()).removeValue();
-//                }
-//            }
-//        });
-//        myHolder.commentIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               //start postdetailactivity
-//                Intent intent = new Intent(context, PostDetailActivity.class);
-//                intent.putExtra("postId", pId);
-//                context.startActivity(intent);
-//            }
-//        });
+        isUpvoted(pId, myHolder.upvoteIv);
+        setCountText(myHolder.upvoteTv, myHolder.commentTv, pId);
 
         myHolder.upvoteLayoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
-                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
-                            //.child("Upvotes")
-                            .child(firebaseUser.getUid()).setValue(true);
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
+                            .child(myUid).setValue(true);
                     //addNotification(post.getPublisher(), post.getPostid());
                 } else {
-                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(post.getpId())
-                            //.child("Upvotes")
-                            .child(firebaseUser.getUid()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
+                            .child(myUid).removeValue();
                 }
             }
         });
@@ -227,6 +183,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 //start postdetailactivity
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("postId", pId);
+                intent.putExtra("uid", hisUid);
                 context.startActivity(intent);
             }
         });
@@ -246,6 +203,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 //start postdetailactivity
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("postId", pId);
+                intent.putExtra("uid", hisUid);
                 context.startActivity(intent);
             }
         });
@@ -270,7 +228,40 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, PostDetailActivity.class);
                 intent.putExtra("postId", pId);
+                intent.putExtra("uid", hisUid);
                 context.startActivity(intent);
+            }
+        });
+    }
+
+    private void getUserData(final ImageView userImage, final TextView username, String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ModelUser user = dataSnapshot.getValue(ModelUser.class);
+
+                //get user data
+                String image = user.getImage();
+                try {
+                    Picasso.get().load(image)
+                            .placeholder(R.drawable.ic_undraw_profile_pic)
+                            .fit()
+                            .centerCrop()
+                            .into(userImage);
+                } catch (Exception e) {
+
+                }
+
+                String name = user.getName();
+                username.setText(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -293,7 +284,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             }
         });
 
-        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Comments");
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(postId);
         commentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -485,7 +476,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         ImageView uPictureIv, pImageIv;
         TextView uNameTv, pTimeTv, pDescTv;
         ImageButton moreBtn;
-        //Button upvoteBtn, commentBtn;
         LinearLayout profileLayout;
         ImageView upvoteIv, commentIv;
         TextView upvoteTv, commentTv;
