@@ -174,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
         mForgotPasswordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Loading");
+                progressDialog.show();
                 showRecoverPasswordDialog();
             }
         });
@@ -237,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -284,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showRecoverPasswordDialog() {
+        progressDialog.dismiss();
         //alertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Recover Password");
