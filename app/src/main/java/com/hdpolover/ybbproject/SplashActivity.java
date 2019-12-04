@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private int loadingTime = 1500;
 
-    private String info_url = Constant.URL;
+    private String info_url = Constant.INFO_URL;
     private String blog_url = Constant.BLOG_URL;
 
     public static List<JSONDataModel> infoJsonData;
@@ -93,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
 //                finally {
 //                    if (infoJsonData!=null) {
 //                        progressDialog.dismiss();
-//                        Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+//                        Intent intent = new Intent(SplashActivity.this, PermissionTransferToDashboardActivity.class);
 //                        startActivity(intent);
 //                        finish();
 //                    }
@@ -128,7 +128,7 @@ public class SplashActivity extends AppCompatActivity {
 //                finally {
 //                    if (infoJsonData!=null) {
 //                        progressDialog.dismiss();
-//                        Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+//                        Intent intent = new Intent(SplashActivity.this, PermissionTransferToDashboardActivity.class);
 //                        startActivity(intent);
 //                        finish();
 //                    }
