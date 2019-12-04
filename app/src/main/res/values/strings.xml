@@ -12,7 +12,6 @@
     <string name="forgot_password">Forgot Password? Recover now</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="facebook_app_id">1160577510808129</string>
+    <string name="fb_login_protocol_scheme">fb1160577510808129</string>
 </resources>
