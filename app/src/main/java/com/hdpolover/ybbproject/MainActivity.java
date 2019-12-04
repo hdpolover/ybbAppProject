@@ -17,9 +17,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
@@ -72,8 +74,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
 
     CallbackManager mCallbackManager;
     final String TAG = "FACELOG";
+
+    String[] appPermissions = {
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.CAMERA,
+    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    Manifest.permission.READ_PHONE_STATE,
+    Manifest.permission.READ_EXTERNAL_STORAGE
+    };
+
+    private static final int PERMISSIONS_REQUEST_CODE = 1240;
+
+    private static final int MY_PERMISSION_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,10 +222,16 @@ public class MainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
+                    public void onSuccess(final LoginResult loginResult) {
                         progressDialog.dismiss();
                         Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+
+                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                getData(loginResult.getAccessToken(), object);
+                            }
+                        });
                     }
 
                     @Override
@@ -223,6 +248,173 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+        //PERMISSIONS
+        checkAndRequestPermissions();
+        //Permission Location
+        //setUpLocation();
+
+
+    }
+
+    private boolean checkAndRequestPermissions() {
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String perm : appPermissions){
+            if(ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED){
+                listPermissionsNeeded.add(perm);
+            }
+        }
+
+        //Ask for non-granted permissions
+        if(!listPermissionsNeeded.isEmpty()){
+            ActivityCompat.requestPermissions(this,
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),
+                    PERMISSIONS_REQUEST_CODE);
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == PERMISSIONS_REQUEST_CODE){
+            HashMap<String, Integer> permissionResults = new HashMap<>();
+            int deniedCount = 0;
+
+            //Gather permission grant result
+            for(int i=0; i<grantResults.length; i++){
+                if(grantResults[i] == PackageManager.PERMISSION_DENIED){
+                    permissionResults.put(permissions[i], grantResults[i]);
+                    deniedCount++;
+                }
+            }
+
+            //check if all permissions are granted
+            if(!(deniedCount == 0)){
+                for(Map.Entry<String, Integer> entry : permissionResults.entrySet()){
+                    String permName = entry.getKey();
+                    int permResult = entry.getValue();
+
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(this, permName)){
+                        showDialog("","This app needs permissions to work without and problems.",
+                                "Yes, Grant permissions",
+                                new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        checkAndRequestPermissions();
+                                    }
+                                },
+                                "No, Exit app", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        finish();
+                                    }
+                                }, false );
+                    }else{
+                        showDialog("", "You have denied some permissions. Allow all permissions at [Setting] > [Permissions]",
+                                "Go to Settings",
+                                new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+
+                                        //Go to app settings
+                                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                                Uri.fromParts("package", getPackageName(), null));
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                },
+                                "No, Exit app", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        finish();
+                                    }
+                                }, false);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public AlertDialog showDialog(String title, String msg, String positiveLabel, DialogInterface.OnClickListener positiveOnClick,
+                                  String negativeLabel, DialogInterface.OnClickListener negativeOnClick,
+                                  boolean isCancelAble){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setCancelable(isCancelAble);
+        builder.setMessage(msg);
+        builder.setPositiveButton(positiveLabel, positiveOnClick);
+        builder.setNegativeButton(negativeLabel, negativeOnClick);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        return alertDialog;
+    }
+    //Permission Location
+    private void setUpLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestRuntimePermission();
+        }
+    }
+
+    private void requestRuntimePermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        }, MY_PERMISSION_REQUEST_CODE);
+    }
+
+    //Storeage
+
+//    private boolean checkStoragePermission() {
+//        //check if storage permission is enabled
+//        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+//        return result;
+//    }
+//
+//    private void requestStoragePermission() {
+//        //request runtime storage permission
+//        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
+//    }
+//
+//    private boolean checkCameraPermission() {
+//        //check if camera permission is enabled
+//        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+//        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+//
+//        return result && result1;
+//    }
+//
+//    private void requestCameraPermission() {
+//        //request runtime camera permission
+//        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
+//    }
+
+    private void getData(AccessToken token, JSONObject object) {
+        try {
+            URL profile = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=100&height=100");
+
+            String profileURL = profile.toString();
+            String email = object.getString("email");
+
+            handleFacebookAccessToken(token, profileURL, email);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -245,9 +437,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(AccessToken token, String profileURL, String email) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
+        final String myEmail = email;
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -255,8 +448,43 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //if user is signin in first time then get and show user info from google account
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+                                //Get user email and uid from auth
+                                String email = myEmail;
+                                String uid = user.getUid();
+
+                                //substring for get name
+                                String subName = "@";
+                                String name = email.substring(0, email.indexOf(subName));
+                                //when user is registered store user info in firebase realtime database too
+                                //using hashmap
+                                HashMap<Object, String> hashMap = new HashMap<>();
+                                //put info in hasmap
+                                hashMap.put("email", email);
+                                hashMap.put("uid", uid);
+                                hashMap.put("name", name); //will add later
+                                hashMap.put("onlineStatus", "online"); //will add later
+                                hashMap.put("typingTo", "noOne"); //will add later
+                                hashMap.put("phone", ""); //will add later
+                                hashMap.put("image", ""); //will add later
+                                hashMap.put("country", "");
+                                hashMap.put("city", "");
+                                hashMap.put("username", "");
+                                hashMap.put("job", "");
+
+                                //firebase database instance
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                //path to store user data name Users
+                                DatabaseReference reference = database.getReference("Users");
+                                //put data within hashmap in database
+                                reference.child(uid).setValue(hashMap);
+                            }
+
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.

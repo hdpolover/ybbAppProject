@@ -58,13 +58,14 @@
                         android:id="@+id/textInputName"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin">
+
                         <EditText
-                            android:id="@+id/usernameEt"
+                            android:id="@+id/fullnameEt"
                             style="@style/modifiedEditText"
+                            android:hint="Full name"
                             android:inputType="textPersonName"
                             android:maxLines="1"
-                            android:textColor="@color/primaryTextColor"
-                            android:hint="Username"/>
+                            android:textColor="@color/primaryTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -80,33 +81,50 @@
                             android:hint="Mobile Number"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputJob"
+                        style="@style/parent"
+                        android:layout_marginTop="@dimen/loginViewsMargin">
 
-                    <Spinner
-                        android:id="@+id/countrySp"
+                        <EditText
+                            android:id="@+id/jobEt"
+                            style="@style/modifiedEditText"
+                            android:hint="Occupation"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/cityTv"
                         style="@style/parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:text="City" />
 
-                    <Spinner
-                        android:id="@+id/citySp"
+                    <TextView
+                        android:id="@+id/countryTv"
                         style="@style/parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:text="Country" />
 
-                    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                    <Button
                         android:id="@+id/loginBtn"
                         style="@style/loginButton"
-                        app:spinning_bar_width="4dp"
-                        app:spinning_bar_color="#FFF"
-                        android:text="Login"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        app:initialCornerAngle="27dp"
-                        app:spinning_bar_padding="6dp"/>
+                        android:paddingLeft="40dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="40dp"
+                        android:text="Login" />
 
 
                 </LinearLayout>

@@ -90,8 +90,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private long FASTEST_INTERVAL = 2000; //2 SECOND
     private LocationManager locationManager;
 
-    private static final int MY_PERMISSION_REQUEST_CODE = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,8 +115,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering user...");
-
-        setUpLocation();
 
         //location
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -206,20 +202,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 onBackPressed();
             }
         });
-    }
-
-    private void setUpLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestRuntimePermission();
-        }
-    }
-
-    private void requestRuntimePermission() {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        }, MY_PERMISSION_REQUEST_CODE);
     }
 
     //location
