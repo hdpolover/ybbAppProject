@@ -102,7 +102,6 @@ public class AddPostActivity extends AppCompatActivity {
 
         pd = new ProgressDialog(this);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         checkUserStatus();
 
         //init views
@@ -122,25 +121,6 @@ public class AddPostActivity extends AppCompatActivity {
             //add
             actionBar.setTitle("Add New Post");
         }
-
-        //get info from current user
-        userDbRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = userDbRef.orderByChild("email").equalTo(email);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    name = "" + ds.child("name").getValue();
-                    email = "" + ds.child("email").getValue();
-                    dp = "" + ds.child("image").getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         //get image from camer/gallery on click
         imageIv.setOnClickListener(new View.OnClickListener() {
@@ -171,9 +151,6 @@ public class AddPostActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         //put post info
         hashMap.put("uid", uid);
-        hashMap.put("uName", name);
-        hashMap.put("uEmail", email);
-        hashMap.put("uDp", dp);
         hashMap.put("pDesc", desc);
         hashMap.put("pImage", "noImage");
 
@@ -224,9 +201,6 @@ public class AddPostActivity extends AppCompatActivity {
                             HashMap<String, Object> hashMap = new HashMap<>();
                             //put post info
                             hashMap.put("uid", uid);
-                            hashMap.put("uName", name);
-                            hashMap.put("uEmail", email);
-                            hashMap.put("uDp", dp);
                             hashMap.put("pDesc", desc);
                             hashMap.put("pImage", downloadUri);
 
@@ -296,9 +270,6 @@ public class AddPostActivity extends AppCompatActivity {
                                             HashMap<String, Object> hashMap = new HashMap<>();
                                             //put post info
                                             hashMap.put("uid", uid);
-                                            hashMap.put("uName", name);
-                                            hashMap.put("uEmail", email);
-                                            hashMap.put("uDp", dp);
                                             hashMap.put("pDesc", desc);
                                             hashMap.put("pImage", downloadUri);
 
@@ -309,7 +280,7 @@ public class AddPostActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
                                                             pd.dismiss();
-                                                            Toast.makeText(AddPostActivity.this, "Post successfully Updated...", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                                                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
                                                         }
@@ -411,15 +382,10 @@ public class AddPostActivity extends AppCompatActivity {
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put post info
                                 hashMap.put("uid", uid);
-                                hashMap.put("uName", name);
-                                hashMap.put("uEmail", email);
-                                hashMap.put("uDp", dp);
                                 hashMap.put("pId", timeStamp);
                                 hashMap.put("pDesc", desc);
                                 hashMap.put("pImage", downloadUri);
                                 hashMap.put("pTime", timeStamp);
-                                hashMap.put("pUpvotes", "0");
-                                hashMap.put("pComments", "0");
 
                                 //path to store post data
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
@@ -463,15 +429,10 @@ public class AddPostActivity extends AppCompatActivity {
             HashMap<Object, String> hashMap = new HashMap<>();
             //put post info
             hashMap.put("uid", uid);
-            hashMap.put("uName", name);
-            hashMap.put("uEmail", email);
-            hashMap.put("uDp", dp);
             hashMap.put("pId", timeStamp);
             hashMap.put("pDesc", desc);
             hashMap.put("pImage", "noImage");
             hashMap.put("pTime", timeStamp);
-            hashMap.put("pUpvotes", "0");
-            hashMap.put("pComments", "0");
 
             //path to store post data
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
@@ -500,122 +461,6 @@ public class AddPostActivity extends AppCompatActivity {
                         }
                     });
         }
-
-//        if (imageIv.getDrawable() != null) {
-//
-//            //get image from image view
-//            Bitmap bitmap = ((BitmapDrawable)imageIv.getDrawable()).getBitmap();
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            //image compress
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-//            byte[] data = baos.toByteArray();
-//
-//            //post with image
-//            StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
-//            ref.putBytes(data)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            //image is uploaded to firebase
-//                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-//                            while (!uriTask.isSuccessful());
-//
-//                            String downloadUri = uriTask.getResult().toString();
-//
-//                                if (uriTask.isSuccessful()) {
-//                                    //uri is receiveed upload post
-//                                    HashMap<Object, String> hashMap = new HashMap<>();
-//                                    //put post info
-//                                    hashMap.put("uid", uid);
-//                                    hashMap.put("uName", name);
-//                                    hashMap.put("uEmail", email);
-//                                    hashMap.put("uDp", dp);
-//                                    hashMap.put("pId", timeStamp);
-//                                    hashMap.put("pDesc", desc);
-//                                    hashMap.put("pImage", downloadUri);
-//                                    hashMap.put("pTime", timeStamp);
-//                                    hashMap.put("pUpvotes", "0");
-//                                    hashMap.put("pComments", "0");
-//
-//                                    //path to store post data
-//                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-//                                    //put data in this ref
-//                                    ref.child(timeStamp).setValue(hashMap)
-//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                @Override
-//                                                public void onSuccess(Void aVoid) {
-//                                                    pd.dismiss();
-//                                                    Toast.makeText(AddPostActivity.this, "Post published...", Toast.LENGTH_SHORT).show();
-//
-//                                                    //reset views
-//                                                    descEt.setText("");
-//                                                    imageIv.setImageURI(null);
-//                                                    image_rui = null;
-//
-//                                                    startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
-//                                                }
-//                                            })
-//                                            .addOnFailureListener(new OnFailureListener() {
-//                                                @Override
-//                                                public void onFailure(@NonNull Exception e) {
-//                                                    //failed addding post
-//                                                    pd.dismiss();
-//                                                    Toast.makeText(AddPostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                                                }
-//                                            });
-//                                }
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            //failed upload
-//                            pd.dismiss();
-//                            Toast.makeText(AddPostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//        } else {
-//            //post without image
-//            HashMap<Object, String> hashMap = new HashMap<>();
-//            //put post info
-//            hashMap.put("uid", uid);
-//            hashMap.put("uName", name);
-//            hashMap.put("uEmail", email);
-//            hashMap.put("uDp", dp);
-//            hashMap.put("pId", timeStamp);
-//            hashMap.put("pDesc", desc);
-//            hashMap.put("pImage", "noImage");
-//            hashMap.put("pTime", timeStamp);
-//            hashMap.put("pUpvotes", "0");
-//            hashMap.put("pComments", "0");
-//
-//            //path to store post data
-//            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-//            //put data in this ref
-//            ref.child(timeStamp).setValue(hashMap)
-//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//                            pd.dismiss();
-//                            Toast.makeText(AddPostActivity.this, "Post published...", Toast.LENGTH_SHORT).show();
-//
-//                            //reset views
-//                            descEt.setText("");
-//                            imageIv.setImageURI(null);
-//                            image_rui = null;
-//
-//                            startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            //failed addding post
-//                            pd.dismiss();
-//                            Toast.makeText(AddPostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//        }
     }
 
     private  void showImagePickDialog() {
@@ -759,10 +604,9 @@ public class AddPostActivity extends AppCompatActivity {
 
     private  void checkUserStatus() {
         //get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             //user is signed in stay here
-            email = user.getEmail();
             uid = user.getUid();
         } else {
             startActivity(new Intent(this, MainActivity.class));
@@ -791,7 +635,7 @@ public class AddPostActivity extends AppCompatActivity {
             //get data
             String desc = descEt.getText().toString().trim();
             if (TextUtils.isEmpty(desc)) {
-                Toast.makeText(AddPostActivity.this, "Write something here...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddPostActivity.this, "Post cannot be empty", Toast.LENGTH_SHORT).show();
                 return false;
             }
 

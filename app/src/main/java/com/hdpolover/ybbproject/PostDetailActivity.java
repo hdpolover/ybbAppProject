@@ -43,6 +43,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.adapters.AdapterComment;
 import com.hdpolover.ybbproject.models.ModelComment;
+import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -58,8 +59,6 @@ public class PostDetailActivity extends AppCompatActivity {
     //to get detail of user and post
     String hisUid, myUid, myEmail, myName, myDp,
     postId, hisDp, hisName, pImage;
-
-    boolean mProcessComment = false;
 
     //progress bar
     ProgressDialog pd;
@@ -103,6 +102,8 @@ public class PostDetailActivity extends AppCompatActivity {
         //get id of post using intent
         Intent intent = getIntent();
         postId = intent.getStringExtra("postId");
+        hisUid = intent.getStringExtra("uid");
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //init views
@@ -133,14 +134,13 @@ public class PostDetailActivity extends AppCompatActivity {
         checkUserStatus();
 
         loadPostInfo();
-
-        loadUserInfo();
+        getUserData(uPictureIv, uNameTv, hisUid);
+        loadComments();
+        loadCurrentUserImage();
 
         //setUpvotes();
         isUpvoted(postId, upvoteIv);
         setCountText(upvoteTv, commentTv, postId);
-
-        loadComments();
         
         //send comment on button click
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +219,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).child("Comments");
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference().child("Comments").child(postId);
         commentsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -272,7 +272,7 @@ public class PostDetailActivity extends AppCompatActivity {
         commentList = new ArrayList<>();
 
         //path of the post, to get its comments
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts").child(postId).child("Comments");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Comments").child(postId);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -438,7 +438,7 @@ public class PostDetailActivity extends AppCompatActivity {
         String timeStamp = String.valueOf(System.currentTimeMillis());
 
         //each post will have a child "comments" taht willc ontain comments of that post
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts").child(postId).child("Comments");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Comments").child(postId);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         //put info in hashmap
@@ -446,9 +446,6 @@ public class PostDetailActivity extends AppCompatActivity {
         hashMap.put("comment", comment);
         hashMap.put("timestamp", timeStamp);
         hashMap.put("uid", myUid);
-        hashMap.put("uDp", myDp);
-        hashMap.put("uEmail", myEmail);
-        hashMap.put("uName", myName);
 
         //put this data in db
         ref.child(timeStamp).setValue(hashMap)
@@ -458,7 +455,6 @@ public class PostDetailActivity extends AppCompatActivity {
                         //added
                         Toast.makeText(PostDetailActivity.this, "Comment added...", Toast.LENGTH_SHORT).show();
                         commentEt.setText("");
-                        updateCommentCount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -472,19 +468,29 @@ public class PostDetailActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateCommentCount() {
-        //whenever user adds comment increase the comment count
-        mProcessComment = true;
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts").child(postId);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getUserData(final ImageView userImage, final TextView username, String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (mProcessComment) {
-                    String comments = ""+ dataSnapshot.child("pComments").getValue();
-                    int newCommentVal = Integer.parseInt(comments) + 1;
-                    ref.child("pComments").setValue(""+newCommentVal);
-                    mProcessComment = false;
+                ModelUser user = dataSnapshot.getValue(ModelUser.class);
+
+                //get user data
+                String image = user.getImage();
+                try {
+                    Picasso.get().load(image)
+                            .placeholder(R.drawable.ic_undraw_profile_pic)
+                            .fit()
+                            .centerCrop()
+                            .into(userImage);
+                } catch (Exception e) {
+
                 }
+
+                String name = user.getName();
+                username.setText(name);
             }
 
             @Override
@@ -494,29 +500,25 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUserInfo() {
+    private void loadCurrentUserImage() {
         //get current user info
         Query myRef = FirebaseDatabase.getInstance().getReference("Users");
-        myRef.orderByChild("uid").equalTo(myUid).addValueEventListener(new ValueEventListener() {
+        Query query = myRef.orderByChild("uid").equalTo(myUid);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     //get data
-                    myName = "" + ds.child("name").getValue();
                     myDp = "" + ds.child("image").getValue();
 
                     //set data
                     try {
 
-                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic).fit().centerInside().into(cAvatarIv);
-                        //if image is received then set
-//                        Picasso.get().load(myDp)
-//                                .placeholder(R.drawable.ic_undraw_profile_pic)
-//                                .fit()
-//                                .centerInside()
-//                                .into(cAvatarIv);
+                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic)
+                                .fit()
+                                .centerInside()
+                                .into(cAvatarIv);
                     } catch (Exception e) {
-                        //Picasso.get().load(R.drawable.ic_undraw_profile_pic).into(cAvatarIv);
                     }
                 }
             }
@@ -541,10 +543,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     String pDesc = ""+ds.child("pDesc").getValue();
                     String pTimeStamp = ""+ds.child("pTime").getValue();
                     pImage = ""+ds.child("pImage").getValue();
-                    hisDp = ""+ds.child("uDp").getValue();
                     hisUid = ""+ds.child("uid").getValue();
-                    String uEmail = ""+ds.child("uEmail").getValue();
-                    hisName = ""+ds.child("uName").getValue();
 
                     //convert timestamp to dd/mm/yyy hh:mm am/pm
                     Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -602,8 +601,6 @@ public class PostDetailActivity extends AppCompatActivity {
                     pDescTv.setText(pDesc);
                     pTimeTv.setText(date + " " + month + " at" + time);
 
-                    uNameTv.setText(hisName);
-
                     //set image of the user who posted
                     //set post image
                     //if no image then hide the imageview
@@ -619,13 +616,6 @@ public class PostDetailActivity extends AppCompatActivity {
                         } catch (Exception e) {
 
                         }
-                    }
-
-                    //set user image in comment part
-                    try {
-                        Picasso.get().load(hisDp).placeholder(R.drawable.ic_undraw_profile_pic).into(uPictureIv);
-                    } catch (Exception e) {
-                        //Picasso.get().load(R.drawable.ic_default_img).into(uPictureIv);
                     }
                 }
             }
