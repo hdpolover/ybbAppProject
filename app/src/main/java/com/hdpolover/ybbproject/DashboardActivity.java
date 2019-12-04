@@ -189,7 +189,6 @@ public class DashboardActivity extends AppCompatActivity {
             editor.putString("Current_USERID", mUID);
             editor.apply();
 
-
             //update token
             updateToken(FirebaseInstanceId.getInstance().getToken());
 

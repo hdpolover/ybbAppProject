@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
 //        tryData = new ArrayList<>();
 //        tryData = SplashActivity.infoJsonData;
-//
+////
 //        Log.e("data", tryData.size() + "");
 
         //get followed user id to be compared later

@@ -14,4 +14,6 @@
     <string name="login_password_hint">Password</string>
     <string name="facebook_app_id">1160577510808129</string>
     <string name="fb_login_protocol_scheme">fb1160577510808129</string>
+
+    <string name="give_permission">Please give permissions</string>
 </resources>
