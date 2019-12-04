@@ -176,6 +176,12 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        uPictureIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         upvotersCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,8 +287,6 @@ public class PostDetailActivity extends AppCompatActivity {
                     ModelComment modelComment = ds.getValue(ModelComment.class);
 
                     commentList.add(modelComment);
-
-                    //pass myUid
 
                     //setup adapter
                     adapterComment = new AdapterComment(getApplicationContext(), commentList, myUid, postId);

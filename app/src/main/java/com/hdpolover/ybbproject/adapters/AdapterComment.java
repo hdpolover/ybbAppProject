@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelComment;
@@ -58,56 +60,60 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         String comment = commentList.get(position).getComment();
         String timestamp = commentList.get(position).getTimestamp();
 
-        //convert timestamp to dd/mm/yyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(timestamp));
-        String pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
+        String pTime = "", month = "", date = "", time = "";
+        try {
+            //convert timestamp to dd/mm/yyy hh:mm am/pm
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTimeInMillis(Long.parseLong(timestamp));
+            pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
+            month = "";
+            date = pTime.substring(0, 2);
+            time = pTime.substring(10);
 
-        String month = "";
-        String date = pTime.substring(0, 2);
-        String time = pTime.substring(10);
+            String b = pTime.substring(3, 5);
 
-        String b = pTime.substring(3, 5);
-
-        switch (b) {
-            case "1":
-                month = "Jan";
-                break;
-            case "2":
-                month = "Feb";
-                break;
-            case "3":
-                month = "Mar";
-                break;
-            case "4":
-                month = "Apr";
-                break;
-            case "5":
-                month = "May";
-                break;
-            case "6":
-                month = "June";
-                break;
-            case "7":
-                month = "July";
-                break;
-            case "8":
-                month = "Aug";
-                break;
-            case "9":
-                month = "Sep";
-                break;
-            case "10":
-                month = "Oct";
-                break;
-            case "11":
-                month = "Nov";
-                break;
-            case "12":
-                month = "Des";
-                break;
-            default:
-                break;
+            switch (b) {
+                case "1":
+                    month = "Jan";
+                    break;
+                case "2":
+                    month = "Feb";
+                    break;
+                case "3":
+                    month = "Mar";
+                    break;
+                case "4":
+                    month = "Apr";
+                    break;
+                case "5":
+                    month = "May";
+                    break;
+                case "6":
+                    month = "June";
+                    break;
+                case "7":
+                    month = "July";
+                    break;
+                case "8":
+                    month = "Aug";
+                    break;
+                case "9":
+                    month = "Sep";
+                    break;
+                case "10":
+                    month = "Oct";
+                    break;
+                case "11":
+                    month = "Nov";
+                    break;
+                case "12":
+                    month = "Des";
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e("nope", "no comment");
         }
 
         //set user data
@@ -152,11 +158,11 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
 
     private void getUserData(final ImageView userImage, final TextView username, String uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("Users")
+                .getReference().child("Users")
                 .child(uid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 ModelUser user = dataSnapshot.getValue(ModelUser.class);
 
                 //get user data
@@ -181,8 +187,25 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
     }
 
     private void deleteComment(String cid) {
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Comments").child(postId);
-        ref.child(cid).removeValue(); //it will delete the comment
+        //final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Comments").child(postId);
+        //ref.child(cid).removeValue(); //it will delete the comment
+
+        Query fQuery = FirebaseDatabase.getInstance().getReference("Comments").child(postId).child(cid);
+        fQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ds.getRef().removeValue(); //remove values from firebase where pid matches
+                }
+                //deleted
+                Toast.makeText(context, "Deleted successfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

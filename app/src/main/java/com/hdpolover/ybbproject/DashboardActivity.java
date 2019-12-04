@@ -39,11 +39,11 @@ public class DashboardActivity extends AppCompatActivity {
     final Fragment fragment2 = new NewsFragment();
     final Fragment fragment3 = new MessagesFragment();
     final Fragment fragment4 = new SchedulesFragment();
-    final Fragment fragment5 = new ProfileFragment();
+    public final Fragment fragment5 = new ProfileFragment();
 
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+    public final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    Fragment active = fragment1;
+    public Fragment active = fragment1;
 
     //firebase auth
     FirebaseAuth firebaseAuth;
@@ -55,6 +55,10 @@ public class DashboardActivity extends AppCompatActivity {
 //    TextView mMasukTv;
 
     String mUID;
+
+    public Fragment getActiveFragment() {
+        return active;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

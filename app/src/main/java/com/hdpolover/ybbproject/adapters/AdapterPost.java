@@ -40,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.AddPostActivity;
+import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.ProfileFragment;
 import com.hdpolover.ybbproject.R;
@@ -212,8 +213,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onClick(View v) {
                 //if post user is me, then go to profile
                 if (hisUid.equals(myUid)) {
-                    ((FragmentActivity)context).getSupportFragmentManager()
-                            .beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                    //((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
+                      //      .replace(R.id.fragment_container, new ProfileFragment()).commit();
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("uid", myUid);
+                    context.startActivity(intent);
                 } else {
                     //will be used to go to userprofileactivity
                     //with myUid to show user's posts

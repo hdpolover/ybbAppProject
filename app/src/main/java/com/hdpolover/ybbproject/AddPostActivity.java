@@ -164,6 +164,7 @@ public class AddPostActivity extends AppCompatActivity {
                         Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                         startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -214,6 +215,7 @@ public class AddPostActivity extends AppCompatActivity {
                                             Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+                                            finish();;
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -283,6 +285,7 @@ public class AddPostActivity extends AppCompatActivity {
                                                             Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
 
                                                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+                                                            finish();
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
@@ -403,6 +406,7 @@ public class AddPostActivity extends AppCompatActivity {
                                                 image_rui = null;
 
                                                 startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+                                                finish();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -450,6 +454,7 @@ public class AddPostActivity extends AppCompatActivity {
                             image_rui = null;
 
                             startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+                            finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
