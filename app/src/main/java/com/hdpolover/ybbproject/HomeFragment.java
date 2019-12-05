@@ -33,7 +33,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterPeopleSuggestion;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
-import com.hdpolover.ybbproject.models.JSONDataModel;
 import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.hdpolover.ybbproject.models.ModelPost;
 
@@ -105,11 +104,6 @@ public class HomeFragment extends Fragment {
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
-
-//        tryData = new ArrayList<>();
-//        tryData = SplashActivity.infoJsonData;
-////
-//        Log.e("data", tryData.size() + "");
 
         //get followed user id to be compared later
         //setFollowedPeopleId();
