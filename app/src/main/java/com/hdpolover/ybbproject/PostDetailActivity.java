@@ -57,7 +57,7 @@ import java.util.Locale;
 public class PostDetailActivity extends AppCompatActivity {
 
     //to get detail of user and post
-    String hisUid, myUid, myEmail, myName, myDp,
+    String hisUid, myUid, myEmail, myDp,
     postId, hisDp, hisName, pImage;
 
     //progress bar
@@ -179,9 +179,21 @@ public class PostDetailActivity extends AppCompatActivity {
         uPictureIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                intent.putExtra("uid", hisUid);
+                startActivity(intent);
             }
         });
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                intent.putExtra("uid", hisUid);
+                startActivity(intent);
+            }
+        });
+
         upvotersCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

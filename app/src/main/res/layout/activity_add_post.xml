@@ -28,12 +28,12 @@
             <!--        Image view for post image-->
             <ImageView
                 android:id="@+id/pImageIv"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:maxHeight="150dp"
-                android:maxWidth="150dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:maxHeight="200dp"
+                android:maxWidth="200dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/ic_add_image1"
                 android:adjustViewBounds="true"

@@ -81,16 +81,16 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
 
         switch (month) {
             case "01":
-                month = "Jan";
+                month = "January";
                 break;
             case "02":
-                month = "Feb";
+                month = "February";
                 break;
             case "03":
-                month = "Mar";
+                month = "March";
                 break;
             case "04":
-                month = "Apr";
+                month = "April";
                 break;
             case "05":
                 month = "May";
@@ -102,25 +102,25 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
                 month = "July";
                 break;
             case "08":
-                month = "Aug";
+                month = "August";
                 break;
             case "09":
-                month = "Sep";
+                month = "September";
                 break;
             case "10":
-                month = "Oct";
+                month = "October";
                 break;
             case "11":
-                month = "Nov";
+                month = "November";
                 break;
             case "12":
-                month = "Des";
+                month = "Desember";
                 break;
             default:
                 break;
         }
 
-        return date + " " + month + " "+ year;
+        return month + " " + date + ", "+ year;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
             newstTitleTv = itemView.findViewById(R.id.newsTitleTv);
             newsExcerptTv = itemView.findViewById(R.id.newsExcerptTv);
             newsDateTv = itemView.findViewById(R.id.newsDateTv);
-            newsCategoryTv = itemView.findViewById(R.id.newsCategoryTv);
+            //newsCategoryTv = itemView.findViewById(R.id.newsCategoryTv);
         }
     }
 }

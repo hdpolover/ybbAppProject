@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +63,8 @@ public class HomeFragment extends Fragment {
     ShimmerFrameLayout shimmerFrameLayoutPeople;
     ShimmerFrameLayout shimmerFrameLayoutPost;
 
+    Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7, chip8, chip9, chip10;
+
     public HomeFragment() {
         //required empty constructor
     }
@@ -75,6 +79,19 @@ public class HomeFragment extends Fragment {
         fab_add_post = view.findViewById(R.id.fab_add_post);
         peopleTv = view.findViewById(R.id.peopleTv);
 
+        //init chips
+        chip1 = view.findViewById(R.id.chip1);
+        chip2 = view.findViewById(R.id.chip2);
+        chip3 = view.findViewById(R.id.chip3);
+        chip4 = view.findViewById(R.id.chip4);
+        chip5 = view.findViewById(R.id.chip5);
+        chip6 = view.findViewById(R.id.chip6);
+        chip7 = view.findViewById(R.id.chip7);
+        chip8 = view.findViewById(R.id.chip8);
+        chip9 = view.findViewById(R.id.chip9);
+        chip10 = view.findViewById(R.id.chip10);
+
+        manageChips();
 
         shimmerFrameLayoutPeople = view.findViewById(R.id.shimmerFrameLayoutPeople);
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
@@ -119,6 +136,19 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void manageChips() {
+        final Chip[] activeChip = {null};
+
+        chip1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //chip1.setBackgroundColor(808080);
+                chip1.setChipBackgroundColor(getResources().getColorStateList(R.color.primaryLightColor));
+                activeChip[0] = chip1;
+            }
+        });
     }
 
     private void setFollowedPeopleId() {
