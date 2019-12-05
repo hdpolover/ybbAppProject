@@ -361,19 +361,19 @@ public class MainActivity extends AppCompatActivity {
         return alertDialog;
     }
     //Permission Location
-    private void setUpLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestRuntimePermission();
-        }
-    }
-
-    private void requestRuntimePermission() {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        }, MY_PERMISSION_REQUEST_CODE);
-    }
+//    private void setUpLocation() {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            requestRuntimePermission();
+//        }
+//    }
+//
+//    private void requestRuntimePermission() {
+//        ActivityCompat.requestPermissions(this, new String[]{
+//                Manifest.permission.ACCESS_COARSE_LOCATION,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//        }, MY_PERMISSION_REQUEST_CODE);
+//    }
 
     //Storeage
 

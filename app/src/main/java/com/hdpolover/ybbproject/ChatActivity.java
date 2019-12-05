@@ -114,6 +114,9 @@ public class ChatActivity extends AppCompatActivity {
     //image pick
     Uri image_rui = null;
 
+    //notif
+    ImageView messageNotif;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +134,8 @@ public class ChatActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
         backBtn = findViewById(R.id.backBtn);
         attachBtn = findViewById(R.id.attachBtn);
+
+        messageNotif = findViewById(R.id.messageNotif);
 
         //int pemissions arrays
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -166,21 +171,21 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //check until required info is received
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
-                    String name = ""+ds.child("name").getValue();
-                    hisImage = ""+ds.child("image").getValue();
-                    String typingStatus = ""+ds.child("typingTo").getValue();
+                    String name = "" + ds.child("name").getValue();
+                    hisImage = "" + ds.child("image").getValue();
+                    String typingStatus = "" + ds.child("typingTo").getValue();
 
                     //check typing status
-                    if(typingStatus.equals(myUid)){
+                    if (typingStatus.equals(myUid)) {
                         userStatusTv.setText("typing...");
-                    }else{
+                    } else {
                         //get value of online status
-                        String onlineStatus = ""+ds.child("onlineStatus").getValue();
-                        if(onlineStatus.equals("online")){
+                        String onlineStatus = "" + ds.child("onlineStatus").getValue();
+                        if (onlineStatus.equals("online")) {
                             userStatusTv.setText(onlineStatus);
-                        }else{
+                        } else {
                             //convert timestamp to proper date time
                             //convert timestamp to dd/mm/yyyy hh:mm am/pm
                             Calendar cal = Calendar.getInstance();
@@ -234,19 +239,18 @@ public class ChatActivity extends AppCompatActivity {
                                     break;
                             }
 
-                            userStatusTv.setText("Last seen on "+ date + " " + month + " at" + time);
+                            userStatusTv.setText("Last seen on " + date + " " + month + " at" + time);
                         }
                     }
 
                     //set data
                     nameTv.setText(name);
-                    try{
+                    try {
                         //image received set it to imageview in toolbar
                         Picasso.get().load(hisImage).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         //there is exception getting picture, set default picture
-                    //    Picasso.get().load(R.drawable.ic_default_img_white).into(profileIv);
+                        //    Picasso.get().load(R.drawable.ic_default_img_white).into(profileIv);
                     }
                 }
             }
@@ -273,10 +277,10 @@ public class ChatActivity extends AppCompatActivity {
                 //get text from edit text
                 String message = messageEt.getText().toString().trim();
                 //check if text is empty or not
-                if(TextUtils.isEmpty(message)){
+                if (TextUtils.isEmpty(message)) {
                     //text empty
-                    Toast.makeText(ChatActivity.this,"Cannot send the empty message...",Toast.LENGTH_SHORT).show();
-                }else{
+                    Toast.makeText(ChatActivity.this, "Cannot send the empty message...", Toast.LENGTH_SHORT).show();
+                } else {
                     //text not empty
                     sendMessage(message);
                 }
@@ -304,9 +308,9 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.toString().trim().length() == 0){
+                if (s.toString().trim().length() == 0) {
                     checkTypingStatus("noOne");
-                }else{
+                } else {
                     checkTypingStatus(hisUid); //uid of receiver
                 }
             }
@@ -323,7 +327,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private  void showImagePickDialog() {
+    private void showImagePickDialog() {
         //option camera/gallery to show in dialog
         String[] options = {"Camera", "Gallery"};
 
@@ -445,8 +449,7 @@ public class ChatActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
                 try {
                     sendImageMessage(image_rui);
                 } catch (IOException e) {
@@ -462,9 +465,9 @@ public class ChatActivity extends AppCompatActivity {
         seenListener = userRefForSeen.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChat chat = ds.getValue(ModelChat.class);
-                    if(chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)){
+                    if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid)) {
                         HashMap<String, Object> hasSeenHashMap = new HashMap<>();
                         hasSeenHashMap.put("isSeen", true);
                         ds.getRef().updateChildren(hasSeenHashMap);
@@ -481,15 +484,15 @@ public class ChatActivity extends AppCompatActivity {
 
     private void readMessage() {
         chatList = new ArrayList<>();
-        DatabaseReference dbRef= FirebaseDatabase.getInstance().getReference("Chats");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Chats");
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChat chat = ds.getValue(ModelChat.class);
-                    if(chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid) ||
-                            chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)){
+                    if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid) ||
+                            chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)) {
                         chatList.add(chat);
 
                     }
@@ -537,7 +540,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ModelUser user = dataSnapshot.getValue(ModelUser.class);
 
-                if(notify){
+                if (notify) {
                     sendNotification(hisUid, user.getName(), message);
                 }
 
@@ -558,7 +561,7 @@ public class ChatActivity extends AppCompatActivity {
         chatRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     chatRef1.child("id").setValue(hisUid);
                 }
             }
@@ -575,7 +578,7 @@ public class ChatActivity extends AppCompatActivity {
         chatRef2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     chatRef2.child("id").setValue(myUid);
                 }
             }
@@ -594,9 +597,9 @@ public class ChatActivity extends AppCompatActivity {
         progressDialog.setMessage("Sending image...");
         progressDialog.show();
 
-        final String timeStamp = ""+System.currentTimeMillis();
+        final String timeStamp = "" + System.currentTimeMillis();
 
-        String fileNameAndPath = "ChatImages/"+"chat_image_"+timeStamp;
+        String fileNameAndPath = "ChatImages/" + "chat_image_" + timeStamp;
 
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_rui);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -611,10 +614,10 @@ public class ChatActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         //get url of uploaded image
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
+                        while (!uriTask.isSuccessful()) ;
                         String downloadUri = uriTask.getResult().toString();
 
-                        if(uriTask.isSuccessful()){
+                        if (uriTask.isSuccessful()) {
                             //add image url and another info to database
                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -636,7 +639,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     ModelUser user = dataSnapshot.getValue(ModelUser.class);
 
-                                    if(notify){
+                                    if (notify) {
                                         sendNotification(hisUid, user.getName(), "Sent you a photo");
                                     }
                                     notify = false;
@@ -655,7 +658,7 @@ public class ChatActivity extends AppCompatActivity {
                             chatRef1.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(!dataSnapshot.exists()){
+                                    if (!dataSnapshot.exists()) {
                                         chatRef1.child("id").setValue(hisUid);
                                     }
                                 }
@@ -672,7 +675,7 @@ public class ChatActivity extends AppCompatActivity {
                             chatRef2.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(!dataSnapshot.exists()){
+                                    if (!dataSnapshot.exists()) {
                                         chatRef2.child("id").setValue(myUid);
                                     }
                                 }
@@ -701,17 +704,20 @@ public class ChatActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name+" : "+message, "New Message", hisUid, R.drawable.ic_chat_black_24dp);
+                    Data data = new Data(myUid, name + " : " + message, "New Message", hisUid, R.drawable.ic_chat_black_24dp);
+
+                    //to set notif in message icon
+                    messageNotif.setImageResource(R.drawable.circle_notif);
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)
                             .enqueue(new Callback<Response>() {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                    //disable because toast appear after send message
-                                    //Toast.makeText(ChatActivity.this, ""+response.message(), Toast.LENGTH_SHORT).show();
+                                    //to set notif in message icon
+                                    messageNotif.setImageResource(R.drawable.circle_notif);
                                 }
 
                                 @Override
@@ -729,21 +735,21 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUserStatus(){
+    private void checkUserStatus() {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        if(user != null){
+        if (user != null) {
             //user is signed in stay here
             //set email of logged in user
             myUid = user.getUid(); //currently signed in user's uid
-        }else{
+        } else {
             //user not signed in, go to main activity
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
 
-    private void checkOnlineStatus(String status){
+    private void checkOnlineStatus(String status) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("onlineStatus", status);
@@ -751,7 +757,7 @@ public class ChatActivity extends AppCompatActivity {
         dbRef.updateChildren(hashMap);
     }
 
-    private void checkTypingStatus(String typing){
+    private void checkTypingStatus(String typing) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("typingTo", typing);

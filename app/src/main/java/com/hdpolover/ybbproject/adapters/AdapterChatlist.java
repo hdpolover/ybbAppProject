@@ -1,5 +1,6 @@
 package com.hdpolover.ybbproject.adapters;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hdpolover.ybbproject.ChatActivity;
+import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
@@ -88,7 +90,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         return userList.size(); //size of the list
     }
 
-    class MyHolder extends RecyclerView.ViewHolder{
+    class MyHolder extends RecyclerView.ViewHolder {
 
         //views of row chatlist.xml
         ImageView profileIv;

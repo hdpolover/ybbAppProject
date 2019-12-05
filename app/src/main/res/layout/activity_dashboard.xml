@@ -18,7 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation"
-        android:background="?android:attr/windowBackground"
-        />
+        android:background="?android:attr/windowBackground" />
+
+    <ImageView
+        android:id="@+id/messageNotif"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/botton_navigation"
+        android:layout_width="20dp"
+        android:layout_height="20dp"/>
 
 </RelativeLayout>
