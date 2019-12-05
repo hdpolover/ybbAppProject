@@ -24,8 +24,10 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoConnectionActivity"
-            android:theme="@style/AppThemeNo"/>
+        <activity android:name=".WebViewNewsActivity"></activity>
+        <activity
+            android:name=".NoConnectionActivity"
+            android:theme="@style/AppThemeNo" />
         <activity android:name=".UserFollowingsActivity" />
         <activity android:name=".UserFollowersActivity" />
         <activity android:name=".EditProfileActivity" />

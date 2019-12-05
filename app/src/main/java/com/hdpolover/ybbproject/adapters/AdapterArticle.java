@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.WebViewNewsActivity;
 import com.hdpolover.ybbproject.models.WordPressPostModel;
 import com.squareup.picasso.Picasso;
 
@@ -40,7 +42,7 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
 
         String image = post.getJetpackFeaturedMediaUrl();
         String title = post.getTitle().getRendered();
-        String link = post.getLink();
+        final String link = post.getLink();
         String excerpt = stripHtml(post.getExcerpt().getRendered());
         String date = post.getDate();
 
@@ -55,6 +57,16 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
         } catch (Exception e) {
             holder.newsImageIv.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WebViewNewsActivity.class);
+                intent.putExtra("link", link);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     public String stripHtml(String html) {
