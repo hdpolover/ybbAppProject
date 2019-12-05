@@ -88,7 +88,6 @@ public class DashboardActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         fragmentManager.beginTransaction().hide(active).show(fragment1).commit();
-
                         active = fragment1;
                         return true;
 

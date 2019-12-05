@@ -1,7 +1,7 @@
 package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,23 +41,74 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
         String image = post.getJetpackFeaturedMediaUrl();
         String title = post.getTitle().getRendered();
         String link = post.getLink();
-        String excerpt = post.getExcerpt().getRendered();
+        String excerpt = stripHtml(post.getExcerpt().getRendered());
         String date = post.getDate();
-        //String categories = post.getCategories().get(0).toString();
-        //Log.e("cat", categories);
 
         holder.newstTitleTv.setText(title);
         holder.newsExcerptTv.setText(excerpt);
-        holder.newsDateTv.setText(date);
-        //holder.newsCategoryTv.setText(categories);
+        holder.newsDateTv.setText(setPrettyDate(date));
 
         try {
             Picasso.get().load(image)
                     .fit()
                     .into(holder.newsImageIv);
         } catch (Exception e) {
-
+            holder.newsImageIv.setVisibility(View.GONE);
         }
+    }
+
+    public String stripHtml(String html) {
+        return Html.fromHtml(html).toString();
+    }
+
+    private String setPrettyDate(String postDate) {
+        String year = postDate.substring(0, 4);
+        String month = postDate.substring(5, 7);
+        String date = postDate.substring(8, 10);
+        String time = postDate.substring(11, 16);
+
+        switch (month) {
+            case "01":
+                month = "Jan";
+                break;
+            case "02":
+                month = "Feb";
+                break;
+            case "03":
+                month = "Mar";
+                break;
+            case "04":
+                month = "Apr";
+                break;
+            case "05":
+                month = "May";
+                break;
+            case "06":
+                month = "June";
+                break;
+            case "07":
+                month = "July";
+                break;
+            case "08":
+                month = "Aug";
+                break;
+            case "09":
+                month = "Sep";
+                break;
+            case "10":
+                month = "Oct";
+                break;
+            case "11":
+                month = "Nov";
+                break;
+            case "12":
+                month = "Des";
+                break;
+            default:
+                break;
+        }
+
+        return date + " " + month + " "+ year;
     }
 
     @Override

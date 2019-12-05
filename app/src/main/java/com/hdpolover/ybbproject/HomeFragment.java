@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,6 +44,7 @@ public class HomeFragment extends Fragment {
 
     FirebaseAuth firebaseAuth;
     FloatingActionButton fab_add_post;
+    TextView peopleTv;
 
     String uid;
 
@@ -56,6 +59,8 @@ public class HomeFragment extends Fragment {
     List<String> followedPeopleId;
 
     NestedScrollView nestedScrollView;
+    ShimmerFrameLayout shimmerFrameLayoutPeople;
+    ShimmerFrameLayout shimmerFrameLayoutPost;
 
     public HomeFragment() {
         //required empty constructor
@@ -69,6 +74,11 @@ public class HomeFragment extends Fragment {
         //init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
         fab_add_post = view.findViewById(R.id.fab_add_post);
+        peopleTv = view.findViewById(R.id.peopleTv);
+
+
+        shimmerFrameLayoutPeople = view.findViewById(R.id.shimmerFrameLayoutPeople);
+        shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -187,6 +197,9 @@ public class HomeFragment extends Fragment {
                     adapterPeopleSuggestion = new AdapterPeopleSuggestion(getActivity(), peopleList);
                     //set adapter recycler view
                     peopleSuggestionRecyclerView.setAdapter(adapterPeopleSuggestion);
+                    adapterPeopleSuggestion.notifyDataSetChanged();
+                    shimmerFrameLayoutPeople.stopShimmer();
+                    shimmerFrameLayoutPeople.setVisibility(View.GONE);
                 }
             }
 
@@ -215,6 +228,9 @@ public class HomeFragment extends Fragment {
                     adapterPost = new AdapterPost(getActivity(), postList);
                     //set adapter recycler view
                     postRecyclerView.setAdapter(adapterPost);
+                    adapterPost.notifyDataSetChanged();
+                    shimmerFrameLayoutPost.stopShimmer();
+                    shimmerFrameLayoutPost.setVisibility(View.GONE);
                 }
             }
 
@@ -245,6 +261,7 @@ public class HomeFragment extends Fragment {
                     adapterPost = new AdapterPost(getActivity(), postList);
                     //set adapter recycler view
                     postRecyclerView.setAdapter(adapterPost);
+                    adapterPost.notifyDataSetChanged();
                 }
             }
 
@@ -298,8 +315,13 @@ public class HomeFragment extends Fragment {
                 //called when user press search button
                 if (!TextUtils.isEmpty(query)) {
                     searchPosts(query);
+                    peopleTv.setVisibility(View.GONE);
+                    peopleSuggestionRecyclerView.setVisibility(View.GONE);
+                    shimmerFrameLayoutPost.startShimmer();
                 } else {
                     loadPosts();
+                    peopleTv.setVisibility(View.VISIBLE);
+                    peopleSuggestionRecyclerView.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -309,8 +331,13 @@ public class HomeFragment extends Fragment {
                 //called as and when useer press any letter
                 if (!TextUtils.isEmpty(newText)) {
                     searchPosts(newText);
+                    peopleTv.setVisibility(View.GONE);
+                    peopleSuggestionRecyclerView.setVisibility(View.GONE);
+                    shimmerFrameLayoutPost.startShimmer();
                 } else {
                     loadPosts();
+                    peopleTv.setVisibility(View.VISIBLE);
+                    peopleSuggestionRecyclerView.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -322,12 +349,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        shimmerFrameLayoutPost.startShimmer();
+        shimmerFrameLayoutPeople.startShimmer();
         checkUserStatus();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        shimmerFrameLayoutPeople.stopShimmer();
+        shimmerFrameLayoutPost.stopShimmer();
         checkUserStatus();
     }
 
