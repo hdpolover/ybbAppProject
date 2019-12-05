@@ -72,10 +72,6 @@ public class InfoFragment extends Fragment {
         shimmerFrameLayout.setVisibility(View.GONE);
     }
 
-    public void scrollUp(){
-        nestedScrollView.smoothScrollTo(0,0);
-    }
-
     @Override
     public void onResume() {
         super.onResume();

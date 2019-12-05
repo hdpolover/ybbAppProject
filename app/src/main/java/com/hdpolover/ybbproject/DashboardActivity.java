@@ -88,6 +88,7 @@ public class DashboardActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         fragmentManager.beginTransaction().hide(active).show(fragment1).commit();
+
                         active = fragment1;
                         return true;
 
@@ -118,49 +119,14 @@ public class DashboardActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-                //Toast.makeText(DashboardActivity.this, "Reselected", Toast.LENGTH_SHORT).show();
+                if (active == fragment1) {
+                    ((HomeFragment) fragment1).scrollUp();
+                }
             }
         });
 
         checkUserStatus();
     }
-
-
-//    //firebase auth
-//    FirebaseAuth firebaseAuth;
-//    boolean doubleBackToExit = false;
-//
-//    ActionBar actionBar;
-//
-//    //views
-////    TextView mMasukTv;
-//
-//    String mUID;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_dashboard);
-//
-//        //action bar and its propertoes
-//        actionBar = getSupportActionBar();
-//        //actionBar.setIcon(R.drawable.ybb_white_cropped);
-//        //actionBar.setTitle("YBB");
-//        actionBar.setDisplayShowHomeEnabled(true);
-//
-//        //init firebase
-//        firebaseAuth = FirebaseAuth.getInstance();
-//
-//        //bottom navigation
-//        BottomNavigationView bottomNav = findViewById(R.id.botton_navigation);
-//        bottomNav.setOnNavigationItemSelectedListener(navListener);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-//
-//        //init views
-////        mMasukTv = findViewById(R.id.masukTv);
-//
-//        checkUserStatus();
-//    }
 
     @Override
     protected void onResume() {

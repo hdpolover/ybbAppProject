@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,7 +54,8 @@ public class HomeFragment extends Fragment {
     AdapterPeopleSuggestion adapterPeopleSuggestion;
 
     List<String> followedPeopleId;
-    List<JSONDataModel> tryData;
+
+    NestedScrollView nestedScrollView;
 
     public HomeFragment() {
         //required empty constructor
@@ -84,6 +86,8 @@ public class HomeFragment extends Fragment {
         //set layout to recycler view
         peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
         peopleSuggestionRecyclerView.setNestedScrollingEnabled(false);
+
+        nestedScrollView = view.findViewById(R.id.nestedScrollViewHome);
 
         checkUserStatus();
 
@@ -263,6 +267,10 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
+    }
+
+    public void scrollUp(){
+        nestedScrollView.smoothScrollTo(0,0);
     }
 
     @Override
