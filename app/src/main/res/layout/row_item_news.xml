@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:contentPadding="4dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="2dp"
@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/newsImageIv"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:src="@color/placeholder_bg"/>
@@ -31,25 +32,27 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/newsTitleTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Article Title"
                     android:textStyle="bold"
                     android:layout_marginBottom="5dp"
                     android:textSize="18sp"
-                    android:textColor="@color/colorBlack"/>
+                    android:textColor="#000"/>
 
                 <TextView
+                    android:id="@+id/newsExcerptTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="This is the excerpt article"/>
 
             </LinearLayout>
 
-            <view
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/placeholder_bg"/>
+            <!--            <view-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:background="@color/placeholder_bg"/>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,23 +61,24 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                android:layout_weight="1">
+                    android:layout_weight="1">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_datetime"
-                    android:layout_marginRight="3dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="20 Des 2019"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_datetime"
+                        android:layout_marginRight="3dp"/>
+                    <TextView
+                        android:id="@+id/newsDateTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="20 Des 2019"/>
 
-            </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,6 +91,7 @@
                         android:src="@drawable/ic_folder"
                         android:layout_marginRight="3dp"/>
                     <TextView
+                        android:id="@+id/newsCategoryTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -100,4 +105,4 @@
 
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
