@@ -221,7 +221,6 @@ public class ProfileFragment extends Fragment {
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Edit profile clicked...", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), EditProfileActivity.class));
             }
         });
