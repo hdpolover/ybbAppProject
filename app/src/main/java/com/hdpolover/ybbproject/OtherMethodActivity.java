@@ -328,7 +328,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
             }
         });
 
-        startActivity(new Intent(OtherMethodActivity.this, DashboardActivity.class));
-        finish();
+//        startActivity(new Intent(OtherMethodActivity.this, DashboardActivity.class));
+//        finish();
     }
 }

@@ -65,6 +65,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.notifications.Data;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -437,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleFacebookAccessToken(AccessToken token, String profileURL, String email) {
+    private void handleFacebookAccessToken(AccessToken token, final String profileURL, String email) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
         final String myEmail = email;
@@ -469,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("onlineStatus", "online"); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
                                 hashMap.put("phone", ""); //will add later
-                                hashMap.put("image", ""); //will add later
+                                hashMap.put("image", profileURL); //will add later
                                 hashMap.put("country", "");
                                 hashMap.put("city", "");
                                 hashMap.put("username", "");
@@ -654,45 +655,31 @@ public class MainActivity extends AppCompatActivity {
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            //firebase database instance
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            //path to store user data name Users
-                            DatabaseReference reference = database.getReference("Users");
-                            Query query = reference.child("uid").equalTo(user.getUid());
-                            query.addValueEventListener(new ValueEventListener() {
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                            DatabaseReference uidRef = rootRef.child(uid);
+
+                            ValueEventListener valueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    //check until required data get
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        //get data
-                                        String phone = "" + ds.child("phone").getValue();
-                                        String email = "" + ds.child("email").getValue();
-
-                                        if (phone == "") {
-                                            //new user
-                                            //show user email in toast
-                                            Toast.makeText(MainActivity.this, "" + email, Toast.LENGTH_SHORT).show();
-                                            //after logged in
-                                            startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
-                                            finish();
-                                            //updateUI(user);
-                                        } else {
-                                            //show user email in toast
-                                            Toast.makeText(MainActivity.this, "" + email, Toast.LENGTH_SHORT).show();
-                                            //after logged in
-                                            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                                            finish();
-                                            //updateUI(user);
-                                        }
+                                    if (dataSnapshot.child("phone").getValue(String.class).equals("")){
+                                        //after logged in
+                                        startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
+                                        finish();
+                                    }else{
+                                        //after logged in
+                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                        finish();
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                    Log.d(TAG, databaseError.getMessage());
                                 }
-                            });
+                            };
+                            uidRef.addListenerForSingleValueEvent(valueEventListener);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
