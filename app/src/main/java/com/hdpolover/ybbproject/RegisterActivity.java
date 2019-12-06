@@ -78,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-
     //location
     private static final String TAG = "RegisterActivity";
     private GoogleApiClient mGoogleApiClient;
