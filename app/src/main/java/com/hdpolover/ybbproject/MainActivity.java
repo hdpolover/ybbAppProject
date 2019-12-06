@@ -237,12 +237,16 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Facebook Cancelled", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "facebook:onCancel");
                         // ...
                     }
 
                     @Override
                     public void onError(FacebookException error) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Facebook Cancelled: " + error, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "facebook:onError", error);
                         // ...
                     }

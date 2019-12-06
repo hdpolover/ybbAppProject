@@ -44,6 +44,25 @@ public class InitRetrofit {
         });
     }
 
+    public void getBlogPost() {
+        apiInterface.getBlogPost().enqueue(new Callback<ArrayList<WordPressPostModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<WordPressPostModel>> call, Response<ArrayList<WordPressPostModel>> response) {
+                ArrayList<WordPressPostModel> list = new ArrayList<>();
+                if(response.code() == 200) {
+                    list.addAll(response.body());
+                }
+                onRetrofitSuccess.onSuccessGetData(list);
+                Log.e("success", response.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<WordPressPostModel>> call, Throwable t) {
+                Log.e("onFailure", t.getMessage());
+            }
+        });
+    }
+
     //Interface
     public interface OnRetrofitSuccess {
         void onSuccessGetData(ArrayList arrayList);

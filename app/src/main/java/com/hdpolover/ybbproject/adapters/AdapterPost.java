@@ -114,10 +114,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 month = "May";
                 break;
             case "6":
-                month = "June";
+                month = "Jun";
                 break;
             case "7":
-                month = "July";
+                month = "Jul";
                 break;
             case "8":
                 month = "Aug";
@@ -132,7 +132,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 month = "Nov";
                 break;
             case "12":
-                month = "Des";
+                month = "Dec";
                 break;
                 default:
                     break;
@@ -142,7 +142,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         getUserData(myHolder.uPictureIv, myHolder.uNameTv, hisUid);
 
         //set data
-        myHolder.pTimeTv.setText(date + " " + month + " at" + time);
+        myHolder.pTimeTv.setText(month + " " + date + " at" + time);
         myHolder.pDescTv.setText(pDesc);
 
         //set post image

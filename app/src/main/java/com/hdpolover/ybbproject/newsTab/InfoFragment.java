@@ -41,7 +41,7 @@ public class InfoFragment extends Fragment {
         view = inflater.inflate(R.layout.news_info_fragment, container, false);
 
         initRetrofitPost = new InitRetrofit();
-        recyclerView = view.findViewById(R.id.recyclerHome);
+        recyclerView = view.findViewById(R.id.recyclerViewInfo);
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutNews);
         nestedScrollView = view.findViewById(R.id.nestedScrollViewNews);

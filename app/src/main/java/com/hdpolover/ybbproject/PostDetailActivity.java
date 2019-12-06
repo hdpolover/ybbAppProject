@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -339,7 +341,24 @@ public class PostDetailActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == 0) {
                     //delete is clicked
-                    beginDelete();
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(item.getActionView().getRootView().getContext());
+//                    builder.setTitle("Delete");
+//                    builder.setMessage("Are you sure to delete this cpost?");
+//                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+                            //delete post
+                            beginDelete();
+//                        }
+//                    });
+//                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    //show dialog
+//                    builder.create().show();
                 }
                 else if (id == 1) {
                     //edit is clicked
