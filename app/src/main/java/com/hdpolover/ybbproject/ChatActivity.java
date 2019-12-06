@@ -38,6 +38,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -114,8 +116,7 @@ public class ChatActivity extends AppCompatActivity {
     //image pick
     Uri image_rui = null;
 
-    //notif
-    ImageView messageNotif;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +135,14 @@ public class ChatActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
         backBtn = findViewById(R.id.backBtn);
         attachBtn = findViewById(R.id.attachBtn);
+        bottomNavigationView = findViewById(R.id.botton_navigation);
 
-        messageNotif = findViewById(R.id.messageNotif);
+//        //badge
+//        bottomNavigationView.getOrCreateBadge(R.id.nav_messages);
+//
+//        //assign in icon
+//        final BadgeDrawable badgeMessage = bottomNavigationView.getBadge(R.id.nav_messages);
+//        badgeMessage.setNumber(1);
 
         //int pemissions arrays
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -260,6 +267,19 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+
+//        //navigation
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()){
+//                    case R.id.nav_messages:
+//                        badgeMessage.clearNumber();
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         //click button to back
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -708,16 +728,12 @@ public class ChatActivity extends AppCompatActivity {
                     Token token = ds.getValue(Token.class);
                     Data data = new Data(myUid, name + " : " + message, "New Message", hisUid, R.drawable.ic_chat_black_24dp);
 
-                    //to set notif in message icon
-                    messageNotif.setImageResource(R.drawable.circle_notif);
 
                     Sender sender = new Sender(data, token.getToken());
                     apiService.sendNotification(sender)
                             .enqueue(new Callback<Response>() {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                    //to set notif in message icon
-                                    messageNotif.setImageResource(R.drawable.circle_notif);
                                 }
 
                                 @Override

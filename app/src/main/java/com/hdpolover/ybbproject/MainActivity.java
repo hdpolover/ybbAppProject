@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -227,12 +228,13 @@ public class MainActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Log.d(TAG, "facebook:onSuccess:" + loginResult);
 
-                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                getData(loginResult.getAccessToken(), object);
-                            }
-                        });
+//                        GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object, GraphResponse response) {
+//                                Log.d(TAG, "dapat masuk ke OnCompleted");
+//                                getData(loginResult.getAccessToken(), object);
+//                            }
+//                        });
                     }
 
                     @Override
@@ -256,8 +258,6 @@ public class MainActivity extends AppCompatActivity {
 
         //PERMISSIONS
         checkAndRequestPermissions();
-        //Permission Location
-        //setUpLocation();
 
 
     }
@@ -365,62 +365,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
         return alertDialog;
     }
-    //Permission Location
-//    private void setUpLocation() {
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            requestRuntimePermission();
-//        }
-//    }
-//
-//    private void requestRuntimePermission() {
-//        ActivityCompat.requestPermissions(this, new String[]{
-//                Manifest.permission.ACCESS_COARSE_LOCATION,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//        }, MY_PERMISSION_REQUEST_CODE);
-//    }
 
-    //Storeage
-
-//    private boolean checkStoragePermission() {
-//        //check if storage permission is enabled
-//        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-//        return result;
-//    }
-//
-//    private void requestStoragePermission() {
-//        //request runtime storage permission
-//        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-//    }
-//
-//    private boolean checkCameraPermission() {
-//        //check if camera permission is enabled
-//        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-//        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-//
-//        return result && result1;
-//    }
-//
-//    private void requestCameraPermission() {
-//        //request runtime camera permission
-//        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
-//    }
-
-    private void getData(AccessToken token, JSONObject object) {
-        try {
-            URL profile = new URL("https://graph.facebook.com/"+object.getString("id")+"/picture?width=100&height=100");
-
-            String profileURL = profile.toString();
-            String email = object.getString("email");
-
-            handleFacebookAccessToken(token, profileURL, email);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -442,6 +387,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    AccessTokenTracker tokenTracker = new AccessTokenTracker() {
+        @Override
+        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+            if(currentAccessToken!=null){
+                getData(currentAccessToken);
+            }
+        }
+    };
+
+    private void getData(final AccessToken token) {
+
+        GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                try {
+                    String email = object.getString("email");
+                    String id = object.getString("id");
+                    String profileURL = "https://graph.facebook.com/"+id+"/picture?type=normal";
+
+                    handleFacebookAccessToken(token, profileURL, email);
+
+                    Log.d(TAG, "KLO INI MASUK KE GET DATA");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Bundle param = new Bundle();
+        param.putString("fields","email, id");
+        request.setParameters(param);
+        request.executeAsync();
+    }
+
     private void handleFacebookAccessToken(AccessToken token, final String profileURL, String email) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
@@ -455,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            //if user is signin in first time then get and show user info from google account
+                            //if user is signin in first time then get and show user info from facebook account
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
                                 //Get user email and uid from auth
                                 String email = myEmail;
@@ -474,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("onlineStatus", "online"); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
                                 hashMap.put("phone", ""); //will add later
-                                hashMap.put("image", profileURL); //will add later
+                                hashMap.put("image", profileURL);
                                 hashMap.put("country", "");
                                 hashMap.put("city", "");
                                 hashMap.put("username", "");
@@ -486,11 +465,22 @@ public class MainActivity extends AppCompatActivity {
                                 DatabaseReference reference = database.getReference("Users");
                                 //put data within hashmap in database
                                 reference.child(uid).setValue(hashMap);
-                            }
 
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            updateUI();
+                                Log.e("success", "updated" + uid);
+
+                                startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
+                                finish();
+
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                updateUI();
+                            } else if (!task.getResult().getAdditionalUserInfo().isNewUser()){
+                                String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                Log.e("suck", "" + uids);
+
+                                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                finish();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
