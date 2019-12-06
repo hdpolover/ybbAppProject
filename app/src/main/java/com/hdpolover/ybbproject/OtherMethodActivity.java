@@ -32,6 +32,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -60,6 +61,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
     //    Declare as instance of FirebaseAuth
     private FirebaseAuth mAuth;
     FirebaseUser user;
+    String uid;
 
     private static final String TAG = "OtherMethodActivity";
     private GoogleApiClient mGoogleApiClient;
@@ -86,6 +88,10 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
+
+        emailTv.setText(user.getEmail());
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Logging in...");
@@ -120,7 +126,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                     mJobEt.setError("Job cannot be empty");
                     mJobEt.setFocusable(true);
                 } else {
-                    registerUser(email); //register user
+                    registerUser(); //register user
                 }
             }
         });
@@ -253,80 +259,174 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
     }
 
 
-    private void registerUser(String email) {
+    private void registerUser() {
         //email and password pattern is valid
         progressDialog.show();
 
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        //put post info
+//        hashMap.put("uid", uid);
+//        hashMap.put("pDesc", desc);
+//        hashMap.put("pImage", "noImage");
+//
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+//        ref.child(uid)
+//                .updateChildren(hashMap)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        pd.dismiss();
+//                        Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
+//
+//                        startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
+//                        finish();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        pd.dismiss();
+//                        Toast.makeText(AddPostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
         mAuth.updateCurrentUser(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, dismiss dialog and start register activity
-                    progressDialog.dismiss();
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, dismiss dialog and start register activity
+                            progressDialog.dismiss();
 
-                    FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = mAuth.getCurrentUser();
 
-                    //Get user email and uid from auth
-                    String email = user.getEmail();
-                    String uid = user.getUid();
+                            //Get user email and uid from auth
+                            String email = user.getEmail();
+                            String uid = user.getUid();
 
-                    //get username based on first 5 letters of uid
-                    String username = "ybb" + uid.substring(0, 5);
+                            //get username based on first 5 letters of uid
+                            String username = "ybb" + uid.substring(0, 5);
 
-                    //get Textview location
-                    String country = countryTv.getText().toString();
-                    String city = cityTv.getText().toString();
+                            //get Textview location
+                            String country = countryTv.getText().toString();
+                            String city = cityTv.getText().toString();
 
-                    String fullName = mFullnameEt.getText().toString();
-                    String phone = mPhoneEt.getText().toString();
-                    //capitalize the first letter
-                    String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
-                            + mJobEt.getText().toString().substring(1);
+                            String fullName = mFullnameEt.getText().toString();
+                            String phone = mPhoneEt.getText().toString();
+                            //capitalize the first letter
+                            String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
+                                    + mJobEt.getText().toString().substring(1);
 
-                    //substring for get name
-                    //String subName = "@";
-                    //String name = email.substring(0, email.indexOf(subName));
+                            //when user is registered store user info in firebase realtime database too
+                            //using hashmap
+                            HashMap<Object, String> hashMap = new HashMap<>();
+                            //put info in hasmap
+                            hashMap.put("email", email);
+                            hashMap.put("uid", uid);
+                            hashMap.put("name", fullName); //will add later
+                            hashMap.put("onlineStatus", "online"); //will add later
+                            hashMap.put("typingTo", "noOne"); //will add later
+                            hashMap.put("phone", phone); //will add later
+                            hashMap.put("image", ""); //will add later
+                            hashMap.put("country", country);
+                            hashMap.put("city", city);
+                            hashMap.put("username", username);
+                            hashMap.put("job", job);
 
-                    //when user is registered store user info in firebase realtime database too
-                    //using hashmap
-                    HashMap<Object, String> hashMap = new HashMap<>();
-                    //put info in hasmap
-                    hashMap.put("email", email);
-                    hashMap.put("uid", uid);
-                    hashMap.put("name", fullName); //will add later
-                    hashMap.put("onlineStatus", "online"); //will add later
-                    hashMap.put("typingTo", "noOne"); //will add later
-                    hashMap.put("phone", phone); //will add later
-                    hashMap.put("image", ""); //will add later
-                    hashMap.put("country", country);
-                    hashMap.put("city", city);
-                    hashMap.put("username", username);
-                    hashMap.put("job", job);
+                            //firebase database instance
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            //path to store user data name Users
+                            DatabaseReference reference = database.getReference("Users");
+                            //put data within hashmap in database
+                            reference.child(uid).setValue(hashMap);
 
-                    //firebase database instance
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    //path to store user data name Users
-                    DatabaseReference reference = database.getReference("Users");
-                    //put data within hashmap in database
-                    reference.child(uid).setValue(hashMap);
-
-                    Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
-                    finish();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Toast.makeText(OtherMethodActivity.this, "Login Failed.",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+                            Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            progressDialog.dismiss();
+                            Toast.makeText(OtherMethodActivity.this, "Login Failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
             }
         });
+
+//        mAuth.updateCurrentUser(user)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                if (task.isSuccessful()) {
+//                    // Sign in success, dismiss dialog and start register activity
+//                    progressDialog.dismiss();
+//
+//                    FirebaseUser user = mAuth.getCurrentUser();
+//
+//                    //Get user email and uid from auth
+//                    String email = user.getEmail();
+//                    String uid = user.getUid();
+//
+//                    //get username based on first 5 letters of uid
+//                    String username = "ybb" + uid.substring(0, 5);
+//
+//                    //get Textview location
+//                    String country = countryTv.getText().toString();
+//                    String city = cityTv.getText().toString();
+//
+//                    String fullName = mFullnameEt.getText().toString();
+//                    String phone = mPhoneEt.getText().toString();
+//                    //capitalize the first letter
+//                    String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
+//                            + mJobEt.getText().toString().substring(1);
+//
+//                    //substring for get name
+//                    //String subName = "@";
+//                    //String name = email.substring(0, email.indexOf(subName));
+//
+//                    //when user is registered store user info in firebase realtime database too
+//                    //using hashmap
+//                    HashMap<Object, String> hashMap = new HashMap<>();
+//                    //put info in hasmap
+//                    hashMap.put("email", email);
+//                    hashMap.put("uid", uid);
+//                    hashMap.put("name", fullName); //will add later
+//                    hashMap.put("onlineStatus", "online"); //will add later
+//                    hashMap.put("typingTo", "noOne"); //will add later
+//                    hashMap.put("phone", phone); //will add later
+//                    hashMap.put("image", ""); //will add later
+//                    hashMap.put("country", country);
+//                    hashMap.put("city", city);
+//                    hashMap.put("username", username);
+//                    hashMap.put("job", job);
+//
+//                    //firebase database instance
+//                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                    //path to store user data name Users
+//                    DatabaseReference reference = database.getReference("Users");
+//                    //put data within hashmap in database
+//                    reference.child(uid).setValue(hashMap);
+//
+//                    Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
+//                    finish();
+//                } else {
+//                    // If sign in fails, display a message to the user.
+//                    progressDialog.dismiss();
+//                    Toast.makeText(OtherMethodActivity.this, "Login Failed.",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//
+//            }
+//        });
 
 //        startActivity(new Intent(OtherMethodActivity.this, DashboardActivity.class));
 //        finish();

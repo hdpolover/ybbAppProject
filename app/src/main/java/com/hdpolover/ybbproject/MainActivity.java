@@ -653,32 +653,42 @@ public class MainActivity extends AppCompatActivity {
                                 DatabaseReference reference = database.getReference("Users");
                                 //put data within hashmap in database
                                 reference.child(uid).setValue(hashMap);
+                                Log.e("success", "updated" + uid);
+
+                                startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
+                                finish();
+                            } else if (!task.getResult().getAdditionalUserInfo().isNewUser()){
+                                String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                Log.e("suck", "" + uids);
+
+                                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                finish();
                             }
 
-                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                            DatabaseReference uidRef = rootRef.child(uid);
-
-                            ValueEventListener valueEventListener = new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.child("phone").getValue(String.class).equals("")){
-                                        //after logged in
-                                        startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
-                                        finish();
-                                    }else{
-                                        //after logged in
-                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                                        finish();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Log.d(TAG, databaseError.getMessage());
-                                }
-                            };
-                            uidRef.addListenerForSingleValueEvent(valueEventListener);
+//                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//                            DatabaseReference uidRef = rootRef.child(uid);
+//
+//                            ValueEventListener valueEventListener = new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                    if (dataSnapshot.child("phone").getValue(String.class).equals("")){
+//                                        //after logged in
+//                                        startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
+//                                        finish();
+//                                    }else{
+//                                        //after logged in
+//                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+//                                        finish();
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//                                    Log.d(TAG, databaseError.getMessage());
+//                                }
+//                            };
+//                            uidRef.addListenerForSingleValueEvent(valueEventListener);
 
                         } else {
                             // If sign in fails, display a message to the user.
