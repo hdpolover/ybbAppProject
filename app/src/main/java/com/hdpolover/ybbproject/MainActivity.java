@@ -7,7 +7,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -214,46 +213,53 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-        //handle facebook login click
         mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                progressDialog.setMessage("Loading");
-                progressDialog.show();
-                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
-                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(final LoginResult loginResult) {
-                        progressDialog.dismiss();
-                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-
-//                        GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(JSONObject object, GraphResponse response) {
-//                                Log.d(TAG, "dapat masuk ke OnCompleted");
-//                                getData(loginResult.getAccessToken(), object);
-//                            }
-//                        });
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Facebook Cancelled", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "facebook:onCancel");
-                        // ...
-                    }
-
-                    @Override
-                    public void onError(FacebookException error) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Facebook Cancelled: " + error, Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "facebook:onError", error);
-                        // ...
-                    }
-                });
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Facebook Login coming soon...", Toast.LENGTH_SHORT).show();
             }
         });
+
+//        //handle facebook login click
+//        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                progressDialog.setMessage("Loading");
+//                progressDialog.show();
+//                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
+//                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//                    @Override
+//                    public void onSuccess(final LoginResult loginResult) {
+//                        progressDialog.dismiss();
+//                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
+//
+////                        GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+////                            @Override
+////                            public void onCompleted(JSONObject object, GraphResponse response) {
+////                                Log.d(TAG, "dapat masuk ke OnCompleted");
+////                                getData(loginResult.getAccessToken(), object);
+////                            }
+////                        });
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getApplicationContext(), "Facebook Cancelled", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, "facebook:onCancel");
+//                        // ...
+//                    }
+//
+//                    @Override
+//                    public void onError(FacebookException error) {
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getApplicationContext(), "Facebook Cancelled: " + error, Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, "facebook:onError", error);
+//                        // ...
+//                    }
+//                });
+//            }
+//        });
 
         //PERMISSIONS
         checkAndRequestPermissions();
@@ -457,6 +463,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("city", "");
                                 hashMap.put("username", "");
                                 hashMap.put("job", "");
+                                hashMap.put("cityFrom", "");
+                                hashMap.put("countryFrom", "");
+                                hashMap.put("birthDate", "");
+                                hashMap.put("bio", "");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -639,6 +649,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("city", "");
                                 hashMap.put("username", "");
                                 hashMap.put("job", "");
+                                hashMap.put("cityFrom", "");
+                                hashMap.put("countryFrom", "");
+                                hashMap.put("birthDate", "");
+                                hashMap.put("bio", "");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
