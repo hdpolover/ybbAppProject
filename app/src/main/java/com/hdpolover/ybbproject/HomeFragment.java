@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment {
                     if (chipContents[finalI2].equals("All")) {
                         loadPosts();
                     } else if (chipContents[finalI2].equals("Followings")) {
-
+                        Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
                     } else {
                         searchPostsOnChip(chipContents[finalI2]);
                     }
