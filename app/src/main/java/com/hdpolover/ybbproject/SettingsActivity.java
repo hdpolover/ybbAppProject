@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,7 +19,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     String uid;
 
-    MaterialCardView logoutBtn, aboutBtn;
+    MaterialCardView logoutBtn, aboutBtn, feedbackBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         //init views
         logoutBtn = findViewById(R.id.logoutBtn);
-        //aboutBtn = findViewById(R.id.aboutBtn);
+        feedbackBtn = findViewById(R.id.feedbackBtn);
+        aboutBtn = findViewById(R.id.aboutBtn);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +48,20 @@ public class SettingsActivity extends AppCompatActivity {
                 //checkUserStatus();
                 startActivity(new Intent(SettingsActivity.this, MainActivity.class));
                 finish();
+            }
+        });
+
+        feedbackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, FeedbackActivity.class));
+            }
+        });
+
+        aboutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 

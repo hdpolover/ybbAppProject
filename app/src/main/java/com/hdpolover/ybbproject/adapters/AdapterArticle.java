@@ -53,9 +53,16 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
         try {
             Picasso.get().load(image)
                     .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_ybb_news)
                     .into(holder.newsImageIv);
         } catch (Exception e) {
-            holder.newsImageIv.setVisibility(View.GONE);
+            //holder.newsImageIv.setVisibility(View.GONE);
+            Picasso.get().load(R.drawable.placeholder_ybb_news)
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder_ybb_news)
+                    .into(holder.newsImageIv);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

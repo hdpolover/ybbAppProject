@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.tabProfile;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
 import com.squareup.picasso.Picasso;
 
@@ -30,15 +32,9 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
  */
 public class DashboardTab extends Fragment {
 
-    //firebase
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    TextView emailTv, phoneTv, bioTv;
 
-    //storage
-    StorageReference storageReference;
-    TextView emailTv, phoneTv;
+    String myUid;
 
     public DashboardTab() {
         // Required empty public constructor
@@ -51,36 +47,25 @@ public class DashboardTab extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard_tab, container, false);
 
-        firebaseAuth = firebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        firebaseDatabase = firebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
-        storageReference = getInstance().getReference(); //firebase storage refence
+        bioTv = view.findViewById(R.id.bioTv);
 
-//        emailTv = view.findViewById(R.id.emailTv);
-//        phoneTv = view.findViewById(R.id.phoneTv);
+        checkUserStatus();
 
+        setUserData();
 
-        //we have to get info of currently signed in user
-        Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
+        return view;
+    }
+
+    private void setUserData() {
+        //get current user info
+        Query myRef = FirebaseDatabase.getInstance().getReference("Users");
+        final Query query = myRef.orderByChild("uid").equalTo(myUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                //check until required data get
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     //get data
-                    String email = "" + ds.child("email").getValue();
-                    String phone = "" + ds.child("phone").getValue();
-
-                    //set data
-//                    emailTv.setText(email);
-
-//                    if (phone == "") {
-//                        phoneTv.setText("086213253142");
-//                    } else {
-//                        phoneTv.setText(phone);
-//                    }
+                    bioTv.setText("" + ds.child("bio").getValue());
                 }
             }
 
@@ -89,8 +74,30 @@ public class DashboardTab extends Fragment {
 
             }
         });
-
-        return view;
     }
 
+    private  void checkUserStatus() {
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //user is signed in stay here
+            myUid = user.getUid();
+        } else {
+            startActivity(new Intent(getActivity(), MainActivity.class));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        checkUserStatus();
+        setUserData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkUserStatus();
+        setUserData();
+    }
 }

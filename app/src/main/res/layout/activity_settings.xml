@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +8,61 @@
     android:orientation="vertical"
     android:background="@color/colorWhite">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/logoutBtn"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:contentPadding="5dp"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/feedbackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:contentPadding="5dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_feedback"/>
+
+            <TextView
+                android:layout_marginLeft="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:textSize="25sp"
+                android:text="Feedback"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/aboutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:contentPadding="5dp"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_info_filled"/>
+
+            <TextView
+                android:layout_marginLeft="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:textSize="25sp"
+                android:text="About"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/logoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:contentPadding="5dp"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:layout_width="60dp"
@@ -28,29 +77,17 @@
                 android:textSize="25sp"
                 android:text="Log out"/>
 
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-<!--    <com.google.android.material.card.MaterialCardView-->
-<!--        android:id="@+id/aboutBtn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="60dp"-->
-<!--        app:contentPadding="5dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginBottom="8dp">-->
+    </LinearLayout>
 
-<!--        <ImageView-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:src="@drawable/ic_edit_black"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YBB 0.1.1"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"/>
 
-<!--        <TextView-->
-<!--            android:layout_marginLeft="70dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:textSize="25sp"-->
-<!--            android:text="About"/>-->
-
-<!--    </com.google.android.material.card.MaterialCardView>-->
-
-</LinearLayout>
+</RelativeLayout>

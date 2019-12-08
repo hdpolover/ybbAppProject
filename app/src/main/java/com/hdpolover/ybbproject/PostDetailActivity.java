@@ -504,9 +504,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void getUserData(final ImageView userImage, final TextView username, String uid) {
-        DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("Users")
-                .child(uid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

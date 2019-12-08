@@ -4,15 +4,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +33,8 @@ import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -34,7 +44,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     //views
     //personal information
-    EditText fullnameEt, birthDateEt, phoneNumberEt,
+    EditText fullnameEt, birthDateEt, phoneNumberEt, occupationEt,
     cityLiveEt, countryLiveEt, cityFromEt, countryFromEt;
     ImageView infoDateHintIv;
 
@@ -45,12 +55,17 @@ public class EditProfileActivity extends AppCompatActivity {
 
     ArrayList<String> data;
 
+    ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        pd = new ProgressDialog(this);
+
         checkUserStatus();
+        //getCurrentUserData(myUid, data);
 
         actionBar = getSupportActionBar();
         actionBar.setTitle("Edit Profile");
@@ -62,9 +77,10 @@ public class EditProfileActivity extends AppCompatActivity {
         fullnameEt = findViewById(R.id.fullnameEt);
         birthDateEt = findViewById(R.id.birthDateEt);
         phoneNumberEt = findViewById(R.id.phoneNumberEt);
+        occupationEt = findViewById(R.id.occupationEt);
         cityLiveEt = findViewById(R.id.cityLiveEt);
         countryLiveEt = findViewById(R.id.countryLiveEt);
-        cityFromEt = findViewById(R.id.cityFomEt);
+        cityFromEt = findViewById(R.id.cityFromEt);
         countryFromEt = findViewById(R.id.countryFromEt);
         infoDateHintIv = findViewById(R.id.infoDateHintIv);
 
@@ -82,62 +98,65 @@ public class EditProfileActivity extends AppCompatActivity {
 
         setUserData();
 
+        birthDateEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDateButton();
+            }
+        });
+
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+               updateUserProfileInfo();
             }
         });
     }
 
-    private void setUserData() {
-        //personal info
-        fullnameEt.setText(data.get(0));
-        birthDateEt.setText(data.get(1));
-        phoneNumberEt.setText(data.get(2));
-        cityLiveEt.setText(data.get(3));
-        countryLiveEt.setText(data.get(4));
-        cityFromEt.setText(data.get(5));
-        cityFromEt.setText(data.get(6));
-        countryFromEt.setText(data.get(7));
+    private void handleDateButton() {
+        Calendar calendar = Calendar.getInstance();
+        int YEAR = calendar.get(Calendar.YEAR);
+        int MONTH = calendar.get(Calendar.MONTH);
+        int DATE = calendar.get(Calendar.DATE);
 
-        //details
-        bioEt.setText(data.get(8));
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.YEAR, year);
+                calendar1.set(Calendar.MONTH, month);
+                calendar1.set(Calendar.DATE, date);
+                String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+
+                birthDateEt.setText(dateText);
+            }
+        }, YEAR, MONTH, DATE);
+
+        datePickerDialog.show();
     }
 
-    private void getCurrentUserData() {
-        final ArrayList<String> data = new ArrayList<>();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(myUid);
-        Log.e("ref", reference.toString());
-        //Query fQuery = reference.orderByChild("uid").equalTo(myUid);
-        reference.addValueEventListener(new ValueEventListener() {
+    private void setUserData() {
+        //get current user info
+        Query myRef = FirebaseDatabase.getInstance().getReference("Users");
+        final Query query = myRef.orderByChild("uid").equalTo(myUid);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ModelUser user = dataSnapshot.getValue(ModelUser.class);
-
-                data.add(user.getName());
-                data.add(user.getName());
-                data.add(user.getName());
-                data.add(user.getName());
-                data.add(user.getName());
-                data.add(user.getName());
-                data.add(user.getName());
-
-//                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-//                    ModelUser user =
-//                    //get data
-//                    data.add(""+ds.child("name").getValue());
-//                    data.add(""+ds.child("birthDate").getValue());
-//                    data.add(""+ds.child("phone").getValue());
-//                    data.add(""+ds.child("city").getValue());
-//                    data.add(""+ds.child("country").getValue());
-//                    data.add(""+ds.child("cityFrom").getValue());
-//                    data.add(""+ds.child("countryFrom").getValue());
-//                    data.add(""+ds.child("bio").getValue());
-//                    data.add(""+ds.child("uid").getValue());
-//                    Log.e("name", ""+ds.child("name").getValue());
-//                }
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    //get data
+                    fullnameEt.setText("" + ds.child("name").getValue());
+                    birthDateEt.setText(""+ds.child("birthDate").getValue());
+                    phoneNumberEt.setText(""+ds.child("phone").getValue());
+                    occupationEt.setText(""+ds.child("job").getValue());
+                    cityLiveEt.setText(""+ds.child("city").getValue());
+                    countryLiveEt.setText(""+ds.child("country").getValue());
+                    cityFromEt.setText(""+ds.child("cityFrom").getValue());
+                    countryFromEt.setText(""+ds.child("countryFrom").getValue());
+                    bioEt.setText(""+ds.child("bio").getValue());
+                    Log.e("is", fullnameEt.getText().toString());
+                    Log.e("is1", ""+ds.child("name").getValue());
+                }
             }
 
             @Override
@@ -145,6 +164,52 @@ public class EditProfileActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void updateUserProfileInfo() {
+        pd.setMessage("Updating profile info...");
+        pd.show();
+
+        String job = "";
+        try {
+            job = occupationEt.getText().toString().substring(0,1).toUpperCase()
+                    + occupationEt.getText().toString().substring(1);
+        } catch (Exception e) {
+            job = occupationEt.getText().toString().trim();
+        }
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //put post info
+        hashMap.put("uid", myUid);
+        hashMap.put("name", fullnameEt.getText().toString().trim());
+        hashMap.put("birthDate", birthDateEt.getText().toString().trim());
+        hashMap.put("phone", phoneNumberEt.getText().toString().trim());
+        hashMap.put("job", job);
+        hashMap.put("city", cityLiveEt.getText().toString().trim());
+        hashMap.put("country", countryLiveEt.getText().toString().trim());
+        hashMap.put("cityFrom", cityFromEt.getText().toString().trim());
+        hashMap.put("countryFrom", countryFromEt.getText().toString().trim());
+        hashMap.put("bio", bioEt.getText().toString().trim());
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(myUid)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        pd.dismiss();
+                        Toast.makeText(EditProfileActivity.this, "Profile info successfully updated...", Toast.LENGTH_SHORT).show();
+
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(EditProfileActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override
