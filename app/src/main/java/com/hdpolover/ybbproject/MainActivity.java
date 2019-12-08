@@ -203,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
         mGoogleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setMessage("Loading");
+                progressDialog.show();
                 //begin google login process
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -382,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
+                progressDialog.dismiss();
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
@@ -466,7 +469,7 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("cityFrom", "");
                                 hashMap.put("countryFrom", "");
                                 hashMap.put("birthDate", "");
-                                hashMap.put("bio", "");
+                                hashMap.put("bio", "--");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

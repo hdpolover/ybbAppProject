@@ -145,33 +145,33 @@
                         android:elevation="3dp"
                         android:text="Following"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip8"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip9"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip10"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
                 </LinearLayout>
 
             </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/noPostHomeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:text="Posts not found"
+                    android:textColor="@color/primaryColor"/>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_undraw_no_data"/>
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/postRecyclerView"

@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,8 +63,10 @@ public class HomeFragment extends Fragment {
     NestedScrollView nestedScrollView;
     ShimmerFrameLayout shimmerFrameLayoutPeople;
     ShimmerFrameLayout shimmerFrameLayoutPost;
+    LinearLayout noPostHomeLayout;
 
-    Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7, chip8, chip9, chip10;
+    Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7;
+    Chip activeChip;
 
     public HomeFragment() {
         //required empty constructor
@@ -87,14 +90,13 @@ public class HomeFragment extends Fragment {
         chip5 = view.findViewById(R.id.chip5);
         chip6 = view.findViewById(R.id.chip6);
         chip7 = view.findViewById(R.id.chip7);
-        chip8 = view.findViewById(R.id.chip8);
-        chip9 = view.findViewById(R.id.chip9);
-        chip10 = view.findViewById(R.id.chip10);
 
-        manageChips();
+        activeChip = chip1;
+        activeChip.setChipBackgroundColor(getResources().getColorStateList(R.color.primaryLightColor));
 
         shimmerFrameLayoutPeople = view.findViewById(R.id.shimmerFrameLayoutPeople);
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
+        noPostHomeLayout = view.findViewById(R.id.noPostHomeLayout);
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -135,21 +137,81 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        final ArrayList<Chip> chips = new ArrayList<>();
+        chips.add(chip1);
+        chips.add(chip2);
+        chips.add(chip3);
+        chips.add(chip4);
+        chips.add(chip5);
+        chips.add(chip6);
+        chips.add(chip7);
+
+        final String[] chipContents = {"All", "Followings", "Istanbul", "IYS2020", "Winter", "Museum", "Kota"};
+
+        for (int i = 0; i < chips.size(); i++) {
+            chips.get(i).setText(chipContents[i]);
+            final int finalI = i;
+            final int finalI1 = i;
+            final int finalI2 = i;
+            chips.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //chip1.setBackgroundColor(808080);
+                    activeChip.setChipBackgroundColor(getResources().getColorStateList(R.color.placeholder_bg));
+                    chips.get(finalI).setChipBackgroundColor(getResources().getColorStateList(R.color.primaryLightColor));
+                    activeChip = chips.get(finalI1);
+
+                    if (chipContents[finalI2].equals("All")) {
+                        loadPosts();
+                    } else if (chipContents[finalI2].equals("Followings")) {
+
+                    } else {
+                        searchPostsOnChip(chipContents[finalI2]);
+                    }
+                }
+            });
+        }
+
         return view;
     }
 
-    private void manageChips() {
-        final Chip[] activeChip = {null};
-
-        chip1.setOnClickListener(new View.OnClickListener() {
+    private void searchPostsOnChip(final String searchQuery) {
+        //path of all posts
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        //get all data from this ref
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                //chip1.setBackgroundColor(808080);
-                chip1.setChipBackgroundColor(getResources().getColorStateList(R.color.primaryLightColor));
-                activeChip[0] = chip1;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ModelPost modelPost = ds.getValue(ModelPost.class);
+
+                    if (modelPost.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
+                        postList.add(modelPost);
+                    }
+
+                    //adapter
+                    adapterPost = new AdapterPost(getActivity(), postList);
+
+                    if (postList.size() == 0) {
+                        noPostHomeLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        //set adapter recycler view
+                        noPostHomeLayout.setVisibility(View.GONE);
+                        postRecyclerView.setAdapter(adapterPost);
+                        adapterPost.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //in case of error
+                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void setFollowedPeopleId() {
 
@@ -250,11 +312,22 @@ public class HomeFragment extends Fragment {
 
                     //adapter
                     adapterPost = new AdapterPost(getActivity(), postList);
-                    //set adapter recycler view
-                    postRecyclerView.setAdapter(adapterPost);
-                    adapterPost.notifyDataSetChanged();
-                    shimmerFrameLayoutPost.stopShimmer();
-                    shimmerFrameLayoutPost.setVisibility(View.GONE);
+
+                    if (postList.size() == 0) {
+                        noPostHomeLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        //set adapter recycler view
+                        noPostHomeLayout.setVisibility(View.GONE);
+                        postRecyclerView.setAdapter(adapterPost);
+                        adapterPost.notifyDataSetChanged();
+                        shimmerFrameLayoutPost.stopShimmer();
+                        shimmerFrameLayoutPost.setVisibility(View.GONE);
+                    }
+//                    //set adapter recycler view
+//                    postRecyclerView.setAdapter(adapterPost);
+//                    adapterPost.notifyDataSetChanged();
+//                    shimmerFrameLayoutPost.stopShimmer();
+//                    shimmerFrameLayoutPost.setVisibility(View.GONE);
                 }
             }
 
@@ -295,7 +368,6 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void checkUserStatus() {

@@ -335,7 +335,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             hashMap.put("cityFrom", "");
                             hashMap.put("countryFrom", "");
                             hashMap.put("birthDate", "");
-                            hashMap.put("bio", "");
+                            hashMap.put("bio", "--");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();

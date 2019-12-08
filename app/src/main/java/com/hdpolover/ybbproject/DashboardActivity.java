@@ -68,7 +68,6 @@ public class DashboardActivity extends AppCompatActivity {
         //action bar and its propertoes
         actionBar = getSupportActionBar();
         //actionBar.setIcon(R.drawable.ybb_white_cropped);
-        //actionBar.setTitle("YBB");
         actionBar.setDisplayShowHomeEnabled(true);
 
         //init firebase
@@ -89,26 +88,31 @@ public class DashboardActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         fragmentManager.beginTransaction().hide(active).show(fragment1).commit();
                         active = fragment1;
+                        actionBar.setTitle("YBB");
                         return true;
 
                     case R.id.nav_news:
                         fragmentManager.beginTransaction().hide(active).show(fragment2).commit();
                         active = fragment2;
+                        actionBar.setTitle("YBB News");
                         return true;
 
                     case R.id.nav_messages:
                         fragmentManager.beginTransaction().hide(active).show(fragment3).commit();
                         active = fragment3;
+                        actionBar.setTitle("YBB Messages");
                         return true;
 
                     case R.id.nav_schedules:
                         fragmentManager.beginTransaction().hide(active).show(fragment4).commit();
                         active = fragment4;
+                        actionBar.setTitle("YBB Schedules");
                         return true;
 
                     case R.id.nav_profile:
                         fragmentManager.beginTransaction().hide(active).show(fragment5).commit();
                         active = fragment5;
+                        actionBar.setTitle("YBB Profile");
                         return true;
                 }
                 return false;

@@ -214,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             ArrayList<String> location = new ArrayList<>();
             if (addresses != null && !addresses.isEmpty()) {
                 location.add(addresses.get(0).getCountryName());
-                location.add(addresses.get(0).getAdminArea());
+                location.add(addresses.get(0).getSubAdminArea());
                 return (location);
             }
             return null;
@@ -390,7 +390,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("cityFrom", "");
                             hashMap.put("countryFrom", "");
                             hashMap.put("birthDate", "");
-                            hashMap.put("bio", "");
+                            hashMap.put("bio", "--");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
