@@ -144,7 +144,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
             ArrayList<String> location = new ArrayList<>();
             if (addresses != null && !addresses.isEmpty()) {
                 location.add(addresses.get(0).getCountryName());
-                location.add(addresses.get(0).getAdminArea());
+                location.add(addresses.get(0).getSubAdminArea());
                 return (location);
             }
             return null;
