@@ -72,6 +72,14 @@ public class MessagesFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerView);
+//
+//        //Layout for recyclerview
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        linearLayoutManager.setReverseLayout(true);
+//        linearLayoutManager.setStackFromEnd(true);
+//
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
         chatList = new ArrayList<>();
 
@@ -100,6 +108,7 @@ public class MessagesFragment extends Fragment {
             }
         });
 
+        checkUserStatus();
 
         //handle fab click
         fab.setOnClickListener(new View.OnClickListener() {

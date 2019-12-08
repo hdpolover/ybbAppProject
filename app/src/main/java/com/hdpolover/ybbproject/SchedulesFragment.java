@@ -43,8 +43,8 @@ public class SchedulesFragment extends Fragment {
         fab_add_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "Create new event clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), AddEventActivity.class));
+                Toast.makeText(getContext(), "Add event coming soon...", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(getActivity(), AddEventActivity.class));
             }
         });
 
