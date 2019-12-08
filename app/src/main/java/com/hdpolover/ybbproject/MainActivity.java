@@ -215,53 +215,53 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Facebook Login coming soon...", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-//        //handle facebook login click
 //        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
-//                progressDialog.setMessage("Loading");
-//                progressDialog.show();
-//                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile","user_friends"));
-//                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-//                    @Override
-//                    public void onSuccess(final LoginResult loginResult) {
-//                        progressDialog.dismiss();
-//                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-//
-////                        GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-////                            @Override
-////                            public void onCompleted(JSONObject object, GraphResponse response) {
-////                                Log.d(TAG, "dapat masuk ke OnCompleted");
-////                                getData(loginResult.getAccessToken(), object);
-////                            }
-////                        });
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getApplicationContext(), "Facebook Cancelled", Toast.LENGTH_SHORT).show();
-//                        Log.d(TAG, "facebook:onCancel");
-//                        // ...
-//                    }
-//
-//                    @Override
-//                    public void onError(FacebookException error) {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getApplicationContext(), "Facebook Cancelled: " + error, Toast.LENGTH_SHORT).show();
-//                        Log.d(TAG, "facebook:onError", error);
-//                        // ...
-//                    }
-//                });
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), "Facebook Login coming soon...", Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+        //handle facebook login click
+        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressDialog.setMessage("Loading");
+                progressDialog.show();
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile","user_friends"));
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(final LoginResult loginResult) {
+                        progressDialog.dismiss();
+                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
+
+//                        GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object, GraphResponse response) {
+//                                Log.d(TAG, "dapat masuk ke OnCompleted");
+//                                getData(loginResult.getAccessToken(), object);
+//                            }
+//                        });
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Facebook Cancelled", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "facebook:onCancel");
+                        // ...
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Facebook Cancelled: " + error, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "facebook:onError", error);
+                        // ...
+                    }
+                });
+            }
+        });
 
         //PERMISSIONS
         checkAndRequestPermissions();
