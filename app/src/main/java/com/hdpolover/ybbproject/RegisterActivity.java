@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     Button mRegisterBtn;
     TextView mHaveAccountTv, countryTv, cityTv;
     ImageButton backBtn;
+    CountryCodePicker countryCP;
 
     //    progressbar to display while registering user
     ProgressDialog progressDialog;
@@ -107,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         backBtn = findViewById(R.id.backBtn);
         countryTv = findViewById(R.id.countryTv);
         cityTv = findViewById(R.id.cityTv);
+        countryCP = findViewById(R.id.countryCP);
 
         //In the onCreate() method, initialize the FirebaseAuth instance.
         // Initialize Firebase Auth
@@ -363,7 +366,21 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             String city = cityTv.getText().toString();
 
                             String fullName = mFullnameEt.getText().toString();
-                            String phone = mPhoneEt.getText().toString();
+
+                            String phone;
+                            String codeNumber = countryCP.getSelectedCountryCodeWithPlus();
+                            String phoneNumber = mPhoneEt.getText().toString().substring(0,1);
+                            int subPhone = phoneNumber.indexOf(phoneNumber);
+
+                            String phoneFull = mPhoneEt.getText().toString();
+                            String phoneLast = mPhoneEt.getText().toString().substring(1);
+
+                            if(subPhone == 0){
+                                phone = codeNumber + phoneLast;
+                            }else{
+                                phone = codeNumber + phoneFull;
+                            }
+
                             //capitalize the first letter
                             String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
                                     + mJobEt.getText().toString().substring(1);

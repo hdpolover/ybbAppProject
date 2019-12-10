@@ -41,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
     EditText mFullnameEt, mPhoneEt, mJobEt;
     Button mLoginBtn;
     TextView countryTv, cityTv, emailTv;
+    CountryCodePicker countryCP;
 
     //    progressbar to display while registering user
     ProgressDialog progressDialog;
@@ -85,6 +87,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
         countryTv = findViewById(R.id.countryTv);
         cityTv = findViewById(R.id.cityTv);
         emailTv = findViewById(R.id.emailTv);
+        countryCP = findViewById(R.id.countryCP);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -312,10 +315,23 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             String city = cityTv.getText().toString();
 
                             String fullName = mFullnameEt.getText().toString();
-                            String phone = mPhoneEt.getText().toString();
                             //capitalize the first letter
                             String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
                                     + mJobEt.getText().toString().substring(1);
+
+                            String phone;
+                            String codeNumber = countryCP.getSelectedCountryCodeWithPlus();
+                            String phoneNumber = mPhoneEt.getText().toString().substring(0,1);
+                            int subPhone = phoneNumber.indexOf(phoneNumber);
+
+                            String phoneFull = mPhoneEt.getText().toString();
+                            String phoneLast = mPhoneEt.getText().toString().substring(1);
+
+                            if(subPhone == 0){
+                                phone = codeNumber + phoneLast;
+                            }else{
+                                phone = codeNumber + phoneFull;
+                            }
 
                             //when user is registered store user info in firebase realtime database too
                             //using hashmap

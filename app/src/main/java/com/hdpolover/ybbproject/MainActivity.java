@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 progressDialog.setMessage("Loading");
                 progressDialog.show();
-                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile","user_friends"));
+                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
                 LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {

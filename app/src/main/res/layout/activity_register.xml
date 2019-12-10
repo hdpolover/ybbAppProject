@@ -108,19 +108,34 @@
                             android:textColor="@color/primaryTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputMobile"
-                        style="@style/parent"
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_marginTop="@dimen/loginViewsMargin">
 
-                        <EditText
-                            android:id="@+id/phoneEt"
-                            style="@style/modifiedEditText"
-                            android:hint="Phone Number"
-                            android:inputType="phone"
-                            android:maxLines="1"
-                            android:textColor="@color/primaryTextColor" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                            android:id="@+id/countryCP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:ccp_textSize="14sp"
+                            app:ccp_setCountryByTimeZone="true"
+                            android:layout_marginTop="18dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputMobile"
+                            style="@style/parent"
+                            android:layout_width="match_parent">
+
+                            <EditText
+                                android:id="@+id/phoneEt"
+                                style="@style/modifiedEditText"
+                                android:hint="Mobile Number"
+                                android:inputType="phone"
+                                android:maxLines="1"
+                                android:textColor="@color/primaryTextColor" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/textInputJob"
@@ -171,10 +186,10 @@
                         android:id="@+id/have_account"
                         style="@style/parent"
                         android:layout_marginTop="@dimen/loginViewsMargin"
+                        android:padding="10dp"
                         android:text="Already have an account? Login here"
                         android:textAlignment="center"
-                        android:textColor="@color/primaryColor"
-                        android:padding="10dp"/>
+                        android:textColor="@color/primaryColor" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
