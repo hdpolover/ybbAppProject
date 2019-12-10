@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        printKeyHash();
         //PERMISSIONS
         checkAndRequestPermissions();
 
