@@ -77,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
     //views from xml
     Toolbar toolbar;
     RecyclerView recyclerView;
-    ImageView profileIv;
+    ImageView profileIv, messageIv;
     TextView nameTv, userStatusTv;
     EditText messageEt;
     ImageButton sendBtn, backBtn, attachBtn;
@@ -136,6 +136,7 @@ public class ChatActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         attachBtn = findViewById(R.id.attachBtn);
         bottomNavigationView = findViewById(R.id.botton_navigation);
+        messageIv = findViewById(R.id.messageIv);
 
 //        //badge
 //        bottomNavigationView.getOrCreateBadge(R.id.nav_messages);
@@ -622,6 +623,9 @@ public class ChatActivity extends AppCompatActivity {
         String fileNameAndPath = "ChatImages/" + "chat_image_" + timeStamp;
 
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image_rui);
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         byte[] data = baos.toByteArray(); //convert image to bytes
