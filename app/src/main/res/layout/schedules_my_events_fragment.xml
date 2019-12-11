@@ -1,40 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/nestedScrollViewBlog"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".schedulesTab.MyEventsFragment"
+    tools:context=".newsTab.BlogFragment"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/noNotifLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/noNotifTv"
-            android:layout_width="wrap_content"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFrameLayoutEvent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            android:text="You have no events. Make one now."
             android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="@color/primaryColor"/>
+            android:orientation="vertical"
+            app:shimmer_duration="800">
 
-        <ImageView
-            android:id="@+id/noNotifIv"
-            android:layout_below="@+id/noNotifTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginBottom="100dp"
-            android:src="@drawable/ic_undraw_no_schedules"/>
+            <!-- Adding 10 rows of placeholders -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/placeholder_event" />
+
+                <include layout="@layout/placeholder_event" />
+
+                <include layout="@layout/placeholder_event" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerViewBlog">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>
