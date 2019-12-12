@@ -44,6 +44,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -115,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_CODE = 1240;
 
-    private static final int MY_PERMISSION_REQUEST_CODE = 1;
-
+    private static final int MY_REQUEST_CODE = 1007;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Initialize Facebook Login button
+//         Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
 //        mFacebookLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +266,10 @@ public class MainActivity extends AppCompatActivity {
         printKeyHash();
         //PERMISSIONS
         checkAndRequestPermissions();
+
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
 
     }
@@ -377,8 +381,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
