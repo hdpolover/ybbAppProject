@@ -10,8 +10,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
 import com.squareup.picasso.Picasso;
@@ -34,6 +41,11 @@ public class DashboardTab extends Fragment {
 
     TextView emailTv, phoneTv, bioTv;
 
+    Chip chipInterest;
+    ChipGroup chipInterestGroup;
+    TextInputEditText textInputEditText;
+    MaterialButton addInterestBtn;
+
     String myUid;
 
     public DashboardTab() {
@@ -42,12 +54,41 @@ public class DashboardTab extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard_tab, container, false);
 
+        addInterestBtn = view.findViewById(R.id.addInterestBtn);
+        chipInterestGroup = view.findViewById(R.id.chipInterestGroup);
+        textInputEditText = view.findViewById(R.id.interestTIET);
         bioTv = view.findViewById(R.id.bioTv);
+
+        //event
+        addInterestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(textInputEditText.getText().toString().equals("")){
+                    Toast.makeText(getContext(), "Empty interest", Toast.LENGTH_SHORT).show();
+                }else {
+                    String[] item = textInputEditText.getText().toString().split(" ");
+                    LayoutInflater inflater1 = LayoutInflater.from(getContext());
+                    for (String text : item) {
+                        Chip chip = (Chip) inflater1.inflate(R.layout.chip_item, null, false);
+                        chip.setText(text);
+                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //remove tags
+                                chipInterestGroup.removeView(view);
+                            }
+                        });
+
+                        chipInterestGroup.addView(chip);
+                    }
+                }
+            }
+        });
 
         checkUserStatus();
 
