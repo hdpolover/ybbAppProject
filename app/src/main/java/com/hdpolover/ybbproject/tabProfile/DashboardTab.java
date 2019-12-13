@@ -71,7 +71,8 @@ public class DashboardTab extends Fragment {
                 if(textInputEditText.getText().toString().equals("")){
                     Toast.makeText(getContext(), "Empty interest", Toast.LENGTH_SHORT).show();
                 }else {
-                    String[] item = textInputEditText.getText().toString().split(" ");
+                    String[] item = textInputEditText.getText().toString().split(", |\\,");
+
                     LayoutInflater inflater1 = LayoutInflater.from(getContext());
                     for (String text : item) {
                         Chip chip = (Chip) inflater1.inflate(R.layout.chip_item, null, false);
