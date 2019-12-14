@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfileActivity"
+    android:background="@color/cardview_light_background"
     android:orientation="vertical"
-    android:background="@color/cardview_light_background">
+    tools:context=".EditProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,19 +22,19 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentPadding="10dp"
                 android:elevation="2dp"
+                app:cardBackgroundColor="@color/cardview_light_background"
                 app:cardCornerRadius="3dp"
-                app:cardBackgroundColor="@color/cardview_light_background">
+                app:contentPadding="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Personal Information"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/primaryColor"/>
+                    android:text="Personal Information"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -42,16 +42,16 @@
                 android:id="@+id/personaledit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical"
                 android:paddingLeft="15dp"
-                android:layout_marginBottom="10dp"
                 android:paddingRight="15dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputName"
-                    android:layout_marginBottom="5dp"
+                    style="@style/parent"
                     android:layout_marginTop="8dp"
-                    style="@style/parent">
+                    android:layout_marginBottom="5dp">
 
                     <EditText
                         android:id="@+id/fullnameEt"
@@ -63,32 +63,32 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/dateInput"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dateInput"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
-                            <EditText
-                                android:id="@+id/birthDateEt"
-                                style="@style/modifiedEditText"
-                                android:hint="Date of Birth"
-                                android:maxLines="1"
-                                android:textColor="@color/primaryTextColor" />
+                        <EditText
+                            android:id="@+id/birthDateEt"
+                            style="@style/modifiedEditText"
+                            android:hint="Date of Birth"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:id="@+id/infoDateHintIv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_info"/>
+                        android:src="@drawable/ic_info" />
 
                 </LinearLayout>
 
@@ -111,9 +111,9 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/occupationInput"
-                    android:layout_marginBottom="10dp"
+                    style="@style/parent"
                     android:layout_marginTop="5dp"
-                    style="@style/parent">
+                    android:layout_marginBottom="10dp">
 
                     <EditText
                         android:id="@+id/occupationEt"
@@ -128,23 +128,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lives in"
-                        android:layout_marginRight="15dp"
                         android:layout_gravity="bottom"
+                        android:layout_marginRight="15dp"
                         android:layout_marginBottom="3dp"
-                        android:textStyle="bold"/>
+                        android:text="Lives in"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/cityLiveInput"
@@ -186,24 +186,24 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="3dp"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="From"
-                        android:layout_marginRight="30dp"
                         android:layout_gravity="bottom"
+                        android:layout_marginRight="30dp"
                         android:layout_marginBottom="3dp"
-                        android:textStyle="bold"/>
+                        android:text="From"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/cityFromInput"
@@ -247,19 +247,19 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentPadding="10dp"
                 android:elevation="2dp"
+                app:cardBackgroundColor="@color/cardview_light_background"
                 app:cardCornerRadius="3dp"
-                app:cardBackgroundColor="@color/cardview_light_background">
+                app:contentPadding="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Details"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/primaryColor"/>
+                    android:text="Details"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -267,15 +267,15 @@
                 android:id="@+id/educationEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp">
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bioInput"
+                    style="@style/parent"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    style="@style/parent">
+                    android:layout_marginBottom="5dp">
 
                     <EditText
                         android:id="@+id/bioEt"
@@ -285,62 +285,102 @@
                         android:textColor="@color/primaryTextColor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal">-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="horizontal">-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="Links"-->
-<!--                            android:layout_marginRight="30dp"-->
-<!--                            android:textStyle="bold"/>-->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipInterestGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
 
-<!--                        <ImageView-->
-<!--                            android:layout_width="25dp"-->
-<!--                            android:layout_height="25dp"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:src="@drawable/ic_facebook"/>-->
-<!--                        -->
-<!--                    </LinearLayout>-->
-<!--                    -->
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:id="@+id/fbInput"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_weight="1">-->
+                    </com.google.android.material.chip.ChipGroup>
 
-<!--                        <EditText-->
-<!--                            android:id="@+id/fbEt"-->
-<!--                            style="@style/modifiedEditText"-->
-<!--                            android:hint="Facebook"-->
-<!--                            android:inputType="text"-->
-<!--                            android:maxLines="1"-->
-<!--                            android:textColor="@color/primaryTextColor" />-->
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
-<!--                    -->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/interestTIET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Enter your Interest"
+                        android:textSize="12sp"/>
 
-<!--                </LinearLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Use (,) to separator"
+                        android:textColor="#7C7C7C" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/addInterestBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Add Interest" />
+
+                </LinearLayout>
+
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="horizontal">-->
+
+                <!--                    <LinearLayout-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:orientation="horizontal">-->
+
+                <!--                        <TextView-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_weight="1"-->
+                <!--                            android:text="Links"-->
+                <!--                            android:layout_marginRight="30dp"-->
+                <!--                            android:textStyle="bold"/>-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="25dp"-->
+                <!--                            android:layout_height="25dp"-->
+                <!--                            android:layout_weight="1"-->
+                <!--                            android:src="@drawable/ic_facebook"/>-->
+                <!--                        -->
+                <!--                    </LinearLayout>-->
+                <!--                    -->
+                <!--                    <com.google.android.material.textfield.TextInputLayout-->
+                <!--                        android:id="@+id/fbInput"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_weight="1">-->
+
+                <!--                        <EditText-->
+                <!--                            android:id="@+id/fbEt"-->
+                <!--                            style="@style/modifiedEditText"-->
+                <!--                            android:hint="Facebook"-->
+                <!--                            android:inputType="text"-->
+                <!--                            android:maxLines="1"-->
+                <!--                            android:textColor="@color/primaryTextColor" />-->
+                <!--                    </com.google.android.material.textfield.TextInputLayout>-->
+                <!--                    -->
+
+                <!--                </LinearLayout>-->
 
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveProfilebtn"
-                android:layout_gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_height="60dp"
-                android:text="SAVE"/>
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="SAVE" />
 
         </LinearLayout>
 

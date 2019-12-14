@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
@@ -78,6 +80,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
         //init progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Logging in...");
+
+        SharedPreferences sp = getSharedPreferences("StatusLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("isNew", "false");
+        editor.apply();
 
         //login button click
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -453,6 +462,10 @@ public class MainActivity extends AppCompatActivity {
                                 String email = myEmail;
                                 String uid = user.getUid();
 
+                                //convert timestamp to dd/mm/yyyy hh:mm am/pm
+                                Date currentTime = Calendar.getInstance().getTime();
+                                String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+
                                 //substring for get name
                                 String subName = "@";
                                 String name = email.substring(0, email.indexOf(subName));
@@ -463,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("email", email);
                                 hashMap.put("uid", uid);
                                 hashMap.put("name", name); //will add later
-                                hashMap.put("onlineStatus", "online"); //will add later
+                                hashMap.put("onlineStatus", time); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
                                 hashMap.put("phone", ""); //will add later
                                 hashMap.put("image", profileURL);

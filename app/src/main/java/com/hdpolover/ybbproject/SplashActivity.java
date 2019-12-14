@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,19 +44,28 @@ public class SplashActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    if (isAlreadyLoggedin()) {
+                    try {
+                        SharedPreferences sp = getSharedPreferences("StatusLogin",MODE_PRIVATE);
+                        sp.getString("isNew","false");
+                        isUser = true;
+
+                    }catch (Exception e){
+                        isUser = false;
+                        Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (isUser) {
                         //jump to dashboard activity after splash screen
                         //Log.e("is", isUser+"");
                         Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
                         startActivity(intent);
                         finish();
-//                    } else {
-//                        //user not signed in
-//                        Log.e("is", isUser+"");
-//                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                        finish();
-//                    }
-
+                    } else {
+                        //user not signed in
+                        Log.e("is", isUser+"");
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
                 }
             }, loadingTime);
         } else {

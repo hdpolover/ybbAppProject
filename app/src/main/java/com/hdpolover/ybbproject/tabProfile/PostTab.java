@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.tabProfile;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
@@ -49,6 +53,9 @@ public class PostTab extends Fragment {
     AdapterPost adapterPost;
     String uid;
 
+    TextView noDataTv;
+    ImageView noDataIv;
+
     public PostTab() {
         // Required empty public constructor
     }
@@ -66,17 +73,21 @@ public class PostTab extends Fragment {
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
+        noDataIv = view.findViewById(R.id.noDataIv);
+        noDataTv = view.findViewById(R.id.noDataTv);
+
+        checkUserStatus();
 
         postList = new ArrayList<>();
 
-        //loadMyPosts();
+        loadMyPosts();
 
         return view;
 
     }
 
     private void loadMyPosts() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //show newest post first
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
@@ -99,17 +110,33 @@ public class PostTab extends Fragment {
                     postList.add(myPosts);
 
                     //adapter
-                    adapterPost = new AdapterPost(getActivity(), postList);
+                    adapterPost = new AdapterPost(getContext(), postList);
                     //set this adapter to recyclerview
                     postsRecyclerView.setAdapter(adapterPost);
+                }
+
+                if (postList.size() > 0) {
+                    noDataIv.setVisibility(View.GONE);
+                    noDataTv.setVisibility(View.GONE);
+                } else {
+                    noDataIv.setVisibility(View.VISIBLE);
+                    noDataTv.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private  void checkUserStatus() {
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //user is signed in stay here
+            uid = user.getUid();
+        }
+    }
 }
