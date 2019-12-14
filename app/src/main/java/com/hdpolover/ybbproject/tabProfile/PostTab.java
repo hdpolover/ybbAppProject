@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +53,9 @@ public class PostTab extends Fragment {
     AdapterPost adapterPost;
     String uid;
 
+    TextView noDataTv;
+    ImageView noDataIv;
+
     public PostTab() {
         // Required empty public constructor
     }
@@ -68,10 +73,12 @@ public class PostTab extends Fragment {
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
-
-        postList = new ArrayList<>();
+        noDataIv = view.findViewById(R.id.noDataIv);
+        noDataTv = view.findViewById(R.id.noDataTv);
 
         checkUserStatus();
+
+        postList = new ArrayList<>();
 
         loadMyPosts();
 
@@ -80,7 +87,7 @@ public class PostTab extends Fragment {
     }
 
     private void loadMyPosts() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //show newest post first
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
@@ -103,15 +110,23 @@ public class PostTab extends Fragment {
                     postList.add(myPosts);
 
                     //adapter
-                    adapterPost = new AdapterPost(getActivity(), postList);
+                    adapterPost = new AdapterPost(getContext(), postList);
                     //set this adapter to recyclerview
                     postsRecyclerView.setAdapter(adapterPost);
+                }
+
+                if (postList.size() > 0) {
+                    noDataIv.setVisibility(View.GONE);
+                    noDataTv.setVisibility(View.GONE);
+                } else {
+                    noDataIv.setVisibility(View.VISIBLE);
+                    noDataTv.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

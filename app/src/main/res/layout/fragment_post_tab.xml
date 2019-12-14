@@ -9,6 +9,7 @@
     tools:context=".tabProfile.PostTab">
 
     <TextView
+        android:id="@+id/noDataTv"
         android:layout_gravity="center"
         android:layout_marginBottom="70dp"
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
         android:textColor="@color/primaryColor"/>
 
     <ImageView
+        android:id="@+id/noDataIv"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="20dp"
