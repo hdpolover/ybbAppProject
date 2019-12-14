@@ -26,4 +26,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_undraw_no_data"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </FrameLayout>

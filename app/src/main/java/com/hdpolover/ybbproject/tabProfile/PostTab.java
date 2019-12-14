@@ -122,6 +122,6 @@ public class PostTab extends Fragment {
         if (user != null) {
             //user is signed in stay here
             uid = user.getUid();
-        } 
+        }
     }
 }
