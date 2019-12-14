@@ -1,5 +1,6 @@
 package com.hdpolover.ybbproject.adapters;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ public class AdapterProfile extends FragmentPagerAdapter {
 
     public AdapterProfile(@NonNull FragmentManager fm) {
         super(fm);
+
+        setPostCount();
     }
 
     @Override
@@ -56,7 +59,7 @@ public class AdapterProfile extends FragmentPagerAdapter {
         }
     }
 
-    public int getPostCount() {
+    public int setPostCount() {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
@@ -94,7 +97,7 @@ public class AdapterProfile extends FragmentPagerAdapter {
             case 0:
                 return "Dashboard";
             case 1:
-                return getPostCount() + " Posts";
+                return setPostCount() +" Posts ";
             case 2:
                 return "0 Comments";
             case 3:
