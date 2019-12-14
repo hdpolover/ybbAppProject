@@ -41,11 +41,6 @@ public class DashboardTab extends Fragment {
 
     TextView emailTv, phoneTv, bioTv;
 
-    Chip chipInterest;
-    ChipGroup chipInterestGroup;
-    TextInputEditText textInputEditText;
-    MaterialButton addInterestBtn;
-
     String myUid;
 
     public DashboardTab() {
@@ -59,37 +54,7 @@ public class DashboardTab extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard_tab, container, false);
 
-        addInterestBtn = view.findViewById(R.id.addInterestBtn);
-        chipInterestGroup = view.findViewById(R.id.chipInterestGroup);
-        textInputEditText = view.findViewById(R.id.interestTIET);
         bioTv = view.findViewById(R.id.bioTv);
-
-        //event
-        addInterestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(textInputEditText.getText().toString().equals("")){
-                    Toast.makeText(getContext(), "Empty interest", Toast.LENGTH_SHORT).show();
-                }else {
-                    String[] item = textInputEditText.getText().toString().split(", |\\,");
-
-                    LayoutInflater inflater1 = LayoutInflater.from(getContext());
-                    for (String text : item) {
-                        Chip chip = (Chip) inflater1.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //remove tags
-                                chipInterestGroup.removeView(view);
-                            }
-                        });
-
-                        chipInterestGroup.addView(chip);
-                    }
-                }
-            }
-        });
 
         checkUserStatus();
 

@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.tabProfile;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
@@ -69,7 +71,9 @@ public class PostTab extends Fragment {
 
         postList = new ArrayList<>();
 
-        //loadMyPosts();
+        checkUserStatus();
+
+        loadMyPosts();
 
         return view;
 
@@ -112,4 +116,12 @@ public class PostTab extends Fragment {
         });
     }
 
+    private  void checkUserStatus() {
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //user is signed in stay here
+            uid = user.getUid();
+        } 
+    }
 }

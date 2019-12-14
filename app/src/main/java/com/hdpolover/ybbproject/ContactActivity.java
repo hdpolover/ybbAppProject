@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +37,9 @@ public class ContactActivity extends AppCompatActivity {
     AdapterUsers adapterUsers;
     List<ModelUser> userList;
     ImageButton backBtn;
+    TextView countContactTv;
+
+    String uid;
 
     //firebase auth
     FirebaseAuth firebaseAuth;
@@ -49,6 +53,7 @@ public class ContactActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         backBtn = findViewById(R.id.backBtn);
+        countContactTv = findViewById(R.id.countContactTv);
 
         //init recyclerview
         recyclerView = findViewById(R.id.user_recyclerView);
@@ -59,9 +64,12 @@ public class ContactActivity extends AppCompatActivity {
         //init user list
         userList = new ArrayList<>();
 
+        checkUserStatus();
+        
         //getAll users
         getAllUsers();
 
+        setUserFollows(countContactTv);
 
         //click button to back
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +79,27 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void setUserFollows(final TextView countContactTv) {
+        DatabaseReference followersRef = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(uid).child("Followings");
+        followersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    countContactTv.setText("0 Contact");
+                } else {
+                    countContactTv.setText(dataSnapshot.getChildrenCount() + " Contacts");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getAllUsers() {
@@ -189,5 +218,14 @@ public class ContactActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    private void checkUserStatus() {
+        //get current user
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+        }
     }
 }

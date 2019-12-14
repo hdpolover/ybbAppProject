@@ -102,43 +102,6 @@
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:orientation="vertical">
-
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chipInterestGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                        </com.google.android.material.chip.ChipGroup>
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/interestTIET"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Enter your Interest" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#7C7C7C"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="Use (,) to separator"/>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/addInterestBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Add Interest" />
-
-
-                    </LinearLayout>
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

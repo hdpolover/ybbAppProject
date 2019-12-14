@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +50,10 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText fullnameEt, birthDateEt, phoneNumberEt, occupationEt,
     cityLiveEt, countryLiveEt, cityFromEt, countryFromEt;
     ImageView infoDateHintIv;
+
+    ChipGroup chipInterestGroup;
+    TextInputEditText textInputEditText;
+    MaterialButton addInterestBtn;
 
     //details
     EditText bioEt;
@@ -83,6 +90,10 @@ public class EditProfileActivity extends AppCompatActivity {
         cityFromEt = findViewById(R.id.cityFromEt);
         countryFromEt = findViewById(R.id.countryFromEt);
         infoDateHintIv = findViewById(R.id.infoDateHintIv);
+        addInterestBtn = findViewById(R.id.addInterestBtn);
+        chipInterestGroup = findViewById(R.id.chipInterestGroup);
+        textInputEditText = findViewById(R.id.interestTIET);
+
 
         //init details info
         bioEt = findViewById(R.id.bioEt);
@@ -111,6 +122,35 @@ public class EditProfileActivity extends AppCompatActivity {
                updateUserProfileInfo();
             }
         });
+
+        //event
+        addInterestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(textInputEditText.getText().toString().equals("")){
+                    Toast.makeText(EditProfileActivity.this, "Empty interest", Toast.LENGTH_SHORT).show();
+                }else {
+                    String[] item = textInputEditText.getText().toString().split(", |\\,");
+
+                    LayoutInflater inflater1 = LayoutInflater.from(EditProfileActivity.this);
+                    for (String text : item) {
+                        Chip chip = (Chip) inflater1.inflate(R.layout.chip_item, null, false);
+                        chip.setText(text);
+                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //remove tags
+                                chipInterestGroup.removeView(view);
+                            }
+                        });
+
+                        chipInterestGroup.addView(chip);
+                    }
+                }
+            }
+        });
+
+
     }
 
     private void handleDateButton() {

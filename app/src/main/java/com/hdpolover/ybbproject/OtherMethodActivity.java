@@ -18,6 +18,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,8 @@ import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -333,6 +336,10 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                                 phone = codeNumber + phoneFull;
                             }
 
+                            //convert timestamp to dd/mm/yyyy hh:mm am/pm
+                            Date currentTime = Calendar.getInstance().getTime();
+                            String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+
                             //when user is registered store user info in firebase realtime database too
                             //using hashmap
                             HashMap<Object, String> hashMap = new HashMap<>();
@@ -340,7 +347,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             hashMap.put("email", email);
                             hashMap.put("uid", uid);
                             hashMap.put("name", fullName); //will add later
-                            hashMap.put("onlineStatus", "online"); //will add later
+                            hashMap.put("onlineStatus", time);
                             hashMap.put("typingTo", "noOne"); //will add later
                             hashMap.put("phone", phone); //will add later
                             hashMap.put("image", ""); //will add later
@@ -450,5 +457,9 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
 
 //        startActivity(new Intent(OtherMethodActivity.this, DashboardActivity.class));
 //        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -56,6 +57,8 @@ import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -381,6 +384,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                                 phone = codeNumber + phoneFull;
                             }
 
+                            //convert timestamp to dd/mm/yyyy hh:mm am/pm
+                            Date currentTime = Calendar.getInstance().getTime();
+                            String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+
                             //capitalize the first letter
                             String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
                                     + mJobEt.getText().toString().substring(1);
@@ -396,7 +403,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("email", email);
                             hashMap.put("uid", uid);
                             hashMap.put("name", fullName); //will add later
-                            hashMap.put("onlineStatus", "online"); //will add later
+                            hashMap.put("onlineStatus", time); //will add later
                             hashMap.put("typingTo", "noOne"); //will add later
                             hashMap.put("phone", phone); //will add later
                             hashMap.put("image", ""); //will add later
