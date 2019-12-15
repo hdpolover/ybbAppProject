@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/thumbnail"
+                android:id="@+id/thumbnailEvent"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_weight="1.5"
