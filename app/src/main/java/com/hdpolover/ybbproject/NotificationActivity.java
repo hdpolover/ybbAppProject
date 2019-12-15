@@ -98,10 +98,7 @@ public class NotificationActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapterNotifications);
                     Collections.reverse(modelNotifications);
                     adapterNotifications.notifyDataSetChanged();
-                    Log.e("s", "exe");
                 }
-
-                Log.e("size", modelNotifications.size() + "");
             }
 
             @Override

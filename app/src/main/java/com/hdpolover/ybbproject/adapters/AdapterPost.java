@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,6 +56,8 @@ import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -68,9 +71,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     Context context;
     List<ModelPost> postList;
 
-    String myUid, myName;
+    String myUid, myName, publisherId;
 
     APIService apiService;
+
+    PrettyTime prettyTime;
 
     boolean notify = false;
 
@@ -97,6 +102,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         myName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
+        prettyTime = new PrettyTime();
+
         //get data
         final String hisUid = postList.get(position).getUid();
         final String pId = postList.get(position).getpId();
@@ -108,6 +115,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTimeInMillis(Long.parseLong(pTime));
         String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
+
+        //Log.e("e", prettyTime.approximateDuration(calendar.getTime()).toString());
 
         String month = "";
         String date = convertedTime.substring(0, 2);
@@ -189,6 +198,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).setValue(true);
+                    publisherId = hisUid;
                     addNotification(hisUid, pId);
                     sendNotification(hisUid,  myName,"upvoted your post");
                 } else {
@@ -298,6 +308,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", myUid);
+        hashMap.put("publisherid", publisherId);
         hashMap.put("text", " upvoted your post");
         hashMap.put("postid", postid);
         hashMap.put("timestamp", timeStamp);

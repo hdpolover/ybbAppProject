@@ -2,6 +2,7 @@ package com.hdpolover.ybbproject.models;
 
 public class ModelNotification {
     private String userid;
+    private String publisherid;
     private String text;
     private String postid;
     private String timestamp;
@@ -10,11 +11,20 @@ public class ModelNotification {
 
     }
 
-    public ModelNotification(String userid, String text, String postid, String timestamp) {
+    public ModelNotification(String userid, String publisherid, String text, String postid, String timestamp) {
         this.userid = userid;
+        this.publisherid = publisherid;
         this.text = text;
         this.postid = postid;
         this.timestamp = timestamp;
+    }
+
+    public String getPublisherid() {
+        return publisherid;
+    }
+
+    public void setPublisherid(String publisherid) {
+        this.publisherid = publisherid;
     }
 
     public String getUserid() {

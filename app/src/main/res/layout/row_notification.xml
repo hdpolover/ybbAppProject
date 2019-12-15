@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="3dp"
@@ -33,7 +33,8 @@
                 android:text="This user upvoted your post"
                 android:gravity="center"
                 android:textColor="@color/colorBlack"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -41,7 +42,7 @@
                 android:id="@+id/notifTimeTv"
                 android:text="3 hours ago"
                 android:layout_gravity="bottom"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorGray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
