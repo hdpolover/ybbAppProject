@@ -47,18 +47,32 @@ import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelPost;
 import com.hdpolover.ybbproject.models.ModelUser;
+import com.hdpolover.ybbproject.notifications.APIService;
+import com.hdpolover.ybbproject.notifications.Client;
+import com.hdpolover.ybbproject.notifications.Data;
+import com.hdpolover.ybbproject.notifications.Response;
+import com.hdpolover.ybbproject.notifications.Sender;
+import com.hdpolover.ybbproject.notifications.Token;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     Context context;
     List<ModelPost> postList;
 
-    String myUid;
+    String myUid, myName;
+
+    APIService apiService;
+
+    boolean notify = false;
 
     public  AdapterPost(Context context, List<ModelPost> postList) {
         this.context = context;
@@ -71,6 +85,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         //inflate layout row_post.xml
         View view = LayoutInflater.from(context).inflate(R.layout.row_posts, viewGroup, false);
 
+        //create api service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
+
         return new MyHolder(view);
     }
 
@@ -78,6 +95,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     public void onBindViewHolder(@NonNull final MyHolder myHolder, final int position) {
         //get current user id
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        myName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
         //get data
         final String hisUid = postList.get(position).getUid();
@@ -171,7 +189,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).setValue(true);
-                    //addNotification(post.getPublisher(), post.getPostid());
+                    addNotification(hisUid, pId);
+                    sendNotification(hisUid,  myName,"upvoted your post");
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).removeValue();
@@ -236,6 +255,54 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 context.startActivity(intent);
             }
         });
+    }
+
+    //for notification
+    private void sendNotification(final String hisUid, final String name, final String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(myUid, name + " " + message, "YBB", hisUid, R.drawable.ic_calendar);
+
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addNotification(String userid, String postid){
+        final String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", myUid);
+        hashMap.put("text", " upvoted your post");
+        hashMap.put("postid", postid);
+        hashMap.put("timestamp", timeStamp);
+
+        reference.push().setValue(hashMap);
     }
 
     private void getUserData(final ImageView userImage, final TextView username, String uid) {
