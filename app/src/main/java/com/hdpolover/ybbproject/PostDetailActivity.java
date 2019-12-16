@@ -46,6 +46,12 @@ import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.adapters.AdapterComment;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.hdpolover.ybbproject.models.ModelUser;
+import com.hdpolover.ybbproject.notifications.APIService;
+import com.hdpolover.ybbproject.notifications.Client;
+import com.hdpolover.ybbproject.notifications.Data;
+import com.hdpolover.ybbproject.notifications.Response;
+import com.hdpolover.ybbproject.notifications.Sender;
+import com.hdpolover.ybbproject.notifications.Token;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -56,11 +62,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+
 public class PostDetailActivity extends AppCompatActivity {
 
     //to get detail of user and post
-    String hisUid, myUid, myEmail, myDp,
-    postId, hisDp, hisName, pImage;
+    String hisUid, myUid, myName, myEmail, myDp,
+    postId, pImage;
 
     //progress bar
     ProgressDialog pd;
@@ -90,10 +99,18 @@ public class PostDetailActivity extends AppCompatActivity {
 
     int upvotersCount;
 
+    APIService apiService;
+
+    String publisherId;
+    ModelUser modelUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
+
+        //create api service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
         //action bar and its propertoes
         ActionBar actionBar = getSupportActionBar();
@@ -105,6 +122,7 @@ public class PostDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         postId = intent.getStringExtra("postId");
         hisUid = intent.getStringExtra("uid");
+        publisherId = hisUid;
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -143,12 +161,17 @@ public class PostDetailActivity extends AppCompatActivity {
         //setUpvotes();
         isUpvoted(postId, upvoteIv);
         setCountText(upvoteTv, commentTv, postId);
+
+        setCurrentUserName(myUid);
         
         //send comment on button click
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postComment();
+                addNotification(hisUid, postId);
+                myName = modelUser.getName();
+                sendNotification(hisUid,  myName," commented on your post");
             }
         });
 
@@ -456,6 +479,70 @@ public class PostDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setCurrentUserName(String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelUser = dataSnapshot.getValue(ModelUser.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //for notification
+    private void sendNotification(final String hisUid, final String name, final String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data(myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addNotification(String userid, String postid){
+        final String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", myUid);
+        hashMap.put("publisherid", publisherId);
+        hashMap.put("text", " commented on your post");
+        hashMap.put("postid", postid);
+        hashMap.put("timestamp", timeStamp);
+
+        reference.push().setValue(hashMap);
     }
 
     private void postComment() {

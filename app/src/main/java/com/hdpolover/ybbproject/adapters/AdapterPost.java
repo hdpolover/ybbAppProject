@@ -77,6 +77,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     PrettyTime prettyTime;
 
+    ModelUser modelUser;
+
     boolean notify = false;
 
     public  AdapterPost(Context context, List<ModelPost> postList) {
@@ -100,7 +102,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     public void onBindViewHolder(@NonNull final MyHolder myHolder, final int position) {
         //get current user id
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        myName = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        setCurrentUserName(myUid);
 
         prettyTime = new PrettyTime();
 
@@ -198,9 +201,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 if (myHolder.upvoteIv.getTag().equals("upvote")) {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).setValue(true);
+
                     publisherId = hisUid;
                     addNotification(hisUid, pId);
-                    sendNotification(hisUid,  myName,"upvoted your post");
+                    myName = modelUser.getName();
+                    sendNotification(hisUid,  myName," upvoted your post");
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).removeValue();
@@ -276,7 +281,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + " " + message, "YBB", hisUid, R.drawable.ic_calendar);
+                    Data data = new Data(myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
 
 
                     Sender sender = new Sender(data, token.getToken());
@@ -314,6 +319,21 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         hashMap.put("timestamp", timeStamp);
 
         reference.push().setValue(hashMap);
+    }
+
+    private void setCurrentUserName(String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelUser = dataSnapshot.getValue(ModelUser.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getUserData(final ImageView userImage, final TextView username, String uid) {

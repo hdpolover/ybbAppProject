@@ -27,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.AddPostActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
@@ -209,6 +210,26 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
         });
         popupMenu.show();
     }
+
+//    private void deleteNotif(final String postid, String userid){
+//        Query fQuery = FirebaseDatabase.getInstance().getReference("Notifications").child(userid)
+//                .orderByChild("timestamp").equalTo(postid);
+//        fQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+//                    ds.getRef().removeValue();
+//                }
+//                //deleted
+//                Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     private void deleteNotif(final String postid, String userid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
