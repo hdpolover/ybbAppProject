@@ -2,13 +2,11 @@
 <androidx.cardview.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/holo_orange_dark"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:contentPadding="3dp">
+    app:contentPadding="2dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/cardview_light_background">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,19 +17,23 @@
             android:id="@+id/avatarIv"
             android:src="@drawable/ic_undraw_profile_pic"
             android:layout_width="70dp"
+            android:layout_margin="5dp"
             android:layout_height="70dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
 
             <TextView
                 android:id="@+id/nameTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Person Name"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@android:color/black"/>
 
             <TextView
@@ -39,20 +41,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Person Email"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"/>
+                android:layout_marginBottom="5dp"/>
 
             <TextView
                 android:id="@+id/phoneTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Person Phone"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"/>
+                android:layout_marginBottom="5dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>

@@ -3,17 +3,20 @@ package com.hdpolover.ybbproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterPostUpvoter;
 import com.hdpolover.ybbproject.adapters.AdapterUsers;
 import com.hdpolover.ybbproject.models.ModelUser;
 
@@ -44,6 +48,11 @@ public class ContactActivity extends AppCompatActivity {
     //firebase auth
     FirebaseAuth firebaseAuth;
 
+    List<String> idList;
+
+    LinearLayout noFollows;
+    NestedScrollView nestedScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +63,8 @@ public class ContactActivity extends AppCompatActivity {
 
         backBtn = findViewById(R.id.backBtn);
         countContactTv = findViewById(R.id.countContactTv);
+        noFollows = findViewById(R.id.noFollows);
+        nestedScrollView = findViewById(R.id.nestedScrollViewContact);
 
         //init recyclerview
         recyclerView = findViewById(R.id.user_recyclerView);
@@ -63,13 +74,18 @@ public class ContactActivity extends AppCompatActivity {
 
         //init user list
         userList = new ArrayList<>();
+        adapterUsers = new AdapterUsers(getApplicationContext(), userList);
+        recyclerView.setAdapter(adapterUsers);
+        nestedScrollView.setSmoothScrollingEnabled(false);
+
+        idList = new ArrayList<>();
 
         checkUserStatus();
 
-        //getAll users
-        getAllUsers();
-
         setUserFollows(countContactTv);
+
+        //getAll users
+        getUserIds();
 
         //click button to back
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,43 +118,97 @@ public class ContactActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllUsers() {
-        //get current user
-        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-        //get path of database name "Users" containing users info
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Follows")
-                .child(uid).child("Followings");
-
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data from path
-        query.addValueEventListener(new ValueEventListener() {
+    private void getUserIds() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(uid).child("Followings");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelUser modelUser = ds.getValue(ModelUser.class);
-
-                    //get all users except currently signed in user
-                    if (modelUser.getUid() != null) {
-                        if (!modelUser.getUid().equals(fUser.getUid())) {
-                            userList.add(modelUser);
-                        }
-                    }
-
-                    //adapter
-                    adapterUsers = new AdapterUsers(getApplicationContext(), userList);
-                    //set adapter to recycler view
-                    recyclerView.setAdapter(adapterUsers);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                idList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    idList.add(snapshot.getKey());
+                }
+                if (idList.size() != 0) {
+                    showUsers();
+                    noFollows.setVisibility(View.GONE);
+                } else {
+                    noFollows.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
     }
+
+    private void showUsers() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    ModelUser modelUser = ds.getValue(ModelUser.class);
+                    for (String id : idList){
+                        try {
+                            if (modelUser.getUid() != null) {
+                                if (modelUser.getUid().equals(id)) {
+                                    userList.add(modelUser);
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.d("gagal", modelUser.getUid() + " != " + id);
+                        }
+                    }
+                }
+                adapterUsers.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+//    private void showUsers() {
+//        //get current user
+//        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+//        //get path of database name "Users" containing users info
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Follows")
+//                .child(uid).child("Followings");
+//
+//        Query query = ref.orderByChild("uid").equalTo(uid);
+//        //get all data from path
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                userList.clear();
+//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    ModelUser modelUser = ds.getValue(ModelUser.class);
+//
+//                    //get all users except currently signed in user
+//                    if (modelUser.getUid() != null) {
+//                        if (!modelUser.getUid().equals(fUser.getUid())) {
+//                            userList.add(modelUser);
+//                        }
+//                    }
+//
+//                    //adapter
+//                    adapterUsers = new AdapterUsers(getApplicationContext(), userList);
+//                    //set adapter to recycler view
+//                    recyclerView.setAdapter(adapterUsers);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//    }
 
     private void searchUsers(final String query) {
         //get current user
@@ -200,7 +270,7 @@ public class ContactActivity extends AppCompatActivity {
                     searchUsers(s);
                 } else {
                     //search text empty, get all users
-                    getAllUsers();
+                    getUserIds();
                 }
                 return false;
             }
@@ -214,7 +284,7 @@ public class ContactActivity extends AppCompatActivity {
                     searchUsers(s);
                 } else {
                     //search text empty, get all users
-                    getAllUsers();
+                    getUserIds();
                 }
                 return false;
             }
