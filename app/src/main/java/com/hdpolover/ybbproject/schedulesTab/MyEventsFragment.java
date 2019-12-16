@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,8 @@ public class MyEventsFragment extends Fragment {
     List<ModelEvent> eventList;
     AdapterEvent adapterEvent;
 
+    String myUid;
+
     public MyEventsFragment() {
 
     }
@@ -42,6 +45,8 @@ public class MyEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.schedules_my_events_fragment, container, false);
+
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
 
@@ -55,7 +60,6 @@ public class MyEventsFragment extends Fragment {
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
 
-
         //init event list
         eventList = new ArrayList<>();
 
@@ -67,7 +71,7 @@ public class MyEventsFragment extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

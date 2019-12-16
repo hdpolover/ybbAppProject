@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.hdpolover.ybbproject.EventDetailActivity;
+import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelEvent;
 import com.squareup.picasso.Picasso;
@@ -46,7 +50,8 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
     public void onBindViewHolder(@NonNull MyHolderEvent holder, int position) {
 
         // get data
-        String uid = eventList.get(position).getUid();
+        final String uid = eventList.get(position).getUid();
+        final String eId = eventList.get(position).getEld();
         String eImage = eventList.get(position).geteImage();
         String eTitle = eventList.get(position).geteTitle();
         String eDate = eventList.get(position).geteDateFrom();
@@ -84,6 +89,10 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(context, EventDetailActivity.class);
+//                intent.putExtra("eId", eId);
+//                intent.putExtra("uid", uid);
+//                context.startActivity(intent);
             }
         });
 

@@ -48,7 +48,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="horizontal">
@@ -56,7 +56,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="3dp"
+                            android:layout_marginRight="8dp"
                             android:src="@drawable/ic_calendar" />
 
                         <TextView
@@ -71,7 +71,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_weight="1">
@@ -79,7 +79,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="8dp"
                         android:src="@drawable/ic_person_grey"/>
 
                     <TextView
@@ -88,7 +88,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:layout_marginLeft="5dp"
                         android:layout_marginBottom="5dp"
                         android:text="Speaker"
                         android:autoLink="all"/>
@@ -99,41 +98,40 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="3dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="3dp"
+                        android:layout_marginRight="8dp"
                         android:src="@drawable/ic_time"/>
 
                     <TextView
-                        android:id="@+id/myeventLocation"
+                        android:id="@+id/myeventTime"
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:layout_marginLeft="5dp"
                         android:layout_marginBottom="5dp"
                         android:text="12.30 PM"
                         android:autoLink="all"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="8dp"
                         android:src="@drawable/ic_folder"/>
 
                     <TextView
@@ -142,7 +140,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:layout_marginLeft="5dp"
                         android:layout_marginBottom="5dp"
                         android:text="Category"
                         android:autoLink="all
@@ -153,41 +150,39 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="3dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="3dp"
+                            android:layout_marginRight="8dp"
                             android:src="@drawable/ic_location"/>
 
                         <TextView
-                            android:id="@+id/myeventTime"
+                            android:id="@+id/myeventLocation"
                             android:layout_marginTop="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="5dp"
                             android:text="Malang"
                             android:autoLink="all"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="8dp"
                             android:src="@drawable/ic_link"/>
 
                         <TextView
@@ -196,83 +191,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="5dp"
                             android:text="Approved"
                             android:autoLink="all"/>
+
                     </LinearLayout>
+
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/placeholder_bg"
-                    android:layout_marginBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/myeventExcerpt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="-25dp"
-                    android:text="More"
-                    android:autoLink="all"/>
-
             </LinearLayout>
-
-            <!--            <View-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="1dp"-->
-            <!--                android:background="@color/placeholder_bg"/>-->
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="2dp"-->
-            <!--                android:layout_marginBottom="2dp"-->
-            <!--                android:padding="5dp"-->
-            <!--                android:orientation="horizontal">-->
-
-            <!--                <LinearLayout-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginLeft="3dp"-->
-            <!--                    android:layout_weight="1">-->
-
-            <!--                    <ImageView-->
-            <!--                        android:layout_width="wrap_content"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:src="@drawable/ic_calendar"-->
-            <!--                        android:layout_marginRight="3dp"/>-->
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/newsDateTv"-->
-            <!--                        android:layout_width="wrap_content"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_gravity="center"-->
-            <!--                        android:text="20 Des 2019"/>-->
-
-            <!--                </LinearLayout>-->
-
-            <!--                <LinearLayout-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1">-->
-
-            <!--                    <ImageView-->
-            <!--                        android:layout_width="wrap_content"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:src="@drawable/ic_folder"-->
-            <!--                        android:layout_marginRight="3dp"/>-->
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/newsCategoryTv"-->
-            <!--                        android:layout_width="wrap_content"-->
-            <!--                        android:layout_height="wrap_content"-->
-            <!--                        android:layout_gravity="center"-->
-            <!--                        android:text="Internship"/>-->
-
-            <!--                </LinearLayout>-->
-
-            <!--            </LinearLayout>-->
 
         </LinearLayout>
 

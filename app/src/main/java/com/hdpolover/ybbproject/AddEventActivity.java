@@ -266,11 +266,10 @@ public class AddEventActivity extends AppCompatActivity {
                                 hashMap.put("confimStatus", "pending");
                                 hashMap.put("eStatus", "upcoming");
 
-
                                 //path to store post data
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Events");
                                 //put data in this ref
-                                ref.child(timeStamp).setValue(hashMap)
+                                ref.child(uid).child(timeStamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
