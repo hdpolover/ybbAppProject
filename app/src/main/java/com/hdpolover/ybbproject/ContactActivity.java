@@ -106,7 +106,8 @@ public class ContactActivity extends AppCompatActivity {
         //get current user
         final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         //get path of database name "Users" containing users info
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(uid).child("Followings");
 
         Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data from path
