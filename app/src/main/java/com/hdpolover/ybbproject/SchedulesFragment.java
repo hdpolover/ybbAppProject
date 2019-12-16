@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -22,8 +23,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterEvent;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.adapters.AdapterSchedules;
+import com.hdpolover.ybbproject.models.ModelEvent;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
@@ -35,20 +38,17 @@ public class SchedulesFragment extends Fragment {
     ViewPager viewPager;
     AdapterSchedules adapterSchedules;
 
-    List<ModelPost> eventList;
-    AdapterPost adapterEvent;
-    LinearLayout noEventSchedulesLayout;
-    RecyclerView eventRecyclerView;
-    ShimmerFrameLayout shimmerFrameLayoutEvent;
-
     FloatingActionButton fab_add_event;
+
+    RecyclerView recyclerView;
+    List<ModelEvent> eventList;
+    AdapterEvent adapterEvent;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedules, container, false);
-
-        viewPager = view.findViewById(R.id.scheduleViewPager);
 
         fab_add_event = view.findViewById(R.id.fab_add_event);
 
@@ -69,47 +69,51 @@ public class SchedulesFragment extends Fragment {
             }
         });
 
+        //recycler view
+        recyclerView = view.findViewById(R.id.eventRecycleview);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        //show event first, for this load from last
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+
+        //set layout to recyclerView
+         recyclerView.setLayoutManager(linearLayoutManager);
+
+
+        //init event list
+        eventList = new ArrayList<>();
+        
+        loadEvent();
+
         return view;
     }
 
-    private void loadPosts() {
-        //path of all Event
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Events");
+    private void loadEvent() {
+        //path of all event
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
-        ref.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost modelPost = ds.getValue(ModelPost.class);
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    eventList.add(modelPost);
+                    eventList.add(modelEvent);
 
                     //adapter
-                    adapterEvent = new AdapterPost(getActivity(), eventList);
-
-                    if (eventList.size() == 0) {
-                        noEventSchedulesLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        //set adapter recycler view
-                        noEventSchedulesLayout.setVisibility(View.GONE);
-                        eventRecyclerView.setAdapter(adapterEvent);
-                        adapterEvent.notifyDataSetChanged();
-                        shimmerFrameLayoutEvent.stopShimmer();
-                        shimmerFrameLayoutEvent.setVisibility(View.GONE);
-                    }
-//                    //set adapter recycler view
-//                    postRecyclerView.setAdapter(adapterPost);
-//                    adapterPost.notifyDataSetChanged();
-//                    shimmerFrameLayoutPost.stopShimmer();
-//                    shimmerFrameLayoutPost.setVisibility(View.GONE);
+                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                    //set adapter to recycle
+                    recyclerView.setAdapter(adapterEvent);
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-//                in case of error
-                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                //in case of errors
+                Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -132,6 +132,21 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/eventSpeaker"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            style="@style/parent">
+
+            <EditText
+                android:id="@+id/eventSpek"
+                style="@style/modifiedEditText"
+                android:hint="Speaker"
+                android:inputType="text"
+                android:textColor="@color/primaryTextColor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/eventLocation"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"

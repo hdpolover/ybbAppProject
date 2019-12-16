@@ -16,15 +16,12 @@
         app:tabTextColor="@color/colorBlack"
         app:tabRippleColor="@color/primaryColor"/>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/scheduleViewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eventRecycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/scheduleTabs"
-        android:layout_marginTop="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </androidx.viewpager.widget.ViewPager>
+        android:textAlignment="center"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_event"
@@ -35,9 +32,5 @@
         android:layout_margin="10dp"
         android:layout_alignParentBottom="true"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

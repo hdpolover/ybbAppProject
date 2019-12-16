@@ -1,94 +1,135 @@
 package com.hdpolover.ybbproject.models;
 
 public class ModelEvent {
-    String uid, imgEvent, titleEvent, dateEventFrom, timeEventFrom, dateEventTo, timeEventTo, catEvent, loctEvent, descEvent;
+    String confirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation, eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker;
 
-    public ModelEvent(String uid, String imgEvent,String titleEvent, String dateEventFrom, String timeEventFrom,
-                       String dateEventTo, String timeEventTo, String catEvent, String loctEvent, String descEvent){
+    public ModelEvent(String confirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eld, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker) {
+        this.confirmStatus = confirmStatus;
         this.uid = uid;
-        this.imgEvent = imgEvent;
-        this.dateEventFrom = dateEventFrom;
-        this.timeEventFrom = timeEventFrom;
-        this.dateEventTo = dateEventTo;
-        this.timeEventTo = timeEventTo;
-        this.catEvent = catEvent;
-        this.loctEvent = loctEvent;
-        this.descEvent = descEvent;
+        this.eDateFrom = eDateFrom;
+        this.eDateTo = eDateTo;
+        this.eDesc = eDesc;
+        this.eld = eld;
+        this.eImage = eImage;
+        this.eLocation = eLocation;
+        this.eStatus = eStatus;
+        this.eTimeFrom = eTimeFrom;
+        this.eTimeTo = eTimeTo;
+        this.eTitle = eTitle;
+        this.eCategory = eCategory;
+        this.eSpeaker = eSpeaker;
     }
 
-    public String getUid() { return uid; }
-
-    public void setUid(String uid) { this.uid = uid; }
-
-    public String getImgEvent() {
-        return imgEvent;
+    public String getConfirmStatus() {
+        return confirmStatus;
     }
 
-    public void setImgEvent(String imgEvent) {
-        this.imgEvent = imgEvent;
+    public void setConfirmStatus(String confirmStatus) {
+        this.confirmStatus = confirmStatus;
     }
 
-    public String getTitleEvent() {
-        return titleEvent;
+    public String getUid() {
+        return uid;
     }
 
-    public void setTitleEvent(String titleEvent) {
-        this.titleEvent = titleEvent;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getDateEventFrom() {
-        return dateEventFrom;
+    public String geteDateFrom() {
+        return eDateFrom;
     }
 
-    public void setDateEventFrom(String dateEventFrom) {
-        this.dateEventFrom = dateEventFrom;
+    public void seteDateFrom(String eDateFrom) {
+        this.eDateFrom = eDateFrom;
     }
 
-    public String getTimeEventFrom() {
-        return timeEventFrom;
+    public String geteDateTo() {
+        return eDateTo;
     }
 
-    public void setTimeEventFrom(String timeEventFrom) {
-        this.timeEventFrom = timeEventFrom;
+    public void seteDateTo(String eDateTo) {
+        this.eDateTo = eDateTo;
     }
 
-    public String getDateEventTo() {
-        return dateEventTo;
+    public String geteDesc() {
+        return eDesc;
     }
 
-    public void setDateEventTo(String dateEventTo) {
-        this.dateEventFrom = dateEventTo;
+    public void seteDesc(String eDesc) {
+        this.eDesc = eDesc;
     }
 
-    public String getTimeEventTo() {
-        return timeEventTo;
+    public String getEld() {
+        return eld;
     }
 
-    public void setTimeEventTo(String timeEventTo) {
-        this.timeEventTo = timeEventTo;
+    public void setEld(String eld) {
+        this.eld = eld;
     }
 
-    public String getCatEvent() {
-        return catEvent;
+    public String geteImage() {
+        return eImage;
     }
 
-    public void setCatEvent(String catEvent) {
-        this.catEvent = catEvent;
+    public void seteImage(String eImage) {
+        this.eImage = eImage;
     }
 
-    public String getLoctEvent() {
-        return loctEvent;
+    public String geteLocation() {
+        return eLocation;
     }
 
-    public void setLoctEvent(String loctEvent) {
-        this.loctEvent = loctEvent;
+    public void seteLocation(String eLocation) {
+        this.eLocation = eLocation;
     }
 
-    public String getDescEvent() {
-        return descEvent;
+    public String geteStatus() {
+        return eStatus;
     }
 
-    public void setDescEvent(String descEvent) {
-        this.descEvent = descEvent;
+    public void seteStatus(String eStatus) {
+        this.eStatus = eStatus;
+    }
+
+    public String geteTimeFrom() {
+        return eTimeFrom;
+    }
+
+    public void seteTimeFrom(String eTimeFrom) {
+        this.eTimeFrom = eTimeFrom;
+    }
+
+    public String geteTimeTo() {
+        return eTimeTo;
+    }
+
+    public void seteTimeTo(String eTimeTo) {
+        this.eTimeTo = eTimeTo;
+    }
+
+    public String geteTitle() {
+        return eTitle;
+    }
+
+    public void seteTitle(String eTitle) {
+        this.eTitle = eTitle;
+    }
+
+    public String geteCategory() {
+        return eCategory;
+    }
+
+    public void seteCategory(String eCategory) {
+        this.eCategory = eCategory;
+    }
+
+    public String geteSpeaker() {
+        return eSpeaker;
+    }
+
+    public void seteSpeaker(String eSpeaker) {
+        this.eSpeaker = eSpeaker;
     }
 }
+
