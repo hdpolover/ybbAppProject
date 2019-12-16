@@ -70,7 +70,6 @@ public class PostTab extends Fragment {
         firebaseAuth = firebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = firebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
         noDataIv = view.findViewById(R.id.noDataIv);

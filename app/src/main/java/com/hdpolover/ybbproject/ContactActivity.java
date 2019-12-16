@@ -65,7 +65,7 @@ public class ContactActivity extends AppCompatActivity {
         userList = new ArrayList<>();
 
         checkUserStatus();
-        
+
         //getAll users
         getAllUsers();
 
@@ -107,8 +107,10 @@ public class ContactActivity extends AppCompatActivity {
         final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         //get path of database name "Users" containing users info
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+
+        Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data from path
-        ref.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();

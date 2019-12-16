@@ -9,21 +9,28 @@
     tools:context=".tabProfile.UpvotesTab">
 
     <TextView
+        android:id="@+id/noDataTv"
         android:layout_gravity="center"
         android:layout_marginBottom="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="You have no upvotes."
+        android:text="You have no posts."
         android:textColor="@color/primaryColor"/>
 
     <ImageView
+        android:id="@+id/noDataIv"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_undraw_no_data"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
