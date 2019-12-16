@@ -261,7 +261,7 @@ public class AddEventActivity extends AppCompatActivity {
                                 hashMap.put("eTimeFrom", timeEtFrom.getText().toString());
                                 hashMap.put("eDateTo", dateEtTo.getText().toString());
                                 hashMap.put("eTimeTo", timeEtTo.getText().toString());
-                                hashMap.put("eCategory", categoryEt.toString());
+                                hashMap.put("eCategory", categoryEt.getSelectedItem().toString());
                                 hashMap.put("eSpeaker", eventSpekEt.getText().toString());
                                 hashMap.put("confimStatus", "pending");
                                 hashMap.put("eStatus", "upcoming");

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,8 +99,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
     class MyHolderEvent extends RecyclerView.ViewHolder{
 
         ImageView myeventImg;
-        TextView myeventTit, myeventDate, myeventTime, myeventEcxerpt, myeventLocation, myeventCategory, myeventSpeaker, myeventStatus;
-
+        TextView myeventTit, myeventDate, myeventTime, myeventLocation, myeventCategory, myeventSpeaker, myeventStatus;
         //view from row_event.xml
         public MyHolderEvent(@NonNull View itemView) {
             super(itemView);
@@ -108,7 +108,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             myeventImg = itemView.findViewById(R.id.myeventImg);
             myeventTit = itemView.findViewById(R.id.myeventTit);
             myeventDate = itemView.findViewById(R.id.myeventDate);
-            myeventEcxerpt = itemView.findViewById(R.id.myeventExcerpt);
             myeventLocation = itemView.findViewById(R.id.myeventLocation);
             myeventCategory = itemView.findViewById(R.id.myeventCategory);
             myeventSpeaker = itemView.findViewById(R.id.myeventSpeaker);
