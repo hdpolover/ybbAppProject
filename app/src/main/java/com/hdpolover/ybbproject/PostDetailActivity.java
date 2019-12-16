@@ -168,10 +168,14 @@ public class PostDetailActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postComment();
-                addNotification(hisUid, postId);
-                myName = modelUser.getName();
-                sendNotification(hisUid,  myName," commented on your post");
+                if (hisUid.equals(myUid)) {
+                    postComment();
+                } else {
+                    postComment();
+                    addNotification(hisUid, postId);
+                    myName = modelUser.getName();
+                    sendNotification(hisUid,  myName," commented on your post");
+                }
             }
         });
 
@@ -538,7 +542,7 @@ public class PostDetailActivity extends AppCompatActivity {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", myUid);
         hashMap.put("publisherid", publisherId);
-        hashMap.put("text", " commented on your post");
+        hashMap.put("text", "commented on your post");
         hashMap.put("postid", postid);
         hashMap.put("timestamp", timeStamp);
 

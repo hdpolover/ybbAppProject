@@ -125,7 +125,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
                 break;
         }
 
-        holder.notifTimeTv.setText(month + " " + date + " at " + time);
+        holder.notifTimeTv.setText(month + " " + date + " at" + time);
         holder.notifMoreBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -299,7 +299,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
                 }
 
                 String username = user.getName();
-                notifContentTv.setText(username + notifContent);
+                notifContentTv.setText(username + " " + notifContent);
             }
 
             @Override

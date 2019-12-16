@@ -202,10 +202,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).setValue(true);
 
-                    publisherId = hisUid;
-                    addNotification(hisUid, pId);
-                    myName = modelUser.getName();
-                    sendNotification(hisUid,  myName," upvoted your post");
+                    if (!hisUid.equals(myUid)) {
+                        publisherId = hisUid;
+                        addNotification(hisUid, pId);
+                        myName = modelUser.getName();
+                        sendNotification(hisUid,  myName," upvoted your post");
+                    }
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
                             .child(myUid).removeValue();
@@ -314,7 +316,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", myUid);
         hashMap.put("publisherid", publisherId);
-        hashMap.put("text", " upvoted your post");
+        hashMap.put("text", "upvoted your post");
         hashMap.put("postid", postid);
         hashMap.put("timestamp", timeStamp);
 

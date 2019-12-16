@@ -72,7 +72,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             holder.myeventImg.setVisibility(View.GONE);
         }else {
             try {
-                Picasso.get().load(eImage).into(holder.myeventImg);
+                Picasso.get().load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.myeventImg);
             }
             catch (Exception e) {
 
