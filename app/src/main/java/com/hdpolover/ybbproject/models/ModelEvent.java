@@ -3,6 +3,10 @@ package com.hdpolover.ybbproject.models;
 public class ModelEvent {
     String confirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation, eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker;
 
+    public ModelEvent() {
+
+    }
+
     public ModelEvent(String confirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eld, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker) {
         this.confirmStatus = confirmStatus;
         this.uid = uid;

@@ -40,10 +40,6 @@ public class SchedulesFragment extends Fragment {
 
     FloatingActionButton fab_add_event;
 
-    RecyclerView recyclerView;
-    List<ModelEvent> eventList;
-    AdapterEvent adapterEvent;
-
 
     @Nullable
     @Override
@@ -51,6 +47,7 @@ public class SchedulesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_schedules, container, false);
 
         fab_add_event = view.findViewById(R.id.fab_add_event);
+        viewPager = view.findViewById(R.id.schedulesViewPager);
 
         adapterSchedules = new AdapterSchedules(getFragmentManager());
 
@@ -58,8 +55,6 @@ public class SchedulesFragment extends Fragment {
         tabLayout = view.findViewById(R.id.scheduleTabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabRippleColor(null);
-
-        eventList = new ArrayList<>();
 
         fab_add_event.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,52 +64,6 @@ public class SchedulesFragment extends Fragment {
             }
         });
 
-        //recycler view
-        recyclerView = view.findViewById(R.id.eventRecycleview);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        //show event first, for this load from last
-        linearLayoutManager.setStackFromEnd(true);
-        linearLayoutManager.setReverseLayout(true);
-
-        //set layout to recyclerView
-         recyclerView.setLayoutManager(linearLayoutManager);
-
-
-        //init event list
-        eventList = new ArrayList<>();
-        
-        loadEvent();
-
         return view;
-    }
-
-    private void loadEvent() {
-        //path of all event
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
-        //get all data from this ref
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
-
-                    eventList.add(modelEvent);
-
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
-                    //set adapter to recycle
-                    recyclerView.setAdapter(adapterEvent);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //in case of errors
-                Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

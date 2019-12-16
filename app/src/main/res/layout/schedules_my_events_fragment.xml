@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".newsTab.BlogFragment"
+    tools:context=".schedulesTab.MyEventsFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,7 +41,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recyclerViewBlog">
+            android:id="@+id/myEventsRecyclerView">
 
         </androidx.recyclerview.widget.RecyclerView>
 

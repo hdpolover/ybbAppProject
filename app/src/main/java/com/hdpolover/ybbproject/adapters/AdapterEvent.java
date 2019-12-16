@@ -79,10 +79,10 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         }
 
         //handle button click
-        holder.myeventExcerpt.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "More", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -99,7 +99,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
         ImageView myeventImg;
         TextView myeventTit, myeventDate, myeventTime, myeventEcxerpt, myeventLocation, myeventCategory, myeventSpeaker, myeventStatus;
-        Button myeventExcerpt;
 
         //view from row_event.xml
         public MyHolderEvent(@NonNull View itemView) {
@@ -115,7 +114,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             myeventSpeaker = itemView.findViewById(R.id.myeventSpeaker);
             myeventTime = itemView.findViewById(R.id.myeventTime);
             myeventStatus = itemView.findViewById(R.id.myeventStatus);
-            myeventExcerpt = itemView.findViewById(R.id.myeventExcerpt);
 
         }
     }
