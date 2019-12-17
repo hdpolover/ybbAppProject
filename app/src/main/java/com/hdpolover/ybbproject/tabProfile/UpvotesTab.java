@@ -91,11 +91,11 @@ public class UpvotesTab extends Fragment {
         postsRecyclerView.setLayoutManager(layoutManager);
 
         //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("PostUpvotes");
-//        //query to load posts
-//        Query query = ref.orderByChild("uid").equalTo(uid);
+        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
+        //query to load posts
+        Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data
-        ref.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
@@ -122,7 +122,7 @@ public class UpvotesTab extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

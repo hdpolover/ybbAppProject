@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterHisProfile;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.adapters.AdapterProfile;
 import com.hdpolover.ybbproject.models.ModelPost;
@@ -59,7 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    AdapterProfile viewAdapterProfile;
+    AdapterHisProfile viewAdapterProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class UserProfileActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
 
         /////*     initialize ViewPager   */////
-        viewAdapterProfile = new AdapterProfile(getSupportFragmentManager());
+        viewAdapterProfile = new AdapterHisProfile(getSupportFragmentManager());
 
         /////*     add adapter to ViewPager  */////
         viewPager.setAdapter(viewAdapterProfile);

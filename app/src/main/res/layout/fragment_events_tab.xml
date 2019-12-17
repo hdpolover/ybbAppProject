@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:text="You have no posts."
+        android:text="You have no event."
         android:textColor="@color/primaryColor"/>
 
     <ImageView

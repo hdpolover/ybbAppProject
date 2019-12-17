@@ -325,7 +325,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             String phone;
                             String codeNumber = countryCP.getSelectedCountryCodeWithPlus();
                             String phoneNumber = mPhoneEt.getText().toString().substring(0,1);
-                            int subPhone = phoneNumber.indexOf(phoneNumber);
+                            int subPhone = Integer.valueOf(phoneNumber);
 
                             String phoneFull = mPhoneEt.getText().toString();
                             String phoneLast = mPhoneEt.getText().toString().substring(1);

@@ -390,7 +390,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -486,10 +485,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("job", "");
                                 hashMap.put("cityFrom", "");
                                 hashMap.put("countryFrom", "");
-                                hashMap.put("birthDate", "");
-                                hashMap.put("bio", "--");
-                                hashMap.put("education", "--");
-                                hashMap.put("interest", "");
+                                hashMap.put("birthDate", "edit in your profile!");
+                                hashMap.put("bio", "edit in your profile!");
+                                hashMap.put("education", "edit in your profile!");
+                                hashMap.put("interest", "edit in your profile!");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -674,10 +673,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("job", "");
                                 hashMap.put("cityFrom", "");
                                 hashMap.put("countryFrom", "");
-                                hashMap.put("birthDate", "");
-                                hashMap.put("bio", "--");
-                                hashMap.put("education", "--");
-                                hashMap.put("interest", "");
+                                hashMap.put("birthDate", "edit in your profile!");
+                                hashMap.put("bio", "edit in your profile!");
+                                hashMap.put("education", "edit in your profile!");
+                                hashMap.put("interest", "edit in your profile!");
 
 
                                 //firebase database instance

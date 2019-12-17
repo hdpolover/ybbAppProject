@@ -1,54 +1,37 @@
-package com.hdpolover.ybbproject.tabProfile;
-
+package com.hdpolover.ybbproject.hisTabProfile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
-import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.MainActivity;
 import com.hdpolover.ybbproject.R;
-import com.squareup.picasso.Picasso;
 
-import static com.google.firebase.storage.FirebaseStorage.getInstance;
+public class hisDashboardTab extends Fragment {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class DashboardTab extends Fragment {
 
     TextView emailTv, phoneTv, bioTv, educationTv, interestTv, birthDateTv;
 
-    String myUid;
+    String hisUid;
 
-    public DashboardTab() {
+    public hisDashboardTab() {
         // Required empty public constructor
     }
 
-
-    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -61,7 +44,12 @@ public class DashboardTab extends Fragment {
         interestTv = view.findViewById(R.id.interestTv);
         birthDateTv = view.findViewById(R.id.birthDateTv);
 
-        checkUserStatus();
+        //get uid of clicked user
+        Intent intent = getActivity().getIntent();
+        hisUid = intent.getStringExtra("uid");
+        Log.e("uidne", hisUid);
+
+        //checkUserStatus();
 
         setUserData();
 
@@ -71,7 +59,7 @@ public class DashboardTab extends Fragment {
     private void setUserData() {
         //get current user info
         Query myRef = FirebaseDatabase.getInstance().getReference("Users");
-        final Query query = myRef.orderByChild("uid").equalTo(myUid);
+        final Query query = myRef.orderByChild("uid").equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -92,29 +80,29 @@ public class DashboardTab extends Fragment {
             }
         });
     }
-
-    private void checkUserStatus() {
-        //get current user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            //user is signed in stay here
-            myUid = user.getUid();
-        } else {
-            startActivity(new Intent(getActivity(), MainActivity.class));
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        checkUserStatus();
-        setUserData();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkUserStatus();
-        setUserData();
-    }
+//
+//    private void checkUserStatus() {
+//        //get current user
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null) {
+//            //user is signed in stay here
+//            myUid = user.getUid();
+//        } else {
+//            startActivity(new Intent(getActivity(), MainActivity.class));
+//        }
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        checkUserStatus();
+//        setUserData();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        checkUserStatus();
+//        setUserData();
+//    }
 }

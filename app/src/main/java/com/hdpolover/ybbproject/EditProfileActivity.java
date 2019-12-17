@@ -197,18 +197,23 @@ public class EditProfileActivity extends AppCompatActivity {
                     fullnameEt.setText("" + ds.child("name").getValue());
                     usernameEt.setText("" + ds.child("username").getValue());
                     username = "" + ds.child("username").getValue().toString();
-                    birthDateEt.setText("" + ds.child("birthDate").getValue());
                     phoneNumberEt.setText("" + ds.child("phone").getValue());
                     occupationEt.setText("" + ds.child("job").getValue());
                     cityLiveEt.setText("" + ds.child("city").getValue());
                     countryLiveEt.setText("" + ds.child("country").getValue());
                     cityFromEt.setText("" + ds.child("cityFrom").getValue());
                     countryFromEt.setText("" + ds.child("countryFrom").getValue());
-                    bioEt.setText("" + ds.child("bio").getValue());
-                    educationEt.setText(""+ds.child("education").getValue());
-                    interestEt.setText(""+ds.child("interest").getValue());
-                    Log.e("is", fullnameEt.getText().toString());
-                    Log.e("is1", "" + ds.child("name").getValue());
+                    if(ds.child("birthDate").getValue().toString().equals("edit in your profile!")){
+                        birthDateEt.setText("");
+                        bioEt.setText("");
+                        educationEt.setText("");
+                        interestEt.setText("");
+                    }else{
+                        birthDateEt.setText("" + ds.child("birthDate").getValue());
+                        bioEt.setText("" + ds.child("bio").getValue());
+                        educationEt.setText(""+ds.child("education").getValue());
+                        interestEt.setText(""+ds.child("interest").getValue());
+                    }
                 }
             }
 

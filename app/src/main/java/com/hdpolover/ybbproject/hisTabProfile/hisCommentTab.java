@@ -1,19 +1,19 @@
-package com.hdpolover.ybbproject.tabProfile;
+package com.hdpolover.ybbproject.hisTabProfile;
 
-
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,11 +33,7 @@ import java.util.List;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CommentTab extends Fragment {
-
+public class hisCommentTab extends Fragment {
     //firebase
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -48,15 +44,14 @@ public class CommentTab extends Fragment {
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
-    String uid, postId;
+    String hisUid;
 
     TextView noDataTv;
     ImageView noDataIv;
 
-    public CommentTab() {
+    public hisCommentTab() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +67,10 @@ public class CommentTab extends Fragment {
         noDataIv = view.findViewById(R.id.noDataIv);
         noDataTv = view.findViewById(R.id.noDataTv);
 
-        checkUserStatus();
+        //get uid of clicked user
+        Intent intent = getActivity().getIntent();
+        hisUid = intent.getStringExtra("uid");
+        Log.e("uidne", hisUid);
 
         postList = new ArrayList<>();
 
@@ -92,7 +90,7 @@ public class CommentTab extends Fragment {
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query query = ref.orderByChild("uid").equalTo(hisUid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -125,14 +123,4 @@ public class CommentTab extends Fragment {
             }
         });
     }
-
-    private void checkUserStatus() {
-        //get current user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            //user is signed in stay here
-            uid = user.getUid();
-        }
-    }
-
 }

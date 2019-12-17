@@ -373,7 +373,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             String phone;
                             String codeNumber = countryCP.getSelectedCountryCodeWithPlus();
                             String phoneNumber = mPhoneEt.getText().toString().substring(0,1);
-                            int subPhone = phoneNumber.indexOf(phoneNumber);
+                            int subPhone = Integer.valueOf(phoneNumber);
 
                             String phoneFull = mPhoneEt.getText().toString();
                             String phoneLast = mPhoneEt.getText().toString().substring(1);
@@ -413,10 +413,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("job", job);
                             hashMap.put("cityFrom", "");
                             hashMap.put("countryFrom", "");
-                            hashMap.put("birthDate", "");
-                            hashMap.put("bio", "--");
-                            hashMap.put("education", "--");
-                            hashMap.put("interest", "");
+                            hashMap.put("birthDate", "edit in your profile!");
+                            hashMap.put("bio", "edit in your profile!");
+                            hashMap.put("education", "edit in your profile!");
+                            hashMap.put("interest", "edit in your profile!");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
