@@ -71,23 +71,25 @@ public class EventsFragment extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                    eventList.add(modelEvent);
+                        eventList.add(modelEvent);
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
-                    //set adapter to recycle
-                    recyclerView.setAdapter(adapterEvent);
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                    }
                 }
 
             }

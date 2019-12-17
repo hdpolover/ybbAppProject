@@ -72,17 +72,13 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
         //event Image
 
-        if (eImage.equals("noImage")){
-            //hide image view
-            holder.myeventImg.setVisibility(View.GONE);
-        }else {
             try {
                 Picasso.get().load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.myeventImg);
             }
             catch (Exception e) {
 
             }
-        }
+
 
         //handle button click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
