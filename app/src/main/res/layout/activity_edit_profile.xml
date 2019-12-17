@@ -93,10 +93,10 @@
                         <EditText
                             android:id="@+id/birthDateEt"
                             style="@style/modifiedEditText"
-                            android:hint="Date of Birth"
-                            android:maxLines="1"
                             android:clickable="true"
                             android:focusable="false"
+                            android:hint="Date of Birth"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -303,45 +303,41 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="8dp"
+                    style="@style/parent"
+                    android:layout_marginBottom="5dp">
+
+                    <EditText
+                        android:id="@+id/interestEt"
+                        style="@style/modifiedEditText"
+                        android:hint="Interest"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/primaryTextColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="vertical">
+                    android:textColor="#7C7C7C"
+                    android:layout_marginLeft="2dp"
+                    android:text="Use (,) to separator"
+                    android:textSize="12sp"/>
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipInterestGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/educationInput"
+                    style="@style/parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="5dp">
 
-                    </com.google.android.material.chip.ChipGroup>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/interestTIET"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:hint="Enter your Interest"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="Use (,) to separator"
-                        android:textColor="#7C7C7C" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/addInterestBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Add Interest" />
-
-                </LinearLayout>
-
+                    <EditText
+                        android:id="@+id/educationEt"
+                        style="@style/modifiedEditText"
+                        android:hint="Education"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/primaryTextColor" />
+                </com.google.android.material.textfield.TextInputLayout>
                 <!--                <LinearLayout-->
                 <!--                    android:layout_width="match_parent"-->
                 <!--                    android:layout_height="wrap_content"-->

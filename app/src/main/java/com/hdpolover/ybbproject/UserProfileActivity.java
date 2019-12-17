@@ -119,8 +119,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     String name = "" + ds.child("name").getValue();
-                    String email = "" + ds.child("email").getValue();
-                    String phone = "" + ds.child("phone").getValue();
+//                    String email = "" + ds.child("email").getValue();
+//                    String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
                     String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();

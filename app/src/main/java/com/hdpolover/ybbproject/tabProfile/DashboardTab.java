@@ -39,7 +39,7 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
  */
 public class DashboardTab extends Fragment {
 
-    TextView emailTv, phoneTv, bioTv;
+    TextView emailTv, phoneTv, bioTv, educationTv, birthDateTv;
 
     String myUid;
 
@@ -55,6 +55,10 @@ public class DashboardTab extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard_tab, container, false);
 
         bioTv = view.findViewById(R.id.bioTv);
+        educationTv = view.findViewById(R.id.educationTv);
+        emailTv = view.findViewById(R.id.emailTv);
+        phoneTv = view.findViewById(R.id.phoneTv);
+        birthDateTv = view.findViewById(R.id.birthDateTv);
 
         checkUserStatus();
 
@@ -70,9 +74,13 @@ public class DashboardTab extends Fragment {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     bioTv.setText("" + ds.child("bio").getValue());
+                    educationTv.setText("" + ds.child("education").getValue());
+                    emailTv.setText("" + ds.child("email").getValue());
+                    phoneTv.setText("" + ds.child("phone").getValue());
+                    birthDateTv.setText("" + ds.child("birthDate").getValue());
                 }
             }
 
@@ -83,7 +91,7 @@ public class DashboardTab extends Fragment {
         });
     }
 
-    private  void checkUserStatus() {
+    private void checkUserStatus() {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

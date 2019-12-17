@@ -104,13 +104,13 @@ public class AdapterProfile extends FragmentPagerAdapter {
             case 0:
                 return "Dashboard";
             case 1:
-                return " My Posts ";
+                return " Posts ";
             case 2:
-                return " 0 Comments ";
+                return " Comments ";
             case 3:
-                return " 0 Upvotes ";
+                return " Upvotes ";
             case 4:
-                return " 0 Events ";
+                return " Events ";
             default:
                 return null;
         }

@@ -49,7 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
     //views
     //personal information
     EditText fullnameEt, birthDateEt, phoneNumberEt, occupationEt, usernameEt,
-            cityLiveEt, countryLiveEt, cityFromEt, countryFromEt;
+            cityLiveEt, countryLiveEt, cityFromEt, countryFromEt, educationEt, interestEt;
     ImageView infoDateHintIv;
 
     ChipGroup chipInterestGroup;
@@ -62,6 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
     MaterialButton saveProfileBtn;
 
     String username;
+    boolean check = false;
     ArrayList<String> data;
     List<String> usernameList = new ArrayList<>();
 
@@ -94,9 +95,8 @@ public class EditProfileActivity extends AppCompatActivity {
         cityFromEt = findViewById(R.id.cityFromEt);
         countryFromEt = findViewById(R.id.countryFromEt);
         infoDateHintIv = findViewById(R.id.infoDateHintIv);
-        addInterestBtn = findViewById(R.id.addInterestBtn);
-        chipInterestGroup = findViewById(R.id.chipInterestGroup);
-        textInputEditText = findViewById(R.id.interestTIET);
+        educationEt = findViewById(R.id.educationEt);
+        interestEt = findViewById(R.id.interestEt);
 
         //init details info
         bioEt = findViewById(R.id.bioEt);
@@ -123,49 +123,23 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean check = false;
-                for (String usernameList : usernameList) {
-                    if(usernameList.equals(usernameInput)) {
-                        check = true;
-                        break;
-                    }
-                }
 
-                if(check == true) {
-                    usernameEt.setError("Invalid email");
-                    usernameEt.setFocusable(true);
-                } else if(check == false) {
                     updateUserProfileInfo();
-                }
+//                for (String usernameList : usernameList) {
+//                    if(usernameList.equals(usernameInput)) {
+//                        check = true;
+//                    }
+//                }
+
+//                if(check) {
+//                    usernameEt.setError("Invalid email");
+//                    usernameEt.setFocusable(true);
+//                } else {
+//                    updateUserProfileInfo();
+//                }
             }
         });
 
-        //event
-        addInterestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (textInputEditText.getText().toString().equals("")) {
-                    Toast.makeText(EditProfileActivity.this, "Empty interest", Toast.LENGTH_SHORT).show();
-                } else {
-                    String[] item = textInputEditText.getText().toString().split(", |\\,");
-
-                    LayoutInflater inflater1 = LayoutInflater.from(EditProfileActivity.this);
-                    for (String text : item) {
-                        Chip chip = (Chip) inflater1.inflate(R.layout.chip_item, null, false);
-                        chip.setText(text);
-                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //remove tags
-                                chipInterestGroup.removeView(view);
-                            }
-                        });
-
-                        chipInterestGroup.addView(chip);
-                    }
-                }
-            }
-        });
 
     }
 
@@ -231,6 +205,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     cityFromEt.setText("" + ds.child("cityFrom").getValue());
                     countryFromEt.setText("" + ds.child("countryFrom").getValue());
                     bioEt.setText("" + ds.child("bio").getValue());
+                    educationEt.setText(""+ds.child("education").getValue());
+                    interestEt.setText(""+ds.child("interest").getValue());
                     Log.e("is", fullnameEt.getText().toString());
                     Log.e("is1", "" + ds.child("name").getValue());
                 }
@@ -255,6 +231,13 @@ public class EditProfileActivity extends AppCompatActivity {
             job = occupationEt.getText().toString().trim();
         }
 
+        //interest
+        String[] item = interestEt.getText().toString().split(", |\\,");
+        String strItem = "";
+        for (int i = 0; i < item.length ; i++) {
+            strItem += item[i] + ", ";
+        }
+
         HashMap<String, Object> hashMap = new HashMap<>();
         //put post info
         hashMap.put("uid", myUid);
@@ -268,6 +251,8 @@ public class EditProfileActivity extends AppCompatActivity {
         hashMap.put("cityFrom", cityFromEt.getText().toString().trim());
         hashMap.put("countryFrom", countryFromEt.getText().toString().trim());
         hashMap.put("bio", bioEt.getText().toString().trim());
+        hashMap.put("education", educationEt.getText().toString().trim());
+        hashMap.put("interest", strItem);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(myUid)

@@ -415,6 +415,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("countryFrom", "");
                             hashMap.put("birthDate", "");
                             hashMap.put("bio", "--");
+                            hashMap.put("education", "--");
+                            hashMap.put("interest", "");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();

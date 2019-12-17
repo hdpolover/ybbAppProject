@@ -148,13 +148,13 @@
 <!--                    android:layout_width="wrap_content"-->
 <!--                    android:layout_height="wrap_content"/>-->
 
-                <ImageButton
-                    android:id="@+id/facebookLoginBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_facebook" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/facebookLoginBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="20dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:src="@drawable/ic_facebook" />-->
 
             </LinearLayout>
 
