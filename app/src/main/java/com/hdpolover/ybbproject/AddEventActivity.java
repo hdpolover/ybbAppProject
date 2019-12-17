@@ -50,14 +50,19 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.prettytime.TimeFormat;
+import org.ocpsoft.prettytime.format.SimpleTimeFormat;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.FloatBuffer;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.SimpleFormatter;
 
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
@@ -87,6 +92,7 @@ public class AddEventActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatter;
 
     private TimePickerDialog timePickerDialog1, timePickerDialog2;
+//    private SimpleTimeFormat simpleTimeFormat;
 
     EditText titleEt, descEt, dateEtFrom, dateEtTo, timeEtFrom, timeEtTo, eventLocEt, eventSpekEt;
     ImageView imgEt;
@@ -133,6 +139,8 @@ public class AddEventActivity extends AppCompatActivity {
                 handleDateButton1();
             }
         });
+
+//        simpleTimeFormat = new SimpleTimeFormat();
         timeEtFrom = findViewById(R.id.eventTimeFrom);
         timeEtFrom.setOnClickListener(new View.OnClickListener() {
             @Override
