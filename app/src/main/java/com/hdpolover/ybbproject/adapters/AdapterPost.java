@@ -115,7 +115,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final String pTime = postList.get(position).getpTime();
 
         //convert timestamp to dd/mm/yyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(pTime));
         String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 

@@ -48,7 +48,7 @@ public class CommentTab extends Fragment {
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
-    String uid;
+    String uid, postId;
 
     TextView noDataTv;
     ImageView noDataIv;
@@ -98,16 +98,19 @@ public class CommentTab extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (ds.child("uid").getValue().equals(uid)) {
 
-                    //add to list
-                    postList.add(myPosts);
+                        ModelPost myPosts = ds.getValue(ModelPost.class);
 
-                    //adapter
-                    adapterPost = new AdapterPost(getContext(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
+                        //add to list
+                        postList.add(myPosts);
+
+                        //adapter
+                        adapterPost = new AdapterPost(getContext(), postList);
+                        //set this adapter to recyclerview
+                        postsRecyclerView.setAdapter(adapterPost);
+                    }
                 }
 
                 if (postList.size() > 0) {
@@ -121,7 +124,7 @@ public class CommentTab extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

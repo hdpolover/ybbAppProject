@@ -62,27 +62,34 @@ public class AdapterProfile extends FragmentPagerAdapter {
     public int setPostCount() {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        uid = user.getUid();
-        //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-                    postList.add(myPosts);
+        if (user != null) {
+
+            uid = user.getUid();
+
+            //init post list
+            DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
+            //query to load posts
+            Query query = ref.orderByChild("uid").equalTo(uid);
+            //get all data
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //postList.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        ModelPost myPosts = ds.getValue(ModelPost.class);
+
+                        postList.add(myPosts);
+                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        }
+
         return postList.size();
     }
 
@@ -97,13 +104,13 @@ public class AdapterProfile extends FragmentPagerAdapter {
             case 0:
                 return "Dashboard";
             case 1:
-                return setPostCount() +" Posts ";
+                return " My Posts ";
             case 2:
-                return "0 Comments";
+                return " 0 Comments ";
             case 3:
-                return "0 Upvotes";
+                return " 0 Upvotes ";
             case 4:
-                return "0 Events";
+                return " 0 Events ";
             default:
                 return null;
         }
