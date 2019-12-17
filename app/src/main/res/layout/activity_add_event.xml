@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="From            : "
+                        android:text="From               "
                         android:paddingRight="10dp"/>
 
                     <EditText
@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="To                 : "
+                        android:text="To                    "
                         android:paddingRight="10dp"/>
 
                     <EditText
@@ -128,7 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="Category     :"
+                        android:text="Category      "
                         android:paddingRight="20dp"/>
 
                     <Spinner
@@ -139,6 +139,21 @@
                         />
 
                 </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/eventQuota"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    style="@style/parent">
+
+                    <EditText
+                        android:id="@+id/eventQuot"
+                        style="@style/modifiedEditText"
+                        android:hint="Quota"
+                        android:inputType="text"
+                        android:textColor="@color/primaryTextColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/eventSpeaker"

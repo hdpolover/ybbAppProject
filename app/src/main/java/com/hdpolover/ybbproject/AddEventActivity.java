@@ -94,7 +94,7 @@ public class AddEventActivity extends AppCompatActivity {
     private TimePickerDialog timePickerDialog1, timePickerDialog2;
 //    private SimpleTimeFormat simpleTimeFormat;
 
-    EditText titleEt, descEt, dateEtFrom, dateEtTo, timeEtFrom, timeEtTo, eventLocEt, eventSpekEt;
+    EditText titleEt, descEt, dateEtFrom, dateEtTo, timeEtFrom, timeEtTo, eventLocEt, eventSpekEt, eventQuotaEt;
     ImageView imgEt;
     Spinner categoryEt;
 
@@ -168,6 +168,8 @@ public class AddEventActivity extends AppCompatActivity {
         eventSpekEt = findViewById(R.id.eventSpek);
         eventLocEt = findViewById(R.id.eventLocEt);
         categoryLoation();
+
+        eventQuotaEt = findViewById(R.id.eventQuot);
     }
 
     private void checkUserStatus() {
@@ -270,6 +272,7 @@ public class AddEventActivity extends AppCompatActivity {
                                 hashMap.put("eDateTo", dateEtTo.getText().toString());
                                 hashMap.put("eTimeTo", timeEtTo.getText().toString());
                                 hashMap.put("eCategory", categoryEt.getSelectedItem().toString());
+                                hashMap.put("eQuota", eventQuotaEt.getText().toString());
                                 hashMap.put("eSpeaker", eventSpekEt.getText().toString());
                                 hashMap.put("confimStatus", "pending");
                                 hashMap.put("eStatus", "upcoming");
