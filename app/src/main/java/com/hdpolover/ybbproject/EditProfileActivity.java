@@ -38,17 +38,18 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     ActionBar actionBar;
 
-    String myUid;
+    String myUid, usernameInput;
 
     //views
     //personal information
-    EditText fullnameEt, birthDateEt, phoneNumberEt, occupationEt,
-    cityLiveEt, countryLiveEt, cityFromEt, countryFromEt;
+    EditText fullnameEt, birthDateEt, phoneNumberEt, occupationEt, usernameEt,
+            cityLiveEt, countryLiveEt, cityFromEt, countryFromEt;
     ImageView infoDateHintIv;
 
     ChipGroup chipInterestGroup;
@@ -60,7 +61,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     MaterialButton saveProfileBtn;
 
+    String username;
     ArrayList<String> data;
+    List<String> usernameList = new ArrayList<>();
 
     ProgressDialog pd;
 
@@ -82,6 +85,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //init personal info
         fullnameEt = findViewById(R.id.fullnameEt);
+        usernameEt = findViewById(R.id.usernameEt);
         birthDateEt = findViewById(R.id.birthDateEt);
         phoneNumberEt = findViewById(R.id.phoneNumberEt);
         occupationEt = findViewById(R.id.occupationEt);
@@ -94,10 +98,9 @@ public class EditProfileActivity extends AppCompatActivity {
         chipInterestGroup = findViewById(R.id.chipInterestGroup);
         textInputEditText = findViewById(R.id.interestTIET);
 
-
         //init details info
         bioEt = findViewById(R.id.bioEt);
-
+        usernameInput = usernameEt.getText().toString();
         saveProfileBtn = findViewById(R.id.saveProfilebtn);
 
         infoDateHintIv.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         setUserData();
+        setUsernameList();
 
         birthDateEt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +123,20 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               updateUserProfileInfo();
+                boolean check = false;
+                for (String usernameList : usernameList) {
+                    if(usernameList.equals(usernameInput)) {
+                        check = true;
+                        break;
+                    }
+                }
+
+                if(check == true) {
+                    usernameEt.setError("Invalid email");
+                    usernameEt.setFocusable(true);
+                } else if(check == false) {
+                    updateUserProfileInfo();
+                }
             }
         });
 
@@ -127,9 +144,9 @@ public class EditProfileActivity extends AppCompatActivity {
         addInterestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(textInputEditText.getText().toString().equals("")){
+                if (textInputEditText.getText().toString().equals("")) {
                     Toast.makeText(EditProfileActivity.this, "Empty interest", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     String[] item = textInputEditText.getText().toString().split(", |\\,");
 
                     LayoutInflater inflater1 = LayoutInflater.from(EditProfileActivity.this);
@@ -150,7 +167,25 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void setUsernameList() {
+        //get post using the id of the post
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usernameList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    usernameList.add("" + ds.child("username").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void handleDateButton() {
@@ -183,19 +218,21 @@ public class EditProfileActivity extends AppCompatActivity {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     fullnameEt.setText("" + ds.child("name").getValue());
-                    birthDateEt.setText(""+ds.child("birthDate").getValue());
-                    phoneNumberEt.setText(""+ds.child("phone").getValue());
-                    occupationEt.setText(""+ds.child("job").getValue());
-                    cityLiveEt.setText(""+ds.child("city").getValue());
-                    countryLiveEt.setText(""+ds.child("country").getValue());
-                    cityFromEt.setText(""+ds.child("cityFrom").getValue());
-                    countryFromEt.setText(""+ds.child("countryFrom").getValue());
-                    bioEt.setText(""+ds.child("bio").getValue());
+                    usernameEt.setText("" + ds.child("username").getValue());
+                    username = "" + ds.child("username").getValue().toString();
+                    birthDateEt.setText("" + ds.child("birthDate").getValue());
+                    phoneNumberEt.setText("" + ds.child("phone").getValue());
+                    occupationEt.setText("" + ds.child("job").getValue());
+                    cityLiveEt.setText("" + ds.child("city").getValue());
+                    countryLiveEt.setText("" + ds.child("country").getValue());
+                    cityFromEt.setText("" + ds.child("cityFrom").getValue());
+                    countryFromEt.setText("" + ds.child("countryFrom").getValue());
+                    bioEt.setText("" + ds.child("bio").getValue());
                     Log.e("is", fullnameEt.getText().toString());
-                    Log.e("is1", ""+ds.child("name").getValue());
+                    Log.e("is1", "" + ds.child("name").getValue());
                 }
             }
 
@@ -212,7 +249,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         String job = "";
         try {
-            job = occupationEt.getText().toString().substring(0,1).toUpperCase()
+            job = occupationEt.getText().toString().substring(0, 1).toUpperCase()
                     + occupationEt.getText().toString().substring(1);
         } catch (Exception e) {
             job = occupationEt.getText().toString().trim();
@@ -222,6 +259,7 @@ public class EditProfileActivity extends AppCompatActivity {
         //put post info
         hashMap.put("uid", myUid);
         hashMap.put("name", fullnameEt.getText().toString().trim());
+        hashMap.put("username", usernameEt.getText().toString().trim());
         hashMap.put("birthDate", birthDateEt.getText().toString().trim());
         hashMap.put("phone", phoneNumberEt.getText().toString().trim());
         hashMap.put("job", job);
@@ -247,7 +285,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         pd.dismiss();
-                        Toast.makeText(EditProfileActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -264,7 +302,7 @@ public class EditProfileActivity extends AppCompatActivity {
         checkUserStatus();
     }
 
-    private  void checkUserStatus() {
+    private void checkUserStatus() {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
