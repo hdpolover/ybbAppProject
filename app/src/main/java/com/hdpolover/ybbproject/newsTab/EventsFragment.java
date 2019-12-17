@@ -24,6 +24,7 @@ import com.hdpolover.ybbproject.adapters.AdapterEvent;
 import com.hdpolover.ybbproject.models.ModelEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class EventsFragment extends Fragment {
@@ -87,6 +88,8 @@ public class EventsFragment extends Fragment {
                         adapterEvent = new AdapterEvent(getActivity(), eventList);
                         //set adapter to recycle
                         recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                     }

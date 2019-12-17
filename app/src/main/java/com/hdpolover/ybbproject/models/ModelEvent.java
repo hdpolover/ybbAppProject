@@ -1,7 +1,8 @@
 package com.hdpolover.ybbproject.models;
 
 public class ModelEvent {
-    String confirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation, eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker;
+    String confirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation,
+            eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker, eCreatedOn, eParticipants, eQuota;
 
     public ModelEvent() {
 
