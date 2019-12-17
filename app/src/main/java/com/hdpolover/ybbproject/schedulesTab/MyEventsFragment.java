@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,12 +25,14 @@ import com.hdpolover.ybbproject.adapters.AdapterEvent;
 import com.hdpolover.ybbproject.models.ModelEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MyEventsFragment extends Fragment {
 
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
+    LinearLayout noMyEventLayout;
 
     RecyclerView recyclerView;
     List<ModelEvent> eventList;
@@ -49,6 +52,7 @@ public class MyEventsFragment extends Fragment {
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
+        noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -84,8 +88,17 @@ public class MyEventsFragment extends Fragment {
 
                     //adapter
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
-                    //set adapter to recycle
-                    recyclerView.setAdapter(adapterEvent);
+
+                    if (eventList.size() == 0) {
+                        noMyEventLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noMyEventLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
+                    }
+
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                 }
@@ -108,7 +121,7 @@ public class MyEventsFragment extends Fragment {
 
     @Override
     public void onPause() {
-        shimmerFrameLayout.stopShimmer();
         super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }

@@ -1,37 +1,18 @@
 package com.hdpolover.ybbproject;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -41,21 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.hdpolover.ybbproject.adapters.AdapterComment;
-import com.hdpolover.ybbproject.models.ModelComment;
-import com.hdpolover.ybbproject.models.ModelEvent;
-import com.hdpolover.ybbproject.models.ModelUser;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 public class EventDetailActivity  extends AppCompatActivity {
 
@@ -67,10 +35,7 @@ public class EventDetailActivity  extends AppCompatActivity {
     EditText editTextTimeToEvent;
     Spinner editTextSpinnerEvent;
     EditText editTextLoctEvent;
-    EditText editTextDescEvent;
-    FirebaseAuth auth;
-    FirebaseDatabase getDatabase;
-    DatabaseReference getReference;
+    EditText editTextDescEvent, editTextEventQuot, editTextEventParticipants, editTextEventSpeaker;
 
     String myUid, eId, uid;
 
@@ -80,58 +45,26 @@ public class EventDetailActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_event_detail);
         getSupportActionBar().setTitle("Detail Event");
 
-        imageViewEvent = findViewById(R.id.eventImgdt);
-        editTextTitleEvent = findViewById(R.id.titleEtdt);
-        editTextDateFromEvent = findViewById(R.id.eventDateFromdt);
-        editTextTimeFromEvent = findViewById(R.id.eventTimeFromdt);
-        editTextDateToEvent = findViewById(R.id.eventDateTodt);
-        editTextTimeToEvent = findViewById(R.id.eventTimeTodt);
-        editTextSpinnerEvent = findViewById(R.id.eventCatSpindt);
-        editTextLoctEvent = findViewById(R.id.eventLocEtdt);
-        editTextDescEvent = findViewById(R.id.descEtdt);
+        imageViewEvent = findViewById(R.id.eventImg);
+        editTextTitleEvent = findViewById(R.id.titleEt);
+        editTextDateFromEvent = findViewById(R.id.eventDateFrom);
+        editTextTimeFromEvent = findViewById(R.id.eventTimeFrom);
+        editTextDateToEvent = findViewById(R.id.eventDateTo);
+        editTextTimeToEvent = findViewById(R.id.eventTimeTo);
+        editTextSpinnerEvent = findViewById(R.id.eventCatSpin);
+        editTextLoctEvent = findViewById(R.id.eventLocEt);
+        editTextDescEvent = findViewById(R.id.descEt);
+        editTextEventQuot = findViewById(R.id.eventQuot);
+        editTextEventSpeaker = findViewById(R.id.eventSpek);
 
         checkUserStatus();
 
         Intent intent = getIntent();
         eId = intent.getStringExtra("eId");
         uid = intent.getStringExtra("uid");
+        Log.e("AD", eId + uid);
 
         showEventDetails();
-
-        getDatabase = FirebaseDatabase.getInstance();
-        getReference = getDatabase.getReference();
-
-//        getReference.child("Users").child(uid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//            ModelEvent event = dataSnapshot.getValue(ModelEvent.class);
-//                String imageEvent = event.getImgEvent();
-//                try {
-//                    Picasso.get().load(imageEvent)
-//                            .placeholder(R.drawable.ic_undraw_profile_pic)
-//                            .fit()
-//                            .centerCrop()
-//                            .into(imageViewEvent);
-//                } catch (Exception e) {
-//
-//                }
-//                String TitleEvent = event.getTitleEvent();
-//                event.setTitleEvent(TitleEvent);
-//                String DateEventFrom = event.getDateEventFrom();
-//                String TimeEventFrom = event.getTimeEventFrom();
-//                String DateEventTo = event.getDateEventTo();
-//                String TimeEventTo = event.getTimeEventTo();
-//                String CatEvent = event.getCatEvent();
-//                String LoctEvent = event.getLoctEvent();
-//                String DescEvent = event.getDescEvent();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
     }
 
     private void showEventDetails() {
@@ -140,12 +73,21 @@ public class EventDetailActivity  extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-//                    //get data
-//                    String pDesc = ""+ds.child("pDesc").getValue();
-//                    String pTimeStamp = ""+ds.child("pTime").getValue();
-//                    pImage = ""+ds.child("pImage").getValue();
-//                    hisUid = ""+ds.child("uid").getValue();
-//
+                    //get data
+                    String eTitle = ""+ds.child("eTitle").getValue();
+                    String eDateFrom = ""+ds.child("eDateFrom").getValue();
+                    String eImage = ""+ds.child("eImage").getValue();
+                    String eDateTo = ""+ds.child("eDateTo").getValue();
+                    String eDesc = ""+ds.child("eDesc").getValue();
+                    String eLocation = ""+ds.child("eLocation").getValue();
+                    String eQuota = ""+ds.child("eQuota").getValue();
+                    String eParticipants = ""+ds.child("eParticipants").getValue();
+                    String eSpeaker = ""+ds.child("eSpeaker").getValue();
+                    String eCategory = ""+ds.child("eCategory").getValue();
+                    String eTimeFrom = ""+ds.child("eTimeFrom").getValue();
+                    String eTimeTo = ""+ds.child("eTimeTo").getValue();
+
+
 //                    //convert timestamp to dd/mm/yyy hh:mm am/pm
 //                    Calendar calendar = Calendar.getInstance(Locale.getDefault());
 //                    calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
@@ -197,27 +139,24 @@ public class EventDetailActivity  extends AppCompatActivity {
 //                        default:
 //                            break;
 //                    }
-//
-//                    //set data
-//                    pDescTv.setText(pDesc);
-//                    pTimeTv.setText(date + " " + month + " at" + time);
-//
-//                    //set image of the user who posted
-//                    //set post image
-//                    //if no image then hide the imageview
-//                    if (pImage.equals("noImage")) {
-//                        //hide imageview
-//                        pImageIv.setVisibility(View.GONE);
-//                    } else {
-//                        //hide imageview
-//                        pImageIv.setVisibility(View.VISIBLE);
-//
-//                        try {
-//                            Picasso.get().load(pImage).into(pImageIv);
-//                        } catch (Exception e) {
-//
-//                        }
-//                    }
+
+                    //set data
+                    editTextTitleEvent.setText(eTitle);
+                    try {
+                        Picasso.get().load(eImage).into(imageViewEvent);
+                    } catch (Exception e) {
+
+                    }
+                    editTextDateFromEvent.setText(eDateFrom);
+                    editTextTimeFromEvent.setText(eTimeFrom);
+                    editTextDateToEvent.setText(eDateTo);
+                    editTextTimeToEvent.setText(eTimeTo);
+                    editTextLoctEvent.setText(eLocation);
+                    //editTextSpinnerEvent.
+                    editTextEventSpeaker.setText(eSpeaker);
+                    editTextEventQuot.setText(eQuota);
+                    editTextDescEvent.setText(eDesc);
+
                 }
 
             }

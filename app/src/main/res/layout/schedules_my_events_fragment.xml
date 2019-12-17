@@ -14,6 +14,36 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/noMyEventLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/noEventTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="150dp"
+                android:text="There are currently no events available."
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/primaryColor"/>
+
+            <ImageView
+                android:id="@+id/noEventImg"
+                android:layout_below="@+id/noEventImg"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginBottom="100dp"
+                android:src="@drawable/ic_undraw_no_news"/>
+
+        </LinearLayout>
+
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmerFrameLayoutEvent"
             android:layout_width="match_parent"
@@ -23,34 +53,15 @@
             app:shimmer_duration="800">
 
             <!-- Adding 10 rows of placeholders -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <include layout="@layout/placeholder_event"/>
 
-                <TextView
-                    android:id="@+id/noEventTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="150dp"
-                    android:text="There are currently no events available."
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/primaryColor"/>
+            <include layout="@layout/placeholder_event"/>
 
-                <ImageView
-                    android:id="@+id/noEventImg"
-                    android:layout_below="@+id/noEventImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="100dp"
-                    android:src="@drawable/ic_undraw_no_news"/>
+            <include layout="@layout/placeholder_event"/>
 
-            </LinearLayout>
+            <include layout="@layout/placeholder_event"/>
+
+            <include layout="@layout/placeholder_event"/>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 

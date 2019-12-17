@@ -273,8 +273,10 @@ public class AddEventActivity extends AppCompatActivity {
                                 hashMap.put("eTimeTo", timeEtTo.getText().toString());
                                 hashMap.put("eCategory", categoryEt.getSelectedItem().toString());
                                 hashMap.put("eQuota", eventQuotaEt.getText().toString());
+                                hashMap.put("eParticipants", "0");
+                                hashMap.put("eCreatedOn", timeStamp);
                                 hashMap.put("eSpeaker", eventSpekEt.getText().toString());
-                                hashMap.put("confimStatus", "pending");
+                                hashMap.put("eConfirmStatus", "pending");
                                 hashMap.put("eStatus", "upcoming");
 
                                 //path to store post data
@@ -285,7 +287,7 @@ public class AddEventActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 pd.dismiss();
-                                                Toast.makeText(AddEventActivity.this, "Event created...", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddEventActivity.this, "Event successfully created...", Toast.LENGTH_SHORT).show();
 
                                                 //reset views
                                                 titleEt.setText("");
@@ -427,10 +429,10 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (!TextUtils.isEmpty(titleEt.getText().toString())) {
+        if (!TextUtils.isEmpty(titleEt.getText().toString()) && image_rui != null) {
             createEvent();
         } else {
-            Toast.makeText(getApplicationContext(), "Event is not completed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Some fields are empty...", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);

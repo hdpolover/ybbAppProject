@@ -1,9 +1,11 @@
 package com.hdpolover.ybbproject.newsTab;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +33,7 @@ public class EventsFragment extends Fragment {
 
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
+    LinearLayout noEventLayout;
 
     RecyclerView recyclerView;
     List<ModelEvent> eventList;
@@ -50,6 +53,7 @@ public class EventsFragment extends Fragment {
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEventNews);
+        noEventLayout = view.findViewById(R.id.noEventLayout);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerViewNews);
@@ -82,14 +86,23 @@ public class EventsFragment extends Fragment {
                     for (DataSnapshot ds1: ds.getChildren()) {
                         ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                        eventList.add(modelEvent);
+                        if (modelEvent.geteConfirmStatus().equals("approved")) {
+                            eventList.add(modelEvent);
+                        }
 
                         //adapter
                         adapterEvent = new AdapterEvent(getActivity(), eventList);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
+
+                        if (eventList.size() == 0) {
+                            noEventLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noEventLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
+
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                     }
@@ -113,7 +126,7 @@ public class EventsFragment extends Fragment {
 
     @Override
     public void onPause() {
-        shimmerFrameLayout.stopShimmer();
         super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }

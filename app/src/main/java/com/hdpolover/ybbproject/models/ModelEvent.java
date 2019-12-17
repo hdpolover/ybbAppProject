@@ -1,15 +1,15 @@
 package com.hdpolover.ybbproject.models;
 
 public class ModelEvent {
-    String confirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation,
+    String eConfirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation,
             eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker, eCreatedOn, eParticipants, eQuota;
 
     public ModelEvent() {
 
     }
 
-    public ModelEvent(String confirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eld, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker) {
-        this.confirmStatus = confirmStatus;
+    public ModelEvent(String eConfirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eld, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker, String eCreatedOn, String eParticipants, String eQuota) {
+        this.eConfirmStatus = eConfirmStatus;
         this.uid = uid;
         this.eDateFrom = eDateFrom;
         this.eDateTo = eDateTo;
@@ -23,14 +23,17 @@ public class ModelEvent {
         this.eTitle = eTitle;
         this.eCategory = eCategory;
         this.eSpeaker = eSpeaker;
+        this.eCreatedOn = eCreatedOn;
+        this.eParticipants = eParticipants;
+        this.eQuota = eQuota;
     }
 
-    public String getConfirmStatus() {
-        return confirmStatus;
+    public String geteConfirmStatus() {
+        return eConfirmStatus;
     }
 
-    public void setConfirmStatus(String confirmStatus) {
-        this.confirmStatus = confirmStatus;
+    public void seteConfirmStatus(String eConfirmStatus) {
+        this.eConfirmStatus = eConfirmStatus;
     }
 
     public String getUid() {
@@ -135,6 +138,30 @@ public class ModelEvent {
 
     public void seteSpeaker(String eSpeaker) {
         this.eSpeaker = eSpeaker;
+    }
+
+    public String geteCreatedOn() {
+        return eCreatedOn;
+    }
+
+    public void seteCreatedOn(String eCreatedOn) {
+        this.eCreatedOn = eCreatedOn;
+    }
+
+    public String geteParticipants() {
+        return eParticipants;
+    }
+
+    public void seteParticipants(String eParticipants) {
+        this.eParticipants = eParticipants;
+    }
+
+    public String geteQuota() {
+        return eQuota;
+    }
+
+    public void seteQuota(String eQuota) {
+        this.eQuota = eQuota;
     }
 }
 

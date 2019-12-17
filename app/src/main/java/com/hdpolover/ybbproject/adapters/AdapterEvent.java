@@ -2,11 +2,14 @@ package com.hdpolover.ybbproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
     Context context;
     List<ModelEvent> eventList;
+    String myUid;
 
     public AdapterEvent(Context context, List<ModelEvent> eventList) {
         this.context = context;
@@ -48,6 +52,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
     @Override
     public void onBindViewHolder(@NonNull MyHolderEvent holder, int position) {
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // get data
         final String uid = eventList.get(position).getUid();
@@ -57,9 +62,10 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         String eDate = eventList.get(position).geteDateFrom();
         String eTime = eventList.get(position).geteTimeFrom();
         String eSpeaker = eventList.get(position).geteSpeaker();
-        String confirmStatus = eventList.get(position).geteStatus();
+        String eConfirmStatus = eventList.get(position).geteConfirmStatus();
         String eLocation = eventList.get(position).geteLocation();
         String eCategory = eventList.get(position).geteCategory();
+        String eStatus = eventList.get(position).geteStatus();
 
         //set data
         holder.myeventTit.setText(eTitle);
@@ -68,7 +74,21 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         holder.myeventLocation.setText(eLocation);
         holder.myeventSpeaker.setText(eSpeaker);
         holder.myeventCategory.setText(eCategory);
-        holder.myeventStatus.setText(confirmStatus);
+
+        if (!uid.equals(myUid)) {
+            holder.confirmStatusLayout.setVisibility(View.GONE);
+        } else {
+            if (eConfirmStatus.equals("pending")) {
+                holder.myeventStatus.setText(eConfirmStatus);
+                holder.myeventStatus.setTextColor(Color.rgb(246, 255, 79));
+            } else if (eConfirmStatus.equals("approved")) {
+                holder.myeventStatus.setText(eConfirmStatus);
+                holder.myeventStatus.setTextColor(Color.CYAN);
+            } else if (eConfirmStatus.equals("rejected")) {
+                holder.myeventStatus.setText(eConfirmStatus);
+                holder.myeventStatus.setTextColor(Color.RED);
+            }
+        }
 
         //event Image
 
@@ -84,11 +104,12 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(context, EventDetailActivity.class);
-//                intent.putExtra("eId", eId);
-//                intent.putExtra("uid", uid);
-//                context.startActivity(intent);
+                //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, EventDetailActivity.class);
+                Log.e("ev", eId + uid);
+                intent.putExtra("eId", eId);
+                intent.putExtra("uid", uid);
+                context.startActivity(intent);
             }
         });
 
@@ -105,6 +126,8 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
         ImageView myeventImg;
         TextView myeventTit, myeventDate, myeventTime, myeventLocation, myeventCategory, myeventSpeaker, myeventStatus;
+        LinearLayout confirmStatusLayout;
+
         //view from row_event.xml
         public MyHolderEvent(@NonNull View itemView) {
             super(itemView);
@@ -118,6 +141,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             myeventSpeaker = itemView.findViewById(R.id.myeventSpeaker);
             myeventTime = itemView.findViewById(R.id.myeventTime);
             myeventStatus = itemView.findViewById(R.id.myeventStatus);
+            confirmStatusLayout = itemView.findViewById(R.id.confirmStatusLayout);
 
         }
     }
