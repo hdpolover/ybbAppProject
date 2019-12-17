@@ -17,7 +17,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true // This must be first
+            minifyEnabled true   // This must be after shrinkResources
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -63,6 +64,8 @@ dependencies {
 
     // Add the dependency for the Performance Monitoring library
     implementation 'com.google.firebase:firebase-perf:19.0.3'
+
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
 
     implementation 'com.android.support:multidex:1.0.3'
 
