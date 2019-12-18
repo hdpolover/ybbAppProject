@@ -56,7 +56,8 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
         // get data
         final String uid = eventList.get(position).getUid();
-        final String eId = eventList.get(position).getEld();
+        final String eId = eventList.get(position).getEId();
+        Log.e("eid", eId);
         String eImage = eventList.get(position).geteImage();
         String eTitle = eventList.get(position).geteTitle();
         String eDate = eventList.get(position).geteDateFrom();
@@ -78,16 +79,17 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         if (!uid.equals(myUid)) {
             holder.confirmStatusLayout.setVisibility(View.GONE);
         } else {
-            if (eConfirmStatus.equals("pending")) {
-                holder.myeventStatus.setText(eConfirmStatus);
-                holder.myeventStatus.setTextColor(Color.rgb(246, 255, 79));
-            } else if (eConfirmStatus.equals("approved")) {
-                holder.myeventStatus.setText(eConfirmStatus);
-                holder.myeventStatus.setTextColor(Color.CYAN);
-            } else if (eConfirmStatus.equals("rejected")) {
-                holder.myeventStatus.setText(eConfirmStatus);
-                holder.myeventStatus.setTextColor(Color.RED);
-            }
+            holder.myeventStatus.setText(eConfirmStatus);
+//            if (eConfirmStatus.equals("pending")) {
+//                holder.myeventStatus.setText(eConfirmStatus);
+//                holder.myeventStatus.setTextColor(Color.rgb(246, 255, 79));
+//            } else if (eConfirmStatus.equals("approved")) {
+//                holder.myeventStatus.setText(eConfirmStatus);
+//                holder.myeventStatus.setTextColor(Color.CYAN);
+//            } else if (eConfirmStatus.equals("rejected")) {
+//                holder.myeventStatus.setText(eConfirmStatus);
+//                holder.myeventStatus.setTextColor(Color.RED);
+//            }
         }
 
         //event Image
@@ -106,13 +108,11 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             public void onClick(View view) {
                 //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, EventDetailActivity.class);
-                Log.e("ev", eId + uid);
                 intent.putExtra("eId", eId);
                 intent.putExtra("uid", uid);
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override

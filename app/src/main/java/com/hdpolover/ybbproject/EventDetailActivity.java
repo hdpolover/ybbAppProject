@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EventDetailActivity  extends AppCompatActivity {
@@ -43,7 +48,12 @@ public class EventDetailActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-        getSupportActionBar().setTitle("Detail Event");
+
+        //action bar and its propertoes
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Event Detail");
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         imageViewEvent = findViewById(R.id.eventImg);
         editTextTitleEvent = findViewById(R.id.titleEt);
@@ -68,24 +78,25 @@ public class EventDetailActivity  extends AppCompatActivity {
     }
 
     private void showEventDetails() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(uid).child(eId);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(uid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    //get data
-                    String eTitle = ""+ds.child("eTitle").getValue();
-                    String eDateFrom = ""+ds.child("eDateFrom").getValue();
-                    String eImage = ""+ds.child("eImage").getValue();
-                    String eDateTo = ""+ds.child("eDateTo").getValue();
-                    String eDesc = ""+ds.child("eDesc").getValue();
-                    String eLocation = ""+ds.child("eLocation").getValue();
-                    String eQuota = ""+ds.child("eQuota").getValue();
-                    String eParticipants = ""+ds.child("eParticipants").getValue();
-                    String eSpeaker = ""+ds.child("eSpeaker").getValue();
-                    String eCategory = ""+ds.child("eCategory").getValue();
-                    String eTimeFrom = ""+ds.child("eTimeFrom").getValue();
-                    String eTimeTo = ""+ds.child("eTimeTo").getValue();
+                    if (ds.getKey().equals(eId)) {
+                        //get data
+                        String eTitle = ""+ds.child("eTitle").getValue();
+                        String eDateFrom = ""+ds.child("eDateFrom").getValue();
+                        String eImage = ""+ds.child("eImage").getValue();
+                        String eDateTo = ""+ds.child("eDateTo").getValue();
+                        String eDesc = ""+ds.child("eDesc").getValue();
+                        String eLocation = ""+ds.child("eLocation").getValue();
+                        String eQuota = ""+ds.child("eQuota").getValue();
+                        String eParticipants = ""+ds.child("eParticipants").getValue();
+                        String eSpeaker = ""+ds.child("eSpeaker").getValue();
+                        String eCategory = ""+ds.child("eCategory").getValue();
+                        String eTimeFrom = ""+ds.child("eTimeFrom").getValue();
+                        String eTimeTo = ""+ds.child("eTimeTo").getValue();
 
 
 //                    //convert timestamp to dd/mm/yyy hh:mm am/pm
@@ -140,23 +151,43 @@ public class EventDetailActivity  extends AppCompatActivity {
 //                            break;
 //                    }
 
-                    //set data
-                    editTextTitleEvent.setText(eTitle);
-                    try {
-                        Picasso.get().load(eImage).into(imageViewEvent);
-                    } catch (Exception e) {
+                        //set data
+                        editTextTitleEvent.setText(eTitle);
+
+                        try {
+                            Picasso.get().load(eImage).into(imageViewEvent);
+                        } catch (Exception e) {
+
+                        }
+                        editTextDateFromEvent.setText(eDateFrom);
+                        editTextTimeFromEvent.setText(eTimeFrom);
+                        editTextDateToEvent.setText(eDateTo);
+                        editTextTimeToEvent.setText(eTimeTo);
+                        editTextLoctEvent.setText(eLocation);
+
+                        List<String> category = new ArrayList<String>();
+                        category.add(eCategory);
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EventDetailActivity.this,android.R.layout.simple_spinner_dropdown_item,category);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        editTextSpinnerEvent.setAdapter(adapter);
+
+                        editTextEventSpeaker.setText(eSpeaker);
+                        editTextEventQuot.setText(eQuota);
+                        editTextDescEvent.setText(eDesc);
+
+                        editTextTitleEvent.setEnabled(false);
+                        editTextDateFromEvent.setEnabled(false);
+                        editTextDateToEvent.setEnabled(false);
+                        editTextTimeToEvent.setEnabled(false);
+                        editTextTimeFromEvent.setEnabled(false);
+                        editTextLoctEvent.setEnabled(false);
+                        editTextEventSpeaker.setEnabled(false);
+                        editTextEventQuot.setEnabled(false);
+                        editTextDescEvent.setEnabled(false);
+                        editTextSpinnerEvent.setEnabled(false);
 
                     }
-                    editTextDateFromEvent.setText(eDateFrom);
-                    editTextTimeFromEvent.setText(eTimeFrom);
-                    editTextDateToEvent.setText(eDateTo);
-                    editTextTimeToEvent.setText(eTimeTo);
-                    editTextLoctEvent.setText(eLocation);
-                    //editTextSpinnerEvent.
-                    editTextEventSpeaker.setText(eSpeaker);
-                    editTextEventQuot.setText(eQuota);
-                    editTextDescEvent.setText(eDesc);
-
                 }
 
             }
@@ -179,6 +210,12 @@ public class EventDetailActivity  extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
 }

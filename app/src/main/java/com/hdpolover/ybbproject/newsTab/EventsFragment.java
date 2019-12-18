@@ -86,7 +86,7 @@ public class EventsFragment extends Fragment {
                     for (DataSnapshot ds1: ds.getChildren()) {
                         ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                        if (modelEvent.geteConfirmStatus().equals("approved")) {
+                        if (modelEvent.geteConfirmStatus().equals("approved") && modelEvent.geteStatus().equals("upcoming")) {
                             eventList.add(modelEvent);
                         }
 

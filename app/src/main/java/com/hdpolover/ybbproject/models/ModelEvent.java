@@ -1,20 +1,20 @@
 package com.hdpolover.ybbproject.models;
 
 public class ModelEvent {
-    String eConfirmStatus, uid, eDateFrom, eDateTo, eDesc, eld, eImage, eLocation,
+    String eConfirmStatus, uid, eDateFrom, eDateTo, eDesc, eId, eImage, eLocation,
             eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker, eCreatedOn, eParticipants, eQuota;
 
     public ModelEvent() {
 
     }
 
-    public ModelEvent(String eConfirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eld, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker, String eCreatedOn, String eParticipants, String eQuota) {
+    public ModelEvent(String eConfirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eId, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker, String eCreatedOn, String eParticipants, String eQuota) {
         this.eConfirmStatus = eConfirmStatus;
         this.uid = uid;
         this.eDateFrom = eDateFrom;
         this.eDateTo = eDateTo;
         this.eDesc = eDesc;
-        this.eld = eld;
+        this.eId = eId;
         this.eImage = eImage;
         this.eLocation = eLocation;
         this.eStatus = eStatus;
@@ -68,12 +68,12 @@ public class ModelEvent {
         this.eDesc = eDesc;
     }
 
-    public String getEld() {
-        return eld;
+    public String getEId() {
+        return eId;
     }
 
-    public void setEld(String eld) {
-        this.eld = eld;
+    public void setEId(String eId) {
+        this.eId = eId;
     }
 
     public String geteImage() {
