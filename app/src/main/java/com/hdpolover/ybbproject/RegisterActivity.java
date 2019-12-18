@@ -384,9 +384,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                                 phone = codeNumber + phoneFull;
                             }
 
-                            //convert timestamp to dd/mm/yyyy hh:mm am/pm
-                            Date currentTime = Calendar.getInstance().getTime();
-                            String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+                            //getDateNow
+                            String time = String.valueOf(System.currentTimeMillis());
 
                             //capitalize the first letter
                             String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()

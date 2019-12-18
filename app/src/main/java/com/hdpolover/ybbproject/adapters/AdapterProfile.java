@@ -52,8 +52,8 @@ public class AdapterProfile extends FragmentPagerAdapter {
                 return new CommentTab();
             case 3:
                 return new UpvotesTab();
-            case 4:
-                return new EventsTab();
+//            case 4:
+//                return new EventsTab();
             default:
                 return null;
         }
@@ -95,7 +95,7 @@ public class AdapterProfile extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 4;
     }
 
     @Override
@@ -109,8 +109,8 @@ public class AdapterProfile extends FragmentPagerAdapter {
                 return " Comments ";
             case 3:
                 return " Upvotes ";
-            case 4:
-                return " Events ";
+//            case 4:
+//                return " Events ";
             default:
                 return null;
         }

@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +44,7 @@ public class EventDetailActivity  extends AppCompatActivity {
     Spinner editTextSpinnerEvent;
     EditText editTextLoctEvent;
     EditText editTextDescEvent, editTextEventQuot, editTextEventParticipants, editTextEventSpeaker;
+    Button joinBtn;
 
     String myUid, eId, uid;
 
@@ -66,6 +70,7 @@ public class EventDetailActivity  extends AppCompatActivity {
         editTextDescEvent = findViewById(R.id.descEt);
         editTextEventQuot = findViewById(R.id.eventQuot);
         editTextEventSpeaker = findViewById(R.id.eventSpek);
+        joinBtn = findViewById(R.id.joinBtn);
 
         checkUserStatus();
 
@@ -75,6 +80,13 @@ public class EventDetailActivity  extends AppCompatActivity {
         Log.e("AD", eId + uid);
 
         showEventDetails();
+
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EventDetailActivity.this, "Join Click!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showEventDetails() {

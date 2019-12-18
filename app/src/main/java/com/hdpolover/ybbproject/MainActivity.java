@@ -461,9 +461,8 @@ public class MainActivity extends AppCompatActivity {
                                 String email = myEmail;
                                 String uid = user.getUid();
 
-                                //convert timestamp to dd/mm/yyyy hh:mm am/pm
-                                Date currentTime = Calendar.getInstance().getTime();
-                                String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+                                //getDateNow
+                                String time = String.valueOf(System.currentTimeMillis());
 
                                 //substring for get name
                                 String subName = "@";

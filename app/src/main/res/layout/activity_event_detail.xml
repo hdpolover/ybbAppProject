@@ -199,9 +199,22 @@
                         android:textColor="@color/primaryTextColor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+
+                <Button
+                    android:id="@+id/joinBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/primaryLightColor"
+                    android:text="Join!"
+                    android:textColor="@color/whiteTextColor"/>
+
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>
