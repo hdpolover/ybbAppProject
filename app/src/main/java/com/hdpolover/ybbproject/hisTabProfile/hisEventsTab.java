@@ -1,6 +1,8 @@
 package com.hdpolover.ybbproject.hisTabProfile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,7 @@ public class hisEventsTab extends Fragment {
     List<ModelEvent> eventList;
     AdapterEvent adapterEvent;
 
-    String myUid;
+    String hisUid;
 
     public hisEventsTab() {
         // Required empty public constructor
@@ -52,10 +54,14 @@ public class hisEventsTab extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_events_tab, container, false);
 
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
+
+
+        //get uid of clicked user
+        Intent intent = getActivity().getIntent();
+        hisUid = intent.getStringExtra("uid");
+        Log.e("uidne", hisUid);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -78,7 +84,7 @@ public class hisEventsTab extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(hisUid);
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

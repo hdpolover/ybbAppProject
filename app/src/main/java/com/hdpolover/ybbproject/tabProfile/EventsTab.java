@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,10 +55,9 @@ public class EventsTab extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_events_tab, container, false);
 
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         //shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
+        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -68,6 +68,8 @@ public class EventsTab extends Fragment {
 
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        checkUserStatus();
 
         //init event list
         eventList = new ArrayList<>();
@@ -86,7 +88,7 @@ public class EventsTab extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
                     eventList.add(modelEvent);
@@ -113,21 +115,31 @@ public class EventsTab extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //in case of errors
-                Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    private void checkUserStatus() {
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //user is signed in stay here
+            myUid = user.getUid();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //shimmerFrameLayout.startShimmer();
+        shimmerFrameLayout.startShimmer();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.stopShimmer();
     }
 
 }
