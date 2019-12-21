@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.WebViewNewsActivity;
 import com.hdpolover.ybbproject.models.WordPressPostModel;
@@ -50,16 +51,27 @@ public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder
         holder.newsExcerptTv.setText(excerpt);
         holder.newsDateTv.setText(setPrettyDate(date));
 
+//        try {
+//            Picasso.get().load(image)
+//                    .fit()
+//                    .centerCrop()
+//                    .placeholder(R.drawable.placeholder_ybb_news)
+//                    .into(holder.newsImageIv);
+//        } catch (Exception e) {
+//            Picasso.get().load(R.drawable.placeholder_ybb_news)
+//                    .fit()
+//                    .centerCrop()
+//                    .placeholder(R.drawable.placeholder_ybb_news)
+//                    .into(holder.newsImageIv);
+//        }
+
         try {
-            Picasso.get().load(image)
-                    .fit()
+            Glide.with(context).load(image)
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_ybb_news)
                     .into(holder.newsImageIv);
         } catch (Exception e) {
-            //holder.newsImageIv.setVisibility(View.GONE);
-            Picasso.get().load(R.drawable.placeholder_ybb_news)
-                    .fit()
+            Glide.with(context).load(R.drawable.placeholder_ybb_news)
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_ybb_news)
                     .into(holder.newsImageIv);

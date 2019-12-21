@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hdpolover.ybbproject.ChatActivity;
 import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.R;
@@ -62,9 +63,12 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         }
 
         try{
-            Picasso.get().load(userImage).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.profileIv);
-        }
-        catch (Exception e){
+            //Picasso.get().load(userImage).placeholder(R.drawable.ic_undraw_profile_pic).into(holder.profileIv);
+            Glide.with(context).load(userImage)
+                    .fitCenter()
+                    .placeholder(R.drawable.ic_undraw_profile_pic)
+                    .into(holder.profileIv);
+        } catch (Exception e){
             //Picasso.get().load(R.drawable.ic_default_img).into(holder.profileIv);
         }
 

@@ -27,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
@@ -119,8 +120,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         calendar.setTimeInMillis(Long.parseLong(pTime));
         String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
 
-        //Log.e("e", prettyTime.approximateDuration(calendar.getTime()).toString());
-
         String month = "";
         String date = convertedTime.substring(0, 2);
         String time = convertedTime.substring(10);
@@ -185,7 +184,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             myHolder.pImageIv.setVisibility(View.VISIBLE);
 
             try {
-                Picasso.get().load(pImage)
+                Glide.with(context).load(pImage)
+                        .fitCenter()
                         .into(myHolder.pImageIv);
             } catch (Exception e) {
 
@@ -350,9 +350,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 //get user data
                 String image = user.getImage();
                 try {
-                    Picasso.get().load(image)
+                    Glide.with(context).load(image)
                             .placeholder(R.drawable.ic_undraw_profile_pic)
-                            .fit()
                             .centerCrop()
                             .into(userImage);
                 } catch (Exception e) {
