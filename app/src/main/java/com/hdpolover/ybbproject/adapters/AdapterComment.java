@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.hdpolover.ybbproject.models.ModelUser;
 
@@ -35,6 +36,8 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
     Context context;
     List<ModelComment> commentList;
     String myUid, postId;
+
+    SocialTimeConverter stc;
 
     public AdapterComment(Context context, List<ModelComment> commentList, String myUid, String postId) {
         this.context = context;
@@ -54,67 +57,13 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        stc = new SocialTimeConverter();
+
         //get data
         final String uid = commentList.get(position).getUid();
         final String cid = commentList.get(position).getcId();
         String comment = commentList.get(position).getComment();
         String timestamp = commentList.get(position).getTimestamp();
-
-        String pTime = "", month = "", date = "", time = "";
-        try {
-            //convert timestamp to dd/mm/yyy hh:mm am/pm
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            calendar.setTimeInMillis(Long.parseLong(timestamp));
-            pTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
-            month = "";
-            date = pTime.substring(0, 2);
-            time = pTime.substring(10);
-
-            String b = pTime.substring(3, 5);
-
-            switch (b) {
-                case "1":
-                    month = "Jan";
-                    break;
-                case "2":
-                    month = "Feb";
-                    break;
-                case "3":
-                    month = "Mar";
-                    break;
-                case "4":
-                    month = "Apr";
-                    break;
-                case "5":
-                    month = "May";
-                    break;
-                case "6":
-                    month = "June";
-                    break;
-                case "7":
-                    month = "July";
-                    break;
-                case "8":
-                    month = "Aug";
-                    break;
-                case "9":
-                    month = "Sep";
-                    break;
-                case "10":
-                    month = "Oct";
-                    break;
-                case "11":
-                    month = "Nov";
-                    break;
-                case "12":
-                    month = "Des";
-                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e("nope", "no comment");
-        }
 
         //set user data
         getUserData(holder.avatarIv, holder.nameTv, uid);
@@ -122,7 +71,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         //set the data
         //holder.nameTv.setText(name);
         holder.commentTv.setText(comment);
-        holder.timeTv.setText(date + " " + month + " at" + time);
+        holder.timeTv.setText(stc.getSocialTimeFormat(timestamp));
 
         //comment click listener
         holder.itemView.setOnClickListener(new View.OnClickListener() {

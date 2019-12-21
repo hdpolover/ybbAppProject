@@ -47,6 +47,7 @@ import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.ProfileFragment;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
+import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelPost;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.hdpolover.ybbproject.notifications.APIService;
@@ -75,7 +76,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     APIService apiService;
 
-    PrettyTime prettyTime;
+    SocialTimeConverter stc;
 
     ModelUser modelUser;
 
@@ -105,7 +106,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         setCurrentUserName(myUid);
 
-        prettyTime = new PrettyTime();
+        stc = new SocialTimeConverter();
 
         //get data
         final String hisUid = postList.get(position).getUid();
@@ -114,63 +115,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final String pImage = postList.get(position).getpImage();
         final String pTime = postList.get(position).getpTime();
 
-        //convert timestamp to dd/mm/yyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(Long.parseLong(pTime));
-        String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
-
-        String month = "";
-        String date = convertedTime.substring(0, 2);
-        String time = convertedTime.substring(10);
-
-        String b = convertedTime.substring(3, 5);
-
-        switch (b) {
-            case "1":
-                month = "Jan";
-                break;
-            case "2":
-                month = "Feb";
-                break;
-            case "3":
-                month = "Mar";
-                break;
-            case "4":
-                month = "Apr";
-                break;
-            case "5":
-                month = "May";
-                break;
-            case "6":
-                month = "Jun";
-                break;
-            case "7":
-                month = "Jul";
-                break;
-            case "8":
-                month = "Aug";
-                break;
-            case "9":
-                month = "Sep";
-                break;
-            case "10":
-                month = "Oct";
-                break;
-            case "11":
-                month = "Nov";
-                break;
-            case "12":
-                month = "Dec";
-                break;
-                default:
-                    break;
-        }
+        myHolder.pTimeTv.setText(stc.getSocialTimeFormat(pTime));
 
         //this is to get the user data
         getUserData(myHolder.uPictureIv, myHolder.uNameTv, hisUid);
 
         //set data
-        myHolder.pTimeTv.setText(month + " " + date + " at" + time);
         myHolder.pDescTv.setText(pDesc);
 
         //set post image

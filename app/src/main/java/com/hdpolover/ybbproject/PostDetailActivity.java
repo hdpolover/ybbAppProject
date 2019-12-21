@@ -45,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.adapters.AdapterComment;
+import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.hdpolover.ybbproject.notifications.APIService;
@@ -665,61 +666,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     pImage = ""+ds.child("pImage").getValue();
                     hisUid = ""+ds.child("uid").getValue();
 
-                    //convert timestamp to dd/mm/yyy hh:mm am/pm
-                    Calendar calendar = Calendar.getInstance(Locale.getDefault());
-                    calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
-                    String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-
-                    String month = "";
-                    String date = pTime.substring(0, 2);
-                    String time = pTime.substring(10);
-
-                    String b = pTime.substring(3, 5);
-
-                    switch (b) {
-                        case "1":
-                            month = "Jan";
-                            break;
-                        case "2":
-                            month = "Feb";
-                            break;
-                        case "3":
-                            month = "Mar";
-                            break;
-                        case "4":
-                            month = "Apr";
-                            break;
-                        case "5":
-                            month = "May";
-                            break;
-                        case "6":
-                            month = "June";
-                            break;
-                        case "7":
-                            month = "July";
-                            break;
-                        case "8":
-                            month = "Aug";
-                            break;
-                        case "9":
-                            month = "Sep";
-                            break;
-                        case "10":
-                            month = "Oct";
-                            break;
-                        case "11":
-                            month = "Nov";
-                            break;
-                        case "12":
-                            month = "Des";
-                            break;
-                        default:
-                            break;
-                    }
-
                     //set data
                     pDescTv.setText(pDesc);
-                    pTimeTv.setText(date + " " + month + " at" + time);
+
+                    SocialTimeConverter stc = new SocialTimeConverter();
+                    pTimeTv.setText(stc.getSocialTimeFormat(pTimeStamp));
 
                     //set image of the user who posted
                     //set post image

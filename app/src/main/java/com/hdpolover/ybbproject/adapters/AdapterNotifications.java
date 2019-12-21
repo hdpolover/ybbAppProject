@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
+import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelNotification;
 import com.hdpolover.ybbproject.models.ModelUser;
 
@@ -43,6 +44,8 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
     private List<ModelNotification> mNotification;
 
     boolean isExist;
+
+    SocialTimeConverter stc;
 
     public AdapterNotifications(Context context, List<ModelNotification> notification){
         mContext = context;
@@ -58,6 +61,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, final int position) {
+        stc = new SocialTimeConverter();
 
         final ModelNotification notification = mNotification.get(position);
 
@@ -69,59 +73,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
 
         getUserData(holder.notifUserIv, holder.notifContentTv, notifContent, userId);
 
-        //convert timestamp to dd/mm/yyy hh:mm am/pm
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.setTimeInMillis(Long.parseLong(notifTime));
-        String convertedTime = DateFormat.format("dd/MM/yyy hh:mm aa", calendar).toString();
-
-        String month = "";
-        String date = convertedTime.substring(0, 2);
-        String time = convertedTime.substring(10);
-
-        String b = convertedTime.substring(3, 5);
-
-        switch (b) {
-            case "1":
-                month = "Jan";
-                break;
-            case "2":
-                month = "Feb";
-                break;
-            case "3":
-                month = "Mar";
-                break;
-            case "4":
-                month = "Apr";
-                break;
-            case "5":
-                month = "May";
-                break;
-            case "6":
-                month = "Jun";
-                break;
-            case "7":
-                month = "Jul";
-                break;
-            case "8":
-                month = "Aug";
-                break;
-            case "9":
-                month = "Sep";
-                break;
-            case "10":
-                month = "Oct";
-                break;
-            case "11":
-                month = "Nov";
-                break;
-            case "12":
-                month = "Dec";
-                break;
-            default:
-                break;
-        }
-
-        holder.notifTimeTv.setText(month + " " + date + " at" + time);
+        holder.notifTimeTv.setText(stc.getSocialTimeFormat(notifTime));
         holder.notifMoreBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -294,7 +246,11 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
                 }
 
                 String username = user.getName();
-                notifContentTv.setText(username + " " + notifContent);
+                if (username.length() > 15) {
+                    notifContentTv.setText(username.substring(0, 16) + "... " + notifContent);
+                } else {
+                    notifContentTv.setText(username + " " + notifContent);
+                }
             }
 
             @Override
