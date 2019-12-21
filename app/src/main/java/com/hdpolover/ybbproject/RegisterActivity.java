@@ -139,58 +139,53 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                 final String password = mPasswordEt.getText().toString().trim();
                 final String phone = mPhoneEt.getText().toString().trim();
                 final String job = mJobEt.getText().toString().trim();
-                //Validate
-                if (fullname.equals("")) {
-                    //set error
+
+                if(fullname == null || fullname.isEmpty()){
                     mFullnameEt.setError("Full name cannot be empty");
                     mFullnameEt.setFocusable(true);
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    //set error
+                    return;
+                }
+
+                if(email == null || email.isEmpty()){
+                    mEmailEt.setError("Email must not be empty");
+                    mEmailEt.setFocusable(true);
+                    return;
+                }
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     mEmailEt.setError("Invalid email!");
                     mEmailEt.setFocusable(true);
-                } else if (password.length() < 6) {
-                    //set error
-                    mPasswordEt.setError("Password length at least 6 characters");
-                    mPasswordEt.setFocusable(true);
-                } else if (phone.equals("")) {
-                    //set error
-                    mPhoneEt.setError("Phone number cannot be empty");
-                    mPhoneEt.setFocusable(true);
-                } else if (job.equals("")) {
-                    //set error
-                    mJobEt.setError("Job cannot be empty");
-                    mJobEt.setFocusable(true);
-                } else {
-                    registerUser(email, password); //register user
-//                    //check if email same
-//                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users");
-//
-//                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                                if (ds.child(username).exists()) {
-//                                    //set error
-//                                    mEmailEt.setError("Username already exists!");
-//                                    mEmailEt.setFocusable(true);
-//                                }else if(ds.child(email).exists()){
-//                                    //set error
-//                                    mEmailEt.setError("Email already exists!");
-//                                    mEmailEt.setFocusable(true);
-//                                }else{
-//                                    registerUser(email, password); //register user
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    });
+                    return;
                 }
+
+                if(password == null || password.isEmpty()){
+                    mPasswordEt.setError("Password must not be empty");
+                    mPasswordEt.setFocusable(true);
+                    return;
+                }
+
+                if(password.length() < 6){
+                    mPasswordEt.setError("Password length must be at least 6 characters");
+                    mPasswordEt.setFocusable(true);
+                    return;
+                }
+
+                if(phone == null || phone.isEmpty()){
+                    mPhoneEt.setError("Phone number must not be empty");
+                    mPhoneEt.setFocusable(true);
+                    return;
+                }
+
+                if(job == null || job.isEmpty()){
+                    mJobEt.setError("Occupation must not be empty");
+                    mJobEt.setFocusable(true);
+                    return;
+                }
+
+                registerUser(email, password); //register user
             }
         });
+
         //handle login textview click
         mHaveAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,10 +407,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("job", job);
                             hashMap.put("cityFrom", "");
                             hashMap.put("countryFrom", "");
-                            hashMap.put("birthDate", "edit in your profile!");
-                            hashMap.put("bio", "edit in your profile!");
-                            hashMap.put("education", "edit in your profile!");
-                            hashMap.put("interest", "edit in your profile!");
+                            hashMap.put("birthDate", "--");
+                            hashMap.put("bio", "--");
+                            hashMap.put("education", "--");
+                            hashMap.put("interest", "--");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -424,7 +419,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
-                            Toast.makeText(RegisterActivity.this, "Registered . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(RegisterActivity.this, "Registered . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, UploadProfileActivity.class));
                             finish();
                         } else {

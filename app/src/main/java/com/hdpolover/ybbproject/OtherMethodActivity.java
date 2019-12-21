@@ -117,23 +117,27 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                 final String fullname = mFullnameEt.getText().toString().trim();
                 final String phone = mPhoneEt.getText().toString().trim();
                 final String job = mJobEt.getText().toString().trim();
-                final String email = emailTv.getText().toString();
                 //Validate
-                if (fullname.equals("")) {
-                    //set error
-                    mFullnameEt.setError("Full name cannot be empty");
-                    mFullnameEt.setFocusable(true);
-                } else if (phone.equals("")) {
-                    //set error
-                    mPhoneEt.setError("Phone number cannot be empty");
+                if(fullname == null || fullname.isEmpty()){
+                    mPhoneEt.setError("Full name must not be empty");
                     mPhoneEt.setFocusable(true);
-                } else if (job.equals("")) {
-                    //set error
-                    mJobEt.setError("Job cannot be empty");
-                    mJobEt.setFocusable(true);
-                } else {
-                    registerUser(); //register user
+                    return;
                 }
+
+                if(phone == null || phone.isEmpty()){
+                    mPhoneEt.setError("Phone number must not be empty");
+                    mPhoneEt.setFocusable(true);
+                    return;
+                }
+
+                if(job == null || job.isEmpty()){
+                    mPhoneEt.setError("Occupation must not be empty");
+                    mPhoneEt.setFocusable(true);
+                    return;
+                }
+
+                registerUser(); //register user
+
             }
         });
     }
@@ -269,33 +273,6 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
         //email and password pattern is valid
         progressDialog.show();
 
-//        HashMap<String, Object> hashMap = new HashMap<>();
-//        //put post info
-//        hashMap.put("uid", uid);
-//        hashMap.put("pDesc", desc);
-//        hashMap.put("pImage", "noImage");
-//
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-//        ref.child(uid)
-//                .updateChildren(hashMap)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        pd.dismiss();
-//                        Toast.makeText(AddPostActivity.this, "Post successfully updated...", Toast.LENGTH_SHORT).show();
-//
-//                        startActivity(new Intent(AddPostActivity.this, DashboardActivity.class));
-//                        finish();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        pd.dismiss();
-//                        Toast.makeText(AddPostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
         mAuth.updateCurrentUser(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -357,8 +334,10 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             hashMap.put("job", job);
                             hashMap.put("cityFrom", "");
                             hashMap.put("countryFrom", "");
-                            hashMap.put("birthDate", "");
+                            hashMap.put("birthDate", "--");
                             hashMap.put("bio", "--");
+                            hashMap.put("education", "--");
+                            hashMap.put("interest", "--");
 
                             //firebase database instance
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
