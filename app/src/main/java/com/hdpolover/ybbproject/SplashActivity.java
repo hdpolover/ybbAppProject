@@ -12,8 +12,12 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,17 +32,26 @@ import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private int loadingTime = 1500;
-
-    String myUid;
-    List<ModelUser> userList;
+    private int loadingTime = 2500;
 
     boolean isUser;
+
+    ImageView ybbLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        ybbLogo = findViewById(R.id.ybbSplashLogo);
+
+        //load logo with glide
+        Glide.with(getApplicationContext()).load(R.drawable.ybb_white_full).into(ybbLogo);
+
+        //add animation
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.splashanim);
+        ybbLogo.startAnimation(animation);
 
         if (isNetworkConnected() || isInternetAvailable()) {
             new Handler().postDelayed(new Runnable() {
@@ -90,36 +103,5 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    private boolean isAlreadyLoggedin() {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        //get all data from this ref
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelUser modelUser = ds.getValue(ModelUser.class);
-
-                    if (modelUser.getUid().equals(user.getUid())) {
-                        Log.e("us", user.getUid());
-                        isUser = true;
-                    } else {
-                        isUser = false;
-                        Log.e("us", "false");
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        return isUser;
     }
 }

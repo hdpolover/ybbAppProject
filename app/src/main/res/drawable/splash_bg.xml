@@ -4,14 +4,14 @@
 <!--    to set background in splash screen -->
     <item android:drawable="@color/primaryColor"/>
 
-    <item
-        android:gravity="center"
-        android:width="260dp"
-        android:height="120dp">
+<!--    <item-->
+<!--        android:gravity="center"-->
+<!--        android:width="260dp"-->
+<!--        android:height="120dp">-->
 
-        <bitmap
-            android:gravity="fill_horizontal|fill_vertical"
-            android:src="@drawable/ybb_white_full" />
+<!--        <bitmap-->
+<!--            android:gravity="fill_horizontal|fill_vertical"-->
+<!--            android:src="@drawable/ybb_white_full" />-->
 
-    </item>
+<!--    </item>-->
 </layer-list>
