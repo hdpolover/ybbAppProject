@@ -183,6 +183,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
             cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
         } else {
             Toast.makeText(this, "Location not Detected. Please Enable Your Location", Toast.LENGTH_SHORT).show();
+            showAlert();
         }
     }
 
@@ -346,7 +347,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
-                            Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
                             finish();
                         } else {
@@ -362,80 +363,6 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
 
             }
         });
-
-//        mAuth.updateCurrentUser(user)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if (task.isSuccessful()) {
-//                    // Sign in success, dismiss dialog and start register activity
-//                    progressDialog.dismiss();
-//
-//                    FirebaseUser user = mAuth.getCurrentUser();
-//
-//                    //Get user email and uid from auth
-//                    String email = user.getEmail();
-//                    String uid = user.getUid();
-//
-//                    //get username based on first 5 letters of uid
-//                    String username = "ybb" + uid.substring(0, 5);
-//
-//                    //get Textview location
-//                    String country = countryTv.getText().toString();
-//                    String city = cityTv.getText().toString();
-//
-//                    String fullName = mFullnameEt.getText().toString();
-//                    String phone = mPhoneEt.getText().toString();
-//                    //capitalize the first letter
-//                    String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
-//                            + mJobEt.getText().toString().substring(1);
-//
-//                    //substring for get name
-//                    //String subName = "@";
-//                    //String name = email.substring(0, email.indexOf(subName));
-//
-//                    //when user is registered store user info in firebase realtime database too
-//                    //using hashmap
-//                    HashMap<Object, String> hashMap = new HashMap<>();
-//                    //put info in hasmap
-//                    hashMap.put("email", email);
-//                    hashMap.put("uid", uid);
-//                    hashMap.put("name", fullName); //will add later
-//                    hashMap.put("onlineStatus", "online"); //will add later
-//                    hashMap.put("typingTo", "noOne"); //will add later
-//                    hashMap.put("phone", phone); //will add later
-//                    hashMap.put("image", ""); //will add later
-//                    hashMap.put("country", country);
-//                    hashMap.put("city", city);
-//                    hashMap.put("username", username);
-//                    hashMap.put("job", job);
-//
-//                    //firebase database instance
-//                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                    //path to store user data name Users
-//                    DatabaseReference reference = database.getReference("Users");
-//                    //put data within hashmap in database
-//                    reference.child(uid).setValue(hashMap);
-//
-//                    Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
-//                    finish();
-//                } else {
-//                    // If sign in fails, display a message to the user.
-//                    progressDialog.dismiss();
-//                    Toast.makeText(OtherMethodActivity.this, "Login Failed.",
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//
-//            }
-//        });
-
-//        startActivity(new Intent(OtherMethodActivity.this, DashboardActivity.class));
-//        finish();
     }
 
     @Override
