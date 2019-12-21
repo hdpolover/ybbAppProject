@@ -51,7 +51,6 @@ public class BlogFragment extends Fragment {
             @Override
             public void onSuccessGetData(ArrayList arrayList) {
                 if (!arrayList.isEmpty()) {
-                    Log.e("Size", String.valueOf(arrayList.size()));
                     showPost(arrayList);
                 } else {
                     Log.e("Size", String.valueOf(arrayList.size()));
@@ -70,10 +69,6 @@ public class BlogFragment extends Fragment {
         adapterArticle.notifyDataSetChanged();
         shimmerFrameLayout.stopShimmer();
         shimmerFrameLayout.setVisibility(View.GONE);
-    }
-
-    public void scrollUp(){
-        nestedScrollView.smoothScrollTo(0,0);
     }
 
     @Override

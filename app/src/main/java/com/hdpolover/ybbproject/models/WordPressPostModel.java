@@ -18,9 +18,6 @@ public class WordPressPostModel {
     @SerializedName("title")
     @Expose
     private Title title;
-    @SerializedName("content")
-    @Expose
-    private Content content;
     @SerializedName("excerpt")
     @Expose
     private Excerpt excerpt;
@@ -32,12 +29,11 @@ public class WordPressPostModel {
 
     }
 
-    public WordPressPostModel(int id, String date, String link, Title title, Content content, Excerpt excerpt, String jetpackFeaturedMediaUrl) {
+    public WordPressPostModel(int id, String date, String link, Title title, Excerpt excerpt, String jetpackFeaturedMediaUrl) {
         this.id = id;
         this.date = date;
         this.link = link;
         this.title = title;
-        this.content = content;
         this.excerpt = excerpt;
         this.jetpackFeaturedMediaUrl = jetpackFeaturedMediaUrl;
     }
@@ -72,14 +68,6 @@ public class WordPressPostModel {
 
     public void setTitle(Title title) {
         this.title = title;
-    }
-
-    public Content getContent() {
-        return content;
-    }
-
-    public void setContent(Content content) {
-        this.content = content;
     }
 
     public Excerpt getExcerpt() {

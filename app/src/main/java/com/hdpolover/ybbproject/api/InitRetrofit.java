@@ -34,7 +34,6 @@ public class InitRetrofit {
                     list.addAll(response.body());
                 }
                 onRetrofitSuccess.onSuccessGetData(list);
-                Log.e("success", response.toString());
             }
 
             @Override
@@ -53,7 +52,6 @@ public class InitRetrofit {
                     list.addAll(response.body());
                 }
                 onRetrofitSuccess.onSuccessGetData(list);
-                Log.e("success", response.toString());
             }
 
             @Override
