@@ -3,13 +3,14 @@ package com.hdpolover.ybbproject.models;
 public class ModelUser {
 
     //use same name as in firebase database
-    String name, email, search, phone, image, cover, uid, onlineStatus, typingTo, country, city, username, job;
+    String name, email, search, phone, image, cover, uid, onlineStatus, typingTo, country, city, username, job,
+    bio, cityFrom, countryFrom, birthDate, education, interest;
 
     public ModelUser(){
 
     }
 
-    public ModelUser(String name, String email, String search, String phone, String image, String cover, String uid, String onlineStatus, String typingTo, String country, String city, String username, String job) {
+    public ModelUser(String name, String email, String search, String phone, String image, String cover, String uid, String onlineStatus, String typingTo, String country, String city, String username, String job, String bio, String cityFrom, String countryFrom, String birthDate, String education, String interest) {
         this.name = name;
         this.email = email;
         this.search = search;
@@ -23,14 +24,12 @@ public class ModelUser {
         this.city = city;
         this.username = username;
         this.job = job;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
+        this.bio = bio;
+        this.cityFrom = cityFrom;
+        this.countryFrom = countryFrom;
+        this.birthDate = birthDate;
+        this.education = education;
+        this.interest = interest;
     }
 
     public String getName() {
@@ -127,5 +126,61 @@ public class ModelUser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getCityFrom() {
+        return cityFrom;
+    }
+
+    public void setCityFrom(String cityFrom) {
+        this.cityFrom = cityFrom;
+    }
+
+    public String getCountryFrom() {
+        return countryFrom;
+    }
+
+    public void setCountryFrom(String countryFrom) {
+        this.countryFrom = countryFrom;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 }

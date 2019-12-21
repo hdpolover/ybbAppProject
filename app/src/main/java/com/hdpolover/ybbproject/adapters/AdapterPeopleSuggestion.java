@@ -24,7 +24,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
-import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.hdpolover.ybbproject.notifications.APIService;
 import com.hdpolover.ybbproject.notifications.Client;
@@ -43,14 +42,14 @@ import retrofit2.Callback;
 public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleSuggestion.MyHolder> {
 
     Context context;
-    List<ModelPeopleSuggestion> peopleList;
+    List<ModelUser> peopleList;
 
     String myUid, myName, publisherId;
 
     APIService apiService;
     ModelUser modelUser;
 
-    public AdapterPeopleSuggestion(Context context, List<ModelPeopleSuggestion> peopleList) {
+    public AdapterPeopleSuggestion(Context context, List<ModelUser> peopleList) {
         this.context = context;
         this.peopleList = peopleList;
     }

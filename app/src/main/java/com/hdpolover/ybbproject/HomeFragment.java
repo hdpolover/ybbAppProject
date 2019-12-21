@@ -36,8 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterPeopleSuggestion;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
-import com.hdpolover.ybbproject.models.ModelPeopleSuggestion;
 import com.hdpolover.ybbproject.models.ModelPost;
+import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     AdapterPost adapterPost;
 
     RecyclerView peopleSuggestionRecyclerView;
-    List<ModelPeopleSuggestion> peopleList;
+    List<ModelUser> peopleList;
     AdapterPeopleSuggestion adapterPeopleSuggestion;
 
     List<String> followedPeopleId;
@@ -98,6 +98,13 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
         noPostHomeLayout = view.findViewById(R.id.noPostHomeLayout);
 
+        checkUserStatus();
+
+        //init post list
+        postList = new ArrayList<>();
+        peopleList = new ArrayList<>();
+        followedPeopleId =  new ArrayList<>();
+
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -106,6 +113,9 @@ public class HomeFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         //set layout to recycler view
         postRecyclerView.setLayoutManager(layoutManager);
+        postRecyclerView.setHasFixedSize(true);
+        adapterPost = new AdapterPost(getContext(), postList);
+        postRecyclerView.setAdapter(adapterPost);
         postRecyclerView.setNestedScrollingEnabled(false);
 
         //recycler view and its properties
@@ -113,16 +123,12 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         //set layout to recycler view
         peopleSuggestionRecyclerView.setLayoutManager(layoutManager1);
+        peopleSuggestionRecyclerView.setHasFixedSize(true);
+        adapterPeopleSuggestion = new AdapterPeopleSuggestion(getContext(), peopleList);
+        peopleSuggestionRecyclerView.setAdapter(adapterPeopleSuggestion);
         peopleSuggestionRecyclerView.setNestedScrollingEnabled(false);
 
         nestedScrollView = view.findViewById(R.id.nestedScrollViewHome);
-
-        checkUserStatus();
-
-        //init post list
-        postList = new ArrayList<>();
-        peopleList = new ArrayList<>();
-        followedPeopleId =  new ArrayList<>();
 
         //get followed user id to be compared later
         //setFollowedPeopleId();
@@ -260,7 +266,7 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 peopleList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPeopleSuggestion modelPeopleSuggestion = ds.getValue(ModelPeopleSuggestion.class);
+                    ModelUser modelUser = ds.getValue(ModelUser.class);
 
 //                        if (followedPeopleId.size() != 0) {
 //                            for (String followedUserId: followedPeopleId) {
@@ -275,8 +281,8 @@ public class HomeFragment extends Fragment {
 //                        peopleList.add(modelPeopleSuggestion);
 //                        }}
 
-                    if (!modelPeopleSuggestion.getUid().equals(uid)) {
-                        peopleList.add(modelPeopleSuggestion);
+                    if (!modelUser.getUid().equals(uid)) {
+                        peopleList.add(modelUser);
                     }
 
                     //adapter
