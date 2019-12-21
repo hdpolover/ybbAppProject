@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -139,7 +140,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                     try {
                         //if image is received then set
-                        Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
+                        Glide.with(getApplicationContext()).load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
                         //if there is any exception while getting image then set default
                         //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);

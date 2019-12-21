@@ -68,6 +68,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddPostActivity" />
         <activity android:name=".HomeFragment" />
+        <activity android:name=".NewsFragment" android:theme="@style/AppThemeNo" />
 
         <service
             android:name=".notifications.FirebaseService"

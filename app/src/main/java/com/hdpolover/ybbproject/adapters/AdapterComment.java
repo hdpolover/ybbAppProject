@@ -3,6 +3,7 @@ package com.hdpolover.ybbproject.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.hdpolover.ybbproject.models.ModelUser;
@@ -98,9 +100,27 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
                     });
                     //show dialog
                     builder.create().show();
-                } else {
-                    //not my comment
                 }
+            }
+        });
+
+        holder.nameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("uid", uid);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.avatarIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfileActivity.class);
+                intent.putExtra("uid", uid);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
     }
