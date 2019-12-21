@@ -178,14 +178,30 @@ public class MainActivity extends AppCompatActivity {
                 //input data
                 String email = mEmailEt.getText().toString();
                 String password = mPasswordEt.getText().toString().trim();
+
+                if(email == null || email.isEmpty()){
+                    //Toast.makeText(getApplicationContext(), "Email must not be empty", Toast.LENGTH_SHORT).show();
+                    mEmailEt.setError("Email must not be empty");
+                    mEmailEt.setFocusable(true);
+                    return;
+                }
+
+                if(password == null || password.isEmpty()){
+                    //Toast.makeText(getApplicationContext(), "Password must not be empty", Toast.LENGTH_SHORT).show();
+                    mPasswordEt.setError("Password must not be empty");
+                    mPasswordEt.setFocusable(true);
+                    return;
+                }
+
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     //invalid
                     mEmailEt.setError("Invalid email");
                     mEmailEt.setFocusable(true);
-                } else {
-                    //valid email
-                    loginUser(email, password);
+                    return;
                 }
+
+                loginUser(email, password);
+
             }
         });
 
