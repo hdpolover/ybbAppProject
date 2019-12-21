@@ -79,7 +79,7 @@ public class BlogFragment extends Fragment {
 
     @Override
     public void onPause() {
-        shimmerFrameLayout.stopShimmer();
         super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }

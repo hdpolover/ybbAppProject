@@ -16,8 +16,6 @@ import com.bumptech.glide.Glide;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.WebViewNewsActivity;
 import com.hdpolover.ybbproject.models.WordPressPostModel;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 public class AdapterArticle extends RecyclerView.Adapter<AdapterArticle.MyHolder> {

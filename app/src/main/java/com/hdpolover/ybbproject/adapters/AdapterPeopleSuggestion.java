@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -101,9 +102,8 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
 
         //set user profile
         try {
-            Picasso.get().load(image)
+            Glide.with(context).load(image)
                     .placeholder(R.drawable.ic_undraw_profile_pic)
-                    .fit()
                     .centerCrop()
                     .into(holder.profileImageIv);
         } catch (Exception e) {

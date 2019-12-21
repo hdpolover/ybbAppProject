@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelComment;
 import com.hdpolover.ybbproject.models.ModelUser;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.List;
@@ -168,7 +168,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
                 //get user data
                 String image = user.getImage();
                 try {
-                    Picasso.get().load(image)
+                    Glide.with(context).load(image)
                             .placeholder(R.drawable.ic_undraw_profile_pic)
                             .into(userImage);
                 } catch (Exception e) {

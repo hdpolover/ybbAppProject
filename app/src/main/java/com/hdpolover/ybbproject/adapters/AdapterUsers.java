@@ -1,8 +1,6 @@
 package com.hdpolover.ybbproject.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.hdpolover.ybbproject.ChatActivity;
 import com.hdpolover.ybbproject.R;
-import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelUser;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -57,7 +54,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         holder.mEmailTv.setText(userEmail);
         holder.mPhoneTv.setText(userPhone);
         try {
-            Picasso.get().load(userImage)
+            Glide.with(context).load(userImage)
                     .placeholder(R.drawable.ic_undraw_profile_pic)
                     .into(holder.mAvatarIv);
         } catch (Exception e) {

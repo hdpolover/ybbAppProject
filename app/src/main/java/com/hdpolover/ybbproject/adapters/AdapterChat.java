@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +26,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelChat;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -82,14 +82,14 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             myHolder.messageTv.setVisibility(View.GONE);
             myHolder.messageIv.setVisibility(View.VISIBLE);
 
-            Picasso.get().load(message).placeholder(R.drawable.ic_picture).into(myHolder.messageIv);
+            Glide.with(context).load(message).placeholder(R.drawable.ic_picture).into(myHolder.messageIv);
         }
 
         //set data
         myHolder.messageTv.setText(message);
         myHolder.timeTv.setText(time);
         try {
-            Picasso.get().load(imageUrl).into(myHolder.profileIv);
+            Glide.with(context).load(imageUrl).into(myHolder.profileIv);
         } catch (Exception e) {
 
         }

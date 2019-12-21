@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
@@ -52,9 +53,6 @@ import com.hdpolover.ybbproject.notifications.Data;
 import com.hdpolover.ybbproject.notifications.Response;
 import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -604,9 +602,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 //get user data
                 String image = user.getImage();
                 try {
-                    Picasso.get().load(image)
+                    Glide.with(getApplicationContext()).load(image)
                             .placeholder(R.drawable.ic_undraw_profile_pic)
-                            .fit()
                             .centerCrop()
                             .into(userImage);
                 } catch (Exception e) {
@@ -638,8 +635,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     //set data
                     try {
 
-                        Picasso.get().load(myDp).placeholder(R.drawable.ic_undraw_profile_pic)
-                                .fit()
+                        Glide.with(getApplicationContext()).load(myDp).placeholder(R.drawable.ic_undraw_profile_pic)
                                 .centerInside()
                                 .into(cAvatarIv);
                     } catch (Exception e) {
@@ -736,7 +732,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         pImageIv.setVisibility(View.VISIBLE);
 
                         try {
-                            Picasso.get().load(pImage).into(pImageIv);
+                            Glide.with(getApplicationContext()).load(pImage).into(pImageIv);
                         } catch (Exception e) {
 
                         }

@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -167,7 +168,7 @@ public class EventDetailActivity  extends AppCompatActivity {
                         editTextTitleEvent.setText(eTitle);
 
                         try {
-                            Picasso.get().load(eImage).into(imageViewEvent);
+                            Glide.with(getApplicationContext()).load(eImage).into(imageViewEvent);
                         } catch (Exception e) {
 
                         }

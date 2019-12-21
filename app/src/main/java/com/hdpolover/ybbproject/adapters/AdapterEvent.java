@@ -17,17 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hdpolover.ybbproject.EventDetailActivity;
-import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelEvent;
-import com.squareup.picasso.Picasso;
 
-import java.sql.Time;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEvent> {
 
@@ -80,22 +76,12 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             holder.confirmStatusLayout.setVisibility(View.GONE);
         } else {
             holder.myeventStatus.setText(eConfirmStatus);
-//            if (eConfirmStatus.equals("pending")) {
-//                holder.myeventStatus.setText(eConfirmStatus);
-//                holder.myeventStatus.setTextColor(Color.rgb(246, 255, 79));
-//            } else if (eConfirmStatus.equals("approved")) {
-//                holder.myeventStatus.setText(eConfirmStatus);
-//                holder.myeventStatus.setTextColor(Color.CYAN);
-//            } else if (eConfirmStatus.equals("rejected")) {
-//                holder.myeventStatus.setText(eConfirmStatus);
-//                holder.myeventStatus.setTextColor(Color.RED);
-//            }
         }
 
         //event Image
 
             try {
-                Picasso.get().load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.myeventImg);
+                Glide.with(context).load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.myeventImg);
             }
             catch (Exception e) {
 

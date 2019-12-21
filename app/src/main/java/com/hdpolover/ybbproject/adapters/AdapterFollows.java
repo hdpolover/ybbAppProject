@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelUser;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class AdapterFollows extends RecyclerView.Adapter<AdapterFollows.MyHolder
         //set data
         holder.upvoterNameTv.setText(userName);
         try {
-            Picasso.get().load(userImage)
+            Glide.with(context).load(userImage)
                     .placeholder(R.drawable.ic_undraw_profile_pic)
                     .into(holder.uImageIv);
         } catch (Exception e) {

@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -255,7 +256,7 @@ public class ChatActivity extends AppCompatActivity {
                     nameTv.setText(name);
                     try {
                         //image received set it to imageview in toolbar
-                        Picasso.get().load(hisImage).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
+                        Glide.with(getApplicationContext()).load(hisImage).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
                         //there is exception getting picture, set default picture
                         //    Picasso.get().load(R.drawable.ic_default_img_white).into(profileIv);
