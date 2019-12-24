@@ -24,16 +24,6 @@ import com.hdpolover.ybbproject.notifications.Token;
 public class DashboardActivity extends AppCompatActivity {
 
     public BottomNavigationView bottomNavigationView;
-    public HomeFragment homeFragment;
-    public NewsFragment newsFragment;
-    public MessagesFragment messagesFragment;
-    public SchedulesFragment schedulesFragment;
-    public ProfileFragment profileFragment;
-
-    Fragment currentFragment;
-
-    //public FragmentTransaction frt;
-    public static int temp = 0;
 
     final Fragment fragment1 = new HomeFragment();
     final Fragment fragment2 = new NewsFragment();
@@ -50,9 +40,6 @@ public class DashboardActivity extends AppCompatActivity {
     boolean doubleBackToExit = false;
 
     ActionBar actionBar;
-
-    //views
-//    TextView mMasukTv;
 
     String mUID;
 
@@ -193,38 +180,4 @@ public class DashboardActivity extends AppCompatActivity {
             }
         }, 2000);
     }
-
-//    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//            Fragment selectedFragment = null;
-//
-//            switch (menuItem.getItemId()) {
-//                case R.id.nav_home:
-//                    actionBar.setTitle("YBB");
-//                    selectedFragment = new HomeFragment();
-//                    break;
-//                case R.id.nav_news:
-//                    actionBar.setTitle("YBB News");
-//                    selectedFragment = new NewsFragment();
-//                    break;
-//                case R.id.nav_messages:
-//                    actionBar.setTitle("YBB Messages");
-//                    selectedFragment = new MessagesFragment();
-//                    break;
-//                case R.id.nav_schedules:
-//                    actionBar.setTitle("YBB Schedules");
-//                    selectedFragment = new SchedulesFragment();
-//                    break;
-//                case R.id.nav_profile:
-//                    actionBar.setTitle("YBB Profile");
-//                    selectedFragment = new ProfileFragment();
-//                    break;
-//            }
-//
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-//
-//            return true;
-//        }
-//    };
 }

@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.tabProfile;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -39,12 +43,13 @@ public class EventsTab extends Fragment {
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
     LinearLayout noMyEventLayout;
+    LinearLayout placeholders;
 
     RecyclerView recyclerView;
     List<ModelEvent> eventList;
     AdapterEvent adapterEvent;
 
-    String myUid;
+    String myUid, hisUid;
 
     public EventsTab() {
         // Required empty public constructor
@@ -55,9 +60,13 @@ public class EventsTab extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_events_tab, container, false);
 
+        SharedPreferences sp = getContext().getSharedPreferences("OtherUserID",MODE_PRIVATE);
+        hisUid = sp.getString("hisUid", "");
+
         //shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
+        placeholders = view.findViewById(R.id.placeholdersEvent);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -66,23 +75,31 @@ public class EventsTab extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);
 
-        //set layout to recyclerView
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        checkUserStatus();
-
         //init event list
         eventList = new ArrayList<>();
 
-        loadEvents();
+        //set layout to recyclerView
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapterEvent = new AdapterEvent(getContext(), eventList);
+        recyclerView.setAdapter(adapterEvent);
+
+        checkUserStatus();
+        Log.e("myUid", myUid);
+        Log.e("hisUid", hisUid);
+
+        if (hisUid.equals(myUid)) {
+            loadEvents(myUid);
+        } else {
+            loadEvents(hisUid);
+        }
 
         return view;
     }
 
-    private void loadEvents() {
+    private void loadEvents(String uid) {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(uid);
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,7 +113,9 @@ public class EventsTab extends Fragment {
                     //adapter
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
 
+                    Log.e("iz", eventList.size() + "");
                     if (eventList.size() == 0) {
+                        Log.e("iz1", eventList.size() + "");
                         noMyEventLayout.setVisibility(View.VISIBLE);
                     } else {
                         noMyEventLayout.setVisibility(View.GONE);
@@ -104,10 +123,11 @@ public class EventsTab extends Fragment {
                         recyclerView.setAdapter(adapterEvent);
                         Collections.reverse(eventList);
                         adapterEvent.notifyDataSetChanged();
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                     }
 
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
+
                 }
 
             }

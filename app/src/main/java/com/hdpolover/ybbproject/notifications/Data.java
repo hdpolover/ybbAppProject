@@ -2,18 +2,36 @@ package com.hdpolover.ybbproject.notifications;
 
 public class Data {
 
-    private String user, body, title, sent;
+    private String user, body, title, sent, postId, notifCategory;
     private Integer icon;
 
     public Data() {
     }
 
-    public Data(String user, String body, String title, String sent, Integer icon) {
+    public Data(String notifCategory, String postId, String user, String body, String title, String sent, Integer icon) {
         this.user = user;
         this.body = body;
         this.title = title;
         this.sent = sent;
         this.icon = icon;
+        this.notifCategory = notifCategory;
+        this.postId = postId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getNotifCategory() {
+        return notifCategory;
+    }
+
+    public void setNotifCategory(String notifCategory) {
+        this.notifCategory = notifCategory;
     }
 
     public String getUser() {

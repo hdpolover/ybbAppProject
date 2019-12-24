@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -111,6 +112,11 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         hisUid = intent.getStringExtra("uid");
 
+        SharedPreferences sp = getSharedPreferences("OtherUserID", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("hisUid", hisUid);
+        editor.apply();
+
         //we have to get info of currently signed in user
         Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
@@ -203,82 +209,6 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-    }
-
-    private void loadHistPosts() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(hisUid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    //add to list
-                    postList.add(myPosts);
-
-                    //adapter
-                    adapterPost = new AdapterPost(UserProfileActivity.this, postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(UserProfileActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void searchHistPosts(final String searchQuery) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(UserProfileActivity.this);
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(hisUid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    if (myPosts.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
-                        //add to list
-                        postList.add(myPosts);
-                    }
-
-                    //adapter
-                    adapterPost = new AdapterPost(UserProfileActivity.this, postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(UserProfileActivity.this, ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

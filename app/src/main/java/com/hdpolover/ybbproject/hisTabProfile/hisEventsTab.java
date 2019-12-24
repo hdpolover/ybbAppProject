@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.hisTabProfile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class hisEventsTab extends Fragment {
 
 
@@ -57,11 +60,12 @@ public class hisEventsTab extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
 
+        SharedPreferences sp = getContext().getSharedPreferences("OtherUserID",MODE_PRIVATE);
+        hisUid = sp.getString("hisUid", "");
+        Log.e("his", hisUid);
 
-        //get uid of clicked user
-        Intent intent = getActivity().getIntent();
-        hisUid = intent.getStringExtra("uid");
-        Log.e("uidne", hisUid);
+        //init event list
+        eventList = new ArrayList<>();
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -72,9 +76,8 @@ public class hisEventsTab extends Fragment {
 
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        //init event list
-        eventList = new ArrayList<>();
+        adapterEvent = new AdapterEvent(getContext(), eventList);
+        recyclerView.setAdapter(adapterEvent);
 
         loadEvents();
 
@@ -84,32 +87,38 @@ public class hisEventsTab extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(hisUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.child(hisUid).exists()) {
+                        ModelEvent modelEvent = ds.child(hisUid).getValue(ModelEvent.class);
 
-                    eventList.add(modelEvent);
+                        eventList.add(modelEvent);
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    if (eventList.size() == 0) {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noMyEventLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noMyEventLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
+                        Log.e("exno", eventList.size()+"");
+                        noMyEventLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
+
                 }
 
             }

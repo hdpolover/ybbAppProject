@@ -53,7 +53,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         // get data
         final String uid = eventList.get(position).getUid();
         final String eId = eventList.get(position).getEId();
-        Log.e("eid", eId);
         String eImage = eventList.get(position).geteImage();
         String eTitle = eventList.get(position).geteTitle();
         String eDate = eventList.get(position).geteDateFrom();

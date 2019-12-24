@@ -173,7 +173,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     postComment();
                     addNotification(hisUid, postId);
                     myName = modelUser.getName();
-                    sendNotification(hisUid,  myName," commented on your post");
+                    sendNotification(hisUid,  myName," commented on your post", postId);
                 }
             }
         });
@@ -500,7 +500,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     //for notification
-    private void sendNotification(final String hisUid, final String name, final String message) {
+    private void sendNotification(final String hisUid, final String name, final String message, final String pId) {
         DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = allTokens.orderByKey().equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
@@ -508,7 +508,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+                    Data data = new Data("1", pId, myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
 
 
                     Sender sender = new Sender(data, token.getToken());

@@ -162,7 +162,7 @@ public class AdapterPeopleSuggestion extends RecyclerView.Adapter<AdapterPeopleS
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+                    Data data = new Data("2", "", myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
 
 
                     Sender sender = new Sender(data, token.getToken());

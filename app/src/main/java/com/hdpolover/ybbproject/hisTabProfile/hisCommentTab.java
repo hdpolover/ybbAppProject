@@ -67,10 +67,6 @@ public class hisCommentTab extends Fragment {
         noDataIv = view.findViewById(R.id.noDataIv);
         noDataTv = view.findViewById(R.id.noDataTv);
 
-        //get uid of clicked user
-        Intent intent = getActivity().getIntent();
-        hisUid = intent.getStringExtra("uid");
-        Log.e("uidne", hisUid);
 
         postList = new ArrayList<>();
 

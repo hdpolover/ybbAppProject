@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -42,9 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.AddPostActivity;
-import com.hdpolover.ybbproject.DashboardActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
-import com.hdpolover.ybbproject.ProfileFragment;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
@@ -57,12 +54,8 @@ import com.hdpolover.ybbproject.notifications.Response;
 import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,8 +72,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     SocialTimeConverter stc;
 
     ModelUser modelUser;
-
-    boolean notify = false;
 
     public  AdapterPost(Context context, List<ModelPost> postList) {
         this.context = context;
@@ -155,7 +146,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                         publisherId = hisUid;
                         addNotification(hisUid, pId);
                         myName = modelUser.getName();
-                        sendNotification(hisUid,  myName," upvoted your post");
+                        sendNotification(hisUid,  myName," upvoted your post", pId);
                     }
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("PostUpvotes").child(pId)
@@ -224,7 +215,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     }
 
     //for notification
-    private void sendNotification(final String hisUid, final String name, final String message) {
+    private void sendNotification(final String hisUid, final String name, final String message, final String postId) {
         DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = allTokens.orderByKey().equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
@@ -232,7 +223,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data(myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+                    Data data = new Data("1", postId, myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
 
 
                     Sender sender = new Sender(data, token.getToken());
