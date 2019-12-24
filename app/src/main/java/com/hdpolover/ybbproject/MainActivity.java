@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -573,7 +574,7 @@ public class MainActivity extends AppCompatActivity {
         emailEt.setMinEms(16);
 
         linearLayout.addView(emailEt);
-        linearLayout.setPadding(10, 10, 10, 10);
+        linearLayout.setPadding(15, 10, 15, 10);
 
         builder.setView(linearLayout);
 
@@ -582,6 +583,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String email = emailEt.getText().toString().trim();
+
+                if(email == null || email.isEmpty()){
+                    //Toast.makeText(getApplicationContext(), "Email must not be empty", Toast.LENGTH_SHORT).show();
+//                    emailEt.setError("Email must not be empty");
+//                    emailEt.setFocusable(true);
+                    Toast.makeText(getApplicationContext(), "Email must not be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    //invalid
+//                    emailEt.setError("Invalid email");
+//                    emailEt.setFocusable(true);
+                    Toast.makeText(getApplicationContext(), "Invalid recovery email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 beginRecovery(email);
             }
         });
