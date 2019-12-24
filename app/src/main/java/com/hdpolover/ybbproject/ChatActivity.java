@@ -161,7 +161,7 @@ public class ChatActivity extends AppCompatActivity {
         apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
         /*On clicking user from users list we have passed that user's UID using intent
-           so get that uid here to get the profile picture, name and start chat with that user
+           so get that myUid here to get the profile picture, name and start chat with that user
          */
 
         Intent intent = getIntent();
@@ -174,7 +174,7 @@ public class ChatActivity extends AppCompatActivity {
         usersDbRef = firebaseDatabase.getReference("Users");
 
         //search user to get that user's info
-        Query userQuery = usersDbRef.orderByChild("uid").equalTo(hisUid);
+        Query userQuery = usersDbRef.orderByChild("myUid").equalTo(hisUid);
         //get user picture and name
         userQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -333,7 +333,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (s.toString().trim().length() == 0) {
                     checkTypingStatus("noOne");
                 } else {
-                    checkTypingStatus(hisUid); //uid of receiver
+                    checkTypingStatus(hisUid); //myUid of receiver
                 }
             }
 
@@ -762,7 +762,7 @@ public class ChatActivity extends AppCompatActivity {
         if (user != null) {
             //user is signed in stay here
             //set email of logged in user
-            myUid = user.getUid(); //currently signed in user's uid
+            myUid = user.getUid(); //currently signed in user's myUid
         } else {
             //user not signed in, go to main activity
             startActivity(new Intent(this, MainActivity.class));

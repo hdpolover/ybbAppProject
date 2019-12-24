@@ -108,9 +108,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        //get uid of clicked user
+        //get myUid of clicked user
         Intent intent = getIntent();
-        hisUid = intent.getStringExtra("uid");
+        hisUid = intent.getStringExtra("myUid");
 
         SharedPreferences sp = getSharedPreferences("OtherUserID", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -118,7 +118,7 @@ public class UserProfileActivity extends AppCompatActivity {
         editor.apply();
 
         //we have to get info of currently signed in user
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("uid").equalTo(hisUid);
+        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("myUid").equalTo(hisUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

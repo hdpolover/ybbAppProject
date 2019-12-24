@@ -474,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
 
                             //if user is signin in first time then get and show user info from facebook account
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                //Get user email and uid from auth
+                                //Get user email and myUid from auth
                                 String email = myEmail;
                                 String uid = user.getUid();
 
@@ -489,7 +489,7 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put info in hasmap
                                 hashMap.put("email", email);
-                                hashMap.put("uid", uid);
+                                hashMap.put("myUid", uid);
                                 hashMap.put("name", name); //will add later
                                 hashMap.put("onlineStatus", time); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
 
                             //if user is signin in first time then get and show user info from google account
                             if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                                //Get user email and uid from auth
+                                //Get user email and myUid from auth
                                 String email = user.getEmail();
                                 String uid = user.getUid();
 
@@ -677,7 +677,7 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put info in hasmap
                                 hashMap.put("email", email);
-                                hashMap.put("uid", uid);
+                                hashMap.put("myUid", uid);
                                 hashMap.put("name", name); //will add later
                                 hashMap.put("onlineStatus", "online"); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
@@ -713,9 +713,9 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
 
-//                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                            String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//                            DatabaseReference uidRef = rootRef.child(uid);
+//                            DatabaseReference uidRef = rootRef.child(myUid);
 //
 //                            ValueEventListener valueEventListener = new ValueEventListener() {
 //                                @Override

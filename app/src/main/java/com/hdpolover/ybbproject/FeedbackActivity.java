@@ -83,7 +83,7 @@ public class FeedbackActivity extends AppCompatActivity {
         hashMap.put("fId", timeStamp);
         hashMap.put("feedback", feedback);
         hashMap.put("timestamp", timeStamp);
-        hashMap.put("uid", myUid);
+        hashMap.put("myUid", myUid);
         hashMap.put("email", myEmail);
 
         //put this data in db

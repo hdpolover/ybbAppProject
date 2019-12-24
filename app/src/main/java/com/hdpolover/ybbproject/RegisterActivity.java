@@ -352,11 +352,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            //Get user email and uid from auth
+                            //Get user email and myUid from auth
                             String email = user.getEmail();
                             String uid = user.getUid();
 
-                            //get username based on first 5 letters of uid
+                            //get username based on first 5 letters of myUid
                             String username = "ybb" + uid.substring(0, 5);
 
                             //get Textview location
@@ -395,7 +395,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             HashMap<Object, String> hashMap = new HashMap<>();
                             //put info in hasmap
                             hashMap.put("email", email);
-                            hashMap.put("uid", uid);
+                            hashMap.put("myUid", uid);
                             hashMap.put("name", fullName); //will add later
                             hashMap.put("onlineStatus", time); //will add later
                             hashMap.put("typingTo", "noOne"); //will add later

@@ -139,7 +139,7 @@ public class DashboardActivity extends AppCompatActivity {
 //            mMasukTv.setText(user.getEmail());
             mUID = user.getUid();
 
-            //save uid of currently signed in user in share preferences
+            //save myUid of currently signed in user in share preferences
             SharedPreferences sp = getSharedPreferences("SP_USER",MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("Current_USERID", mUID);

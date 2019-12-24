@@ -504,7 +504,7 @@ public class ProfileFragment extends Fragment {
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query query = ref.orderByChild("myUid").equalTo(uid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -541,7 +541,7 @@ public class ProfileFragment extends Fragment {
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query query = ref.orderByChild("myUid").equalTo(uid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -802,7 +802,7 @@ public class ProfileFragment extends Fragment {
 //                    //if user edit his name, also change it in his posts
 //                    if (keyParam.equals("name")) {
 //                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-//                        Query query = ref.orderByChild("uid").equalTo(uid);
+//                        Query query = ref.orderByChild("myUid").equalTo(myUid);
 //                        query.addValueEventListener(new ValueEventListener() {
 //                            @Override
 //                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -828,7 +828,7 @@ public class ProfileFragment extends Fragment {
 //                                String child = ds.getKey();
 //                                if (dataSnapshot.child(child).hasChild("Comments")) {
 //                                    String child1 = "" + dataSnapshot.child(child).getKey();
-//                                    Query child2 = FirebaseDatabase.getInstance().getReference("Posts").child(child1).child("Comments").orderByChild("uid").equalTo(uid);
+//                                    Query child2 = FirebaseDatabase.getInstance().getReference("Posts").child(child1).child("Comments").orderByChild("myUid").equalTo(myUid);
 //                                    child2.addValueEventListener(new ValueEventListener() {
 //                                        @Override
 //                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

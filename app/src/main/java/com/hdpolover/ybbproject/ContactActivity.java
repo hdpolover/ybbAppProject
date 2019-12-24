@@ -177,9 +177,9 @@ public class ContactActivity extends AppCompatActivity {
 //        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 //        //get path of database name "Users" containing users info
 //        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Follows")
-//                .child(uid).child("Followings");
+//                .child(myUid).child("Followings");
 //
-//        Query query = ref.orderByChild("uid").equalTo(uid);
+//        Query query = ref.orderByChild("myUid").equalTo(myUid);
 //        //get all data from path
 //        query.addValueEventListener(new ValueEventListener() {
 //            @Override

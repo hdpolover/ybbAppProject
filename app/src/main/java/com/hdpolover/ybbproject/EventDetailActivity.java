@@ -77,7 +77,7 @@ public class EventDetailActivity  extends AppCompatActivity {
 
         Intent intent = getIntent();
         eId = intent.getStringExtra("eId");
-        uid = intent.getStringExtra("uid");
+        uid = intent.getStringExtra("myUid");
         Log.e("AD", eId + uid);
 
         showEventDetails();

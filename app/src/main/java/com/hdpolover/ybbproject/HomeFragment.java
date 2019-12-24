@@ -1,7 +1,6 @@
 package com.hdpolover.ybbproject;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment {
     FloatingActionButton fab_add_post;
     TextView peopleTv;
 
-    String uid;
+    String myUid;
 
     RecyclerView postRecyclerView;
     List<ModelPost> postList;
@@ -59,6 +58,7 @@ public class HomeFragment extends Fragment {
     AdapterPeopleSuggestion adapterPeopleSuggestion;
 
     List<String> followedPeopleId;
+    List<String> idList;
 
     NestedScrollView nestedScrollView;
     ShimmerFrameLayout shimmerFrameLayoutPeople;
@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment {
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
+        idList = new ArrayList<>();
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -135,6 +136,7 @@ public class HomeFragment extends Fragment {
 
         loadPeople();
         loadPosts();
+        getUnfollowedPeople();
 
         fab_add_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,11 +220,35 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void getUnfollowedPeople() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(myUid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                idList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        if (snapshot.child("Followings").exists()) {
+                            idList.add(snapshot.child("Followings").getKey());
+                            Log.e("id", snapshot.child("Followings").getKey());
+                        } else {
+                            Log.e("2", "noFoloowings");
+                        }
+                }
+                Log.e("se", idList.size() + "");
+                //showUsers();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void setFollowedPeopleId() {
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows")
-                    .child(uid).child("Followings");
+                    .child(myUid).child("Followings");
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -236,8 +262,8 @@ public class HomeFragment extends Fragment {
                         Log.e("list size", "" + followedPeopleId.size());
                     }
 
-//                if (dataSnapshot.child(uid).exists()) {
-//                    if (dataSnapshot.child(uid).child("Followings").exists()) {
+//                if (dataSnapshot.child(myUid).exists()) {
+//                    if (dataSnapshot.child(myUid).child("Followings").exists()) {
 //                            for (DataSnapshot ds: dataSnapshot.getChildren()) {
 //                                Log.e("value", ""+ ds.getValue());
 //                                followedPeopleId.add(ds.getKey());
@@ -270,18 +296,18 @@ public class HomeFragment extends Fragment {
 
 //                        if (followedPeopleId.size() != 0) {
 //                            for (String followedUserId: followedPeopleId) {
-//                                if (!modelPeopleSuggestion.getUid().equals(uid)
+//                                if (!modelPeopleSuggestion.getUid().equals(myUid)
 //                                        && !modelPeopleSuggestion.getUid().equals(followedUserId)) {
 //                                    peopleList.add(modelPeopleSuggestion);
 //                                }
 //                            }
 //                    } else {
-//                            if (!modelPeopleSuggestion.getUid().equals(uid))
+//                            if (!modelPeopleSuggestion.getUid().equals(myUid))
 //                        {
 //                        peopleList.add(modelPeopleSuggestion);
 //                        }}
 
-                    if (!modelUser.getUid().equals(uid)) {
+                    if (!modelUser.getUid().equals(myUid)) {
                         peopleList.add(modelUser);
                     }
 
@@ -380,7 +406,7 @@ public class HomeFragment extends Fragment {
         //get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            uid = user.getUid();
+            myUid = user.getUid();
         } else {
             //user not signed in, go to welcome
             startActivity(new Intent(getActivity(), MainActivity.class));
