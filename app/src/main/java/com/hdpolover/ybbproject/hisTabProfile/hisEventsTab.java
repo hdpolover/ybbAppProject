@@ -126,7 +126,7 @@ public class hisEventsTab extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //in case of errors
-                Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -106,15 +106,18 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
 //                } else {
 //                    Toast.makeText(mContext, "Post doesn't exist anymore...", Toast.LENGTH_SHORT).show();
 //                }
-                try {
-                    Intent intent = new Intent(mContext, PostDetailActivity.class);
-                    intent.putExtra("postId", postId);
-                    intent.putExtra("uid", publisherId);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(intent);
-                } catch (Exception e) {
-                    Toast.makeText(mContext, "Post doesn't exist anymore...", Toast.LENGTH_SHORT).show();
-                }
+                    if (postId.isEmpty()) {
+                        Intent intent = new Intent(mContext, UserProfileActivity.class);
+                        intent.putExtra("uid", userId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, PostDetailActivity.class);
+                        intent.putExtra("postId", postId);
+                        intent.putExtra("uid", publisherId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    }
 
             }
         });
