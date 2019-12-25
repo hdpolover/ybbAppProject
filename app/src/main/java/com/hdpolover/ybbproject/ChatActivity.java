@@ -174,7 +174,7 @@ public class ChatActivity extends AppCompatActivity {
         usersDbRef = firebaseDatabase.getReference("Users");
 
         //search user to get that user's info
-        Query userQuery = usersDbRef.orderByChild("myUid").equalTo(hisUid);
+        Query userQuery = usersDbRef.orderByChild("uid").equalTo(hisUid);
         //get user picture and name
         userQuery.addValueEventListener(new ValueEventListener() {
             @Override

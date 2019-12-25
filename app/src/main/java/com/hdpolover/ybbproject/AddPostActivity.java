@@ -150,7 +150,7 @@ public class AddPostActivity extends AppCompatActivity {
     private void updateWithoutImage(String desc, String editPostId) {
         HashMap<String, Object> hashMap = new HashMap<>();
         //put post info
-        hashMap.put("myUid", uid);
+        hashMap.put("uid", uid);
         hashMap.put("pDesc", desc);
         hashMap.put("pImage", "noImage");
 
@@ -201,7 +201,7 @@ public class AddPostActivity extends AppCompatActivity {
                             //url is received, upload to firebase
                             HashMap<String, Object> hashMap = new HashMap<>();
                             //put post info
-                            hashMap.put("myUid", uid);
+                            hashMap.put("uid", uid);
                             hashMap.put("pDesc", desc);
                             hashMap.put("pImage", downloadUri);
 
@@ -271,7 +271,7 @@ public class AddPostActivity extends AppCompatActivity {
                                             //url is received, upload to firebase
                                             HashMap<String, Object> hashMap = new HashMap<>();
                                             //put post info
-                                            hashMap.put("myUid", uid);
+                                            hashMap.put("uid", uid);
                                             hashMap.put("pDesc", desc);
                                             hashMap.put("pImage", downloadUri);
 
@@ -384,7 +384,7 @@ public class AddPostActivity extends AppCompatActivity {
                                 //uri is receiveed upload post
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put post info
-                                hashMap.put("myUid", uid);
+                                hashMap.put("uid", uid);
                                 hashMap.put("pId", timeStamp);
                                 hashMap.put("pDesc", desc);
                                 hashMap.put("pImage", downloadUri);
@@ -432,7 +432,7 @@ public class AddPostActivity extends AppCompatActivity {
             //post without image
             HashMap<Object, String> hashMap = new HashMap<>();
             //put post info
-            hashMap.put("myUid", uid);
+            hashMap.put("uid", uid);
             hashMap.put("pId", timeStamp);
             hashMap.put("pDesc", desc);
             hashMap.put("pImage", "noImage");

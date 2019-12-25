@@ -120,7 +120,7 @@ public class PostDetailActivity extends AppCompatActivity {
         //get id of post using intent
         Intent intent = getIntent();
         postId = intent.getStringExtra("postId");
-        hisUid = intent.getStringExtra("myUid");
+        hisUid = intent.getStringExtra("uid");
         publisherId = hisUid;
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -208,7 +208,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                intent.putExtra("myUid", hisUid);
+                intent.putExtra("uid", hisUid);
                 startActivity(intent);
             }
         });
@@ -217,7 +217,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                intent.putExtra("myUid", hisUid);
+                intent.putExtra("uid", hisUid);
                 startActivity(intent);
             }
         });
@@ -570,7 +570,7 @@ public class PostDetailActivity extends AppCompatActivity {
         hashMap.put("cId", timeStamp);
         hashMap.put("comment", comment);
         hashMap.put("timestamp", timeStamp);
-        hashMap.put("myUid", myUid);
+        hashMap.put("uid", myUid);
 
         //put this data in db
         ref.child(timeStamp).setValue(hashMap)
@@ -625,7 +625,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private void loadCurrentUserImage() {
         //get current user info
         Query myRef = FirebaseDatabase.getInstance().getReference("Users");
-        Query query = myRef.orderByChild("myUid").equalTo(myUid);
+        Query query = myRef.orderByChild("uid").equalTo(myUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -664,7 +664,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     String pDesc = ""+ds.child("pDesc").getValue();
                     String pTimeStamp = ""+ds.child("pTime").getValue();
                     pImage = ""+ds.child("pImage").getValue();
-                    hisUid = ""+ds.child("myUid").getValue();
+                    hisUid = ""+ds.child("uid").getValue();
 
                     //set data
                     pDescTv.setText(pDesc);

@@ -31,7 +31,6 @@ import com.hdpolover.ybbproject.notifications.Data;
 import com.hdpolover.ybbproject.notifications.Response;
 import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;

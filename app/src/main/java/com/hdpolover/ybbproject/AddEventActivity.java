@@ -261,7 +261,7 @@ public class AddEventActivity extends AppCompatActivity {
                                 //uri is receiveed upload post
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put post info
-                                hashMap.put("myUid", uid);
+                                hashMap.put("uid", uid);
                                 hashMap.put("eId", timeStamp);
                                 hashMap.put("eTitle", titleEt.getText().toString());
                                 hashMap.put("eDesc", descEt.getText().toString());

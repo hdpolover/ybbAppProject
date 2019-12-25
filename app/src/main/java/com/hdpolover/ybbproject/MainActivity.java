@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put info in hasmap
                                 hashMap.put("email", email);
-                                hashMap.put("myUid", uid);
+                                hashMap.put("uid", uid);
                                 hashMap.put("name", name); //will add later
                                 hashMap.put("onlineStatus", time); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later
@@ -695,7 +695,7 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put info in hasmap
                                 hashMap.put("email", email);
-                                hashMap.put("myUid", uid);
+                                hashMap.put("uid", uid);
                                 hashMap.put("name", name); //will add later
                                 hashMap.put("onlineStatus", "online"); //will add later
                                 hashMap.put("typingTo", "noOne"); //will add later

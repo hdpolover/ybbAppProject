@@ -43,7 +43,6 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    FirebaseAuth firebaseAuth;
     FloatingActionButton fab_add_post;
     TextView peopleTv;
 
@@ -77,8 +76,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //init firebase auth
-        firebaseAuth = FirebaseAuth.getInstance();
         fab_add_post = view.findViewById(R.id.fab_add_post);
         peopleTv = view.findViewById(R.id.peopleTv);
 
@@ -98,13 +95,13 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
         noPostHomeLayout = view.findViewById(R.id.noPostHomeLayout);
 
-        checkUserStatus();
-
         //init post list
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
         idList = new ArrayList<>();
+
+        checkUserStatus();
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -136,7 +133,7 @@ public class HomeFragment extends Fragment {
 
         loadPeople();
         loadPosts();
-        getUnfollowedPeople();
+        //getUnfollowedPeople();
 
         fab_add_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,9 +304,10 @@ public class HomeFragment extends Fragment {
 //                        peopleList.add(modelPeopleSuggestion);
 //                        }}
 
-                    if (!modelUser.getUid().equals(myUid)) {
-                        peopleList.add(modelUser);
-                    }
+                        if (!modelUser.getUid().equals(myUid)) {
+                            peopleList.add(modelUser);
+                        }
+
 
                     //adapter
                     adapterPeopleSuggestion = new AdapterPeopleSuggestion(getActivity(), peopleList);
@@ -404,7 +402,7 @@ public class HomeFragment extends Fragment {
 
     private void checkUserStatus() {
         //get current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             myUid = user.getUid();
         } else {

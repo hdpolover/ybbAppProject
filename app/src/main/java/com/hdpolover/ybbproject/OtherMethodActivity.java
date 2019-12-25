@@ -323,7 +323,7 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             HashMap<Object, String> hashMap = new HashMap<>();
                             //put info in hasmap
                             hashMap.put("email", email);
-                            hashMap.put("myUid", uid);
+                            hashMap.put("uid", uid);
                             hashMap.put("name", fullName); //will add later
                             hashMap.put("onlineStatus", time);
                             hashMap.put("typingTo", "noOne"); //will add later

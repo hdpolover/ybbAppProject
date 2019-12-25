@@ -188,7 +188,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void setUserData() {
         //get current user info
         Query myRef = FirebaseDatabase.getInstance().getReference("Users");
-        final Query query = myRef.orderByChild("myUid").equalTo(myUid);
+        final Query query = myRef.orderByChild("uid").equalTo(myUid);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -245,7 +245,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         //put post info
-        hashMap.put("myUid", myUid);
+        hashMap.put("uid", myUid);
         hashMap.put("name", fullnameEt.getText().toString().trim());
         hashMap.put("username", usernameEt.getText().toString().trim());
         hashMap.put("birthDate", birthDateEt.getText().toString().trim());

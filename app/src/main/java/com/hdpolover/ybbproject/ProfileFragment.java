@@ -504,7 +504,7 @@ public class ProfileFragment extends Fragment {
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("myUid").equalTo(uid);
+        Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data
         query.addValueEventListener(new ValueEventListener() {
             @Override
