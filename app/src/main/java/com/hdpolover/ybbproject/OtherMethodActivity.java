@@ -314,9 +314,8 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                                 phone = codeNumber + phoneFull;
                             }
 
-                            //convert timestamp to dd/mm/yyyy hh:mm am/pm
-                            Date currentTime = Calendar.getInstance().getTime();
-                            String time = DateFormat.format("dd/MM/yyyy hh:mm aa", currentTime).toString();
+                            //getDateNow
+                            String time = String.valueOf(System.currentTimeMillis());
 
                             //when user is registered store user info in firebase realtime database too
                             //using hashmap
