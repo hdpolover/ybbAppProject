@@ -502,10 +502,10 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("job", "");
                                 hashMap.put("cityFrom", "");
                                 hashMap.put("countryFrom", "");
-                                hashMap.put("birthDate", "edit in your profile!");
-                                hashMap.put("bio", "edit in your profile!");
-                                hashMap.put("education", "edit in your profile!");
-                                hashMap.put("interest", "edit in your profile!");
+                                hashMap.put("birthDate", "--");
+                                hashMap.put("bio", "--");
+                                hashMap.put("education", "--");
+                                hashMap.put("interest", "--");
 
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

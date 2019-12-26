@@ -9,11 +9,11 @@
         android:id="@+id/chatLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/imgProfile"
@@ -24,11 +24,11 @@
             <!--ImageView : online/offline status -->
             <com.blogspot.atifsoftwares.circularimageview.CircularImageView
                 android:id="@+id/profileIv"
-                app:c_border="true"
-                app:c_border_color="@color/placeholder_bg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_undraw_profile_pic" />
+                android:src="@drawable/ic_undraw_profile_pic"
+                app:c_border="true"
+                app:c_border_color="@color/placeholder_bg" />
 
         </RelativeLayout>
 
@@ -48,15 +48,31 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <!--Textview: last message (by sender/receiver) -->
-            <TextView
-                android:id="@+id/lastMessageTv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nameTv"
-                android:layout_marginStart="4dp"
-                android:maxLines="2"
-                android:text="the last message" />
+                android:orientation="horizontal"
+                android:layout_below="@+id/nameTv">
+
+                <!--Textview: last message (by sender/receiver) -->
+                <TextView
+                    android:id="@+id/lastMessageTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:maxLines="2"
+                    android:text="the last message" />
+
+
+                <TextView
+                    android:id="@+id/lastClockTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="09.00 PM"
+                    android:textColor="@color/primaryDarkColor"
+                    android:textAlignment="viewEnd"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -64,9 +80,9 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginLeft="67dp"
         android:layout_height="1dp"
         android:layout_below="@+id/chatLayout"
+        android:layout_marginLeft="67dp"
         android:background="@color/placeholder_bg" />
 
 </LinearLayout>

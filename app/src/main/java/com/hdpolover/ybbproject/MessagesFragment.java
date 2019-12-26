@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -174,6 +175,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String theLastMessage = "default";
+                String theLastClock = "0000";
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChat chat = ds.getValue(ModelChat.class);
                     if (chat == null) {
@@ -191,13 +193,18 @@ public class MessagesFragment extends Fragment {
 
                         if (chat.getType().equals("image")) {
                             theLastMessage = "Sent a photo";
+                            theLastClock = String.valueOf(chat.getTimestamp());
+                            Log.e("jam if", theLastClock);
                         } else {
                             theLastMessage = chat.getMessage();
+                            theLastClock = String.valueOf(chat.getTimestamp());
+                            Log.e("jam else", theLastClock);
                         }
                     }
                 }
 
                 adapterChatlist.setLastMessageMap(userId, theLastMessage);
+                //adapterChatlist.setLastClockMap(userId, theLastClock);
                 adapterChatlist.notifyDataSetChanged();
             }
 

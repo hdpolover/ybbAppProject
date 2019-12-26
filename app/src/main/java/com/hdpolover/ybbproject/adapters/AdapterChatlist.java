@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.hdpolover.ybbproject.ChatActivity;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.models.ModelChat;
 import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.util.HashMap;
@@ -24,13 +25,16 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
 
     Context context;
     List<ModelUser> userList; //get user info
+    List<ModelChat> chatList;
     private HashMap<String, String> lastMessageMap;
+    private HashMap<String, String> lastClockMap;
 
     //constructor
     public AdapterChatlist(Context context, List<ModelUser> userList) {
         this.context = context;
         this.userList = userList;
         lastMessageMap = new HashMap<>();
+        lastClockMap = new HashMap<>();
     }
 
     @NonNull
@@ -46,18 +50,22 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
     public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
         //get data
         final String hisUid = userList.get(position).getUid();
+        //final String hisClock = String.valueOf(chatList.get(position).getTimestamp());
         String userImage = userList.get(position).getImage();
         String userName = userList.get(position).getName();
         String lastMessage = lastMessageMap.get(hisUid);
+        //String lastClock = lastClockMap.get(hisUid);
 
         //set data
         holder.nameTv.setText(userName);
         if(lastMessage == null || lastMessage.equals("default")){
             holder.lastMessageTv.setVisibility(View.GONE);
+            holder.lastClockTv.setVisibility(View.GONE);
         }
         else {
             holder.lastMessageTv.setVisibility(View.VISIBLE);
             holder.lastMessageTv.setText(lastMessage);
+            holder.lastClockTv.setText("09.00 PM");
         }
 
         try{
@@ -85,6 +93,10 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         lastMessageMap.put(userId, lastMessage);
     }
 
+    public void setLastClockMap (String userId, String lastClock){
+        lastMessageMap.put(userId, lastClock);
+    }
+
     @Override
     public int getItemCount() {
         return userList.size(); //size of the list
@@ -94,7 +106,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
 
         //views of row chatlist.xml
         ImageView profileIv;
-        TextView nameTv, lastMessageTv;
+        TextView nameTv, lastMessageTv, lastClockTv;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,6 +115,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
             profileIv = itemView.findViewById(R.id.profileIv);
             nameTv = itemView.findViewById(R.id.nameTv);
             lastMessageTv = itemView.findViewById(R.id.lastMessageTv);
+            lastClockTv = itemView.findViewById(R.id.lastClockTv);
         }
     }
 }
