@@ -418,9 +418,9 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
+            } catch (Exception e) {
                 // Google Sign In failed, update UI appropriately
-                //Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
                 //dismiss progress dialog
                 progressDialog.dismiss();
                 //error, get and show message
-//                Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
