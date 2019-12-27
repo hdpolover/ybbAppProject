@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.tabProfile;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -87,11 +88,12 @@ public class EventsTab extends Fragment {
         Log.e("myUid", myUid);
         Log.e("hisUid", hisUid);
 
-        if (hisUid.equals(myUid)) {
-            loadEvents(myUid);
-        } else {
-            loadEvents(hisUid);
-        }
+//        if (hisUid.equals(myUid)) {
+//            loadEvents(myUid);
+//        } else {
+//            loadEvents(hisUid);
+//        }
+        loadEvents(myUid);
 
         return view;
     }

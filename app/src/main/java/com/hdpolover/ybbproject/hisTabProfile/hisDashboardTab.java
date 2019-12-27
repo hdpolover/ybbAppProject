@@ -44,6 +44,9 @@ public class hisDashboardTab extends Fragment {
         interestTv = view.findViewById(R.id.interestTv);
         birthDateTv = view.findViewById(R.id.birthDateTv);
 
+        //get myUid of clicked user
+        Intent intent = getActivity().getIntent();
+        hisUid = intent.getStringExtra("uid");
         //checkUserStatus();
 
         setUserData();
