@@ -128,10 +128,7 @@ public class HomeFragment extends Fragment {
 
         nestedScrollView = view.findViewById(R.id.nestedScrollViewHome);
 
-        //get followed user id to be compared later
-        //setFollowedPeopleId();
-
-        getUnfollowedPeople(myUid);
+        //getUnfollowedPeople(myUid);
         loadPeople();
         loadPosts();
 
@@ -218,35 +215,63 @@ public class HomeFragment extends Fragment {
     }
 
     private void getUnfollowedPeople(final String uid) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows");
-        reference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(uid).child("Followings");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 idList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Log.e("a", snapshot.getValue().toString());
-//                    if (snapshot.child(uid).exists()) {
-//                        if (snapshot.child(uid).child("Followings").exists()) {
-//                            if (snapshot.child(uid).child("Followings").hasChildren()) {
-//                                idList.add(snapshot.child(uid).child("Followings").getKey());
-//                                Log.e("se", idList.size() + "");
-//                            } else {
-//                                Log.e("3", "no children");
-//                            }
-//                        } else {
-//                            Log.e("2", "no followings");
-//                        }
-//                    } else {
-//                        Log.e("1", "no uid");
-//                    }
+                    idList.add(snapshot.getKey());
                 }
-
-                //showUsers();
+                showPeople();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    private void showPeople() {
+        //path of all posts
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        //get all data from this ref
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                peopleList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ModelUser modelUser = ds.getValue(ModelUser.class);
+
+                    if (!modelUser.getUid().equals(myUid)) {
+                        if (idList.size() == 0) {
+                            Log.e("1", "0");
+                            peopleList.add(modelUser);
+                        } else {
+                            for (String id : idList) {
+                                if (!modelUser.getUid().equals(id)) {
+                                    peopleList.add(modelUser);
+                                    Log.e("2", id);
+                                }
+                            }
+                        }
+                    }
+
+                    //adapter
+                    adapterPeopleSuggestion = new AdapterPeopleSuggestion(getActivity(), peopleList);
+                    //set adapter recycler view
+                    peopleSuggestionRecyclerView.setAdapter(adapterPeopleSuggestion);
+                    adapterPeopleSuggestion.notifyDataSetChanged();
+                    shimmerFrameLayoutPeople.stopShimmer();
+                    shimmerFrameLayoutPeople.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //in case of error
+//                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
