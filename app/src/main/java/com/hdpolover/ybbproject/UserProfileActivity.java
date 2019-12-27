@@ -40,10 +40,21 @@ import com.hdpolover.ybbproject.adapters.AdapterHisProfile;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.adapters.AdapterProfile;
 import com.hdpolover.ybbproject.models.ModelPost;
+import com.hdpolover.ybbproject.models.ModelUser;
+import com.hdpolover.ybbproject.notifications.APIService;
+import com.hdpolover.ybbproject.notifications.Client;
+import com.hdpolover.ybbproject.notifications.Data;
+import com.hdpolover.ybbproject.notifications.Response;
+import com.hdpolover.ybbproject.notifications.Sender;
+import com.hdpolover.ybbproject.notifications.Token;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class UserProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -55,10 +66,11 @@ public class UserProfileActivity extends AppCompatActivity {
     RecyclerView postsRecyclerView;
     LinearLayout followsLayout;
 
-    List<ModelPost> postList;
-    AdapterPost adapterPost;
+    String myUid, hisUid, publisherId;
 
-    String myUid, hisUid;
+    APIService apiService;
+    ModelUser modelUser;
+    String myName;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -68,6 +80,9 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_profile);
+
+        //create api service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Profile");
@@ -107,6 +122,8 @@ public class UserProfileActivity extends AppCompatActivity {
         firebaseAuth = firebaseAuth.getInstance();
 
         checkUserStatus();
+
+        setCurrentUserName(myUid);
 
         //get myUid of clicked user
         Intent intent = getIntent();
@@ -178,6 +195,11 @@ public class UserProfileActivity extends AppCompatActivity {
                                 .child("Followings").child(hisUid).setValue(true);
                         FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
                                 .child("Followers").child(myUid).setValue(true);
+
+                        publisherId = hisUid;
+                        addNotification(hisUid, "");
+                        myName = modelUser.getName();
+                        sendNotification(hisUid,  myName," started following you");
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
                                 .child("Followings").child(hisUid).removeValue();
@@ -191,6 +213,70 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //postList = new ArrayList<>();
         //loadHistPosts();
+    }
+
+    private void setCurrentUserName(String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelUser = dataSnapshot.getValue(ModelUser.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //for notification
+    private void sendNotification(final String hisUid, final String name, final String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data("2", "", myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addNotification(String userid, String postid){
+        final String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", myUid);
+        hashMap.put("publisherid", publisherId);
+        hashMap.put("text", "started following you");
+        hashMap.put("postid", postid);
+        hashMap.put("timestamp", timeStamp);
+
+        reference.push().setValue(hashMap);
     }
 
     private void isFollowing(final String followerId, final Button followBtn) {

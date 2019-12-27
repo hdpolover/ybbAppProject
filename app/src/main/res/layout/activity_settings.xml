@@ -14,70 +14,140 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/feedbackBtn"
+            android:id="@+id/accountBtn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:contentPadding="5dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_feedback"/>
-
-            <TextView
-                android:layout_marginLeft="70dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:textSize="25sp"
-                android:text="Feedback"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_person_black_24dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="My account"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/helpBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_help_black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="Help"/>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/feedbackBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_feedback_black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="Feedback"/>
+            </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/aboutBtn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:contentPadding="5dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_info_filled"/>
-
-            <TextView
-                android:layout_marginLeft="70dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:textSize="25sp"
-                android:text="About"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_info_black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="About"/>
+            </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/logoutBtn"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:contentPadding="5dp"
-            android:layout_marginTop="8dp">
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_logout"/>
-
-            <TextView
-                android:layout_marginLeft="70dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:textSize="25sp"
-                android:text="Log out"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_exit_black"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="Log out"/>
+            </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
 
     </LinearLayout>
 
@@ -88,6 +158,7 @@
         android:text="YBB 0.1.1"
         android:layout_marginBottom="20dp"
         android:textSize="20sp"
+        android:textColor="@color/colorBlack"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"/>
 

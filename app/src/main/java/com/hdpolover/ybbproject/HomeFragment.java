@@ -131,9 +131,9 @@ public class HomeFragment extends Fragment {
         //get followed user id to be compared later
         //setFollowedPeopleId();
 
+        getUnfollowedPeople(myUid);
         loadPeople();
         loadPosts();
-        //getUnfollowedPeople();
 
         fab_add_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,21 +217,30 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void getUnfollowedPeople() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(myUid);
+    private void getUnfollowedPeople(final String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 idList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if (snapshot.child("Followings").exists()) {
-                            idList.add(snapshot.child("Followings").getKey());
-                            Log.e("id", snapshot.child("Followings").getKey());
-                        } else {
-                            Log.e("2", "noFoloowings");
-                        }
+                    Log.e("a", snapshot.getValue().toString());
+//                    if (snapshot.child(uid).exists()) {
+//                        if (snapshot.child(uid).child("Followings").exists()) {
+//                            if (snapshot.child(uid).child("Followings").hasChildren()) {
+//                                idList.add(snapshot.child(uid).child("Followings").getKey());
+//                                Log.e("se", idList.size() + "");
+//                            } else {
+//                                Log.e("3", "no children");
+//                            }
+//                        } else {
+//                            Log.e("2", "no followings");
+//                        }
+//                    } else {
+//                        Log.e("1", "no uid");
+//                    }
                 }
-                Log.e("se", idList.size() + "");
+
                 //showUsers();
             }
 
