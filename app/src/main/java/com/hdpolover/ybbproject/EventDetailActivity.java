@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,14 +38,14 @@ import java.util.List;
 public class EventDetailActivity  extends AppCompatActivity {
 
     ImageView imageViewEvent;
-    EditText editTextTitleEvent;
-    EditText editTextDateFromEvent;
-    EditText editTextTimeFromEvent;
-    EditText editTextDateToEvent;
-    EditText editTextTimeToEvent;
-    Spinner editTextSpinnerEvent;
-    EditText editTextLoctEvent;
-    EditText editTextDescEvent, editTextEventQuot, editTextEventParticipants, editTextEventSpeaker;
+    TextView editTextTitleEvent;
+    TextView editTextDateFromEvent;
+    TextView editTextTimeFromEvent;
+    TextView editTextDateToEvent;
+    TextView editTextTimeToEvent;
+    TextView editTextSpinnerEvent;
+    TextView editTextLoctEvent;
+    TextView editTextDescEvent, editTextEventQuot, editTextEventParticipants, editTextEventSpeaker;
     Button joinBtn;
 
     String myUid, eId, uid;
@@ -60,17 +61,17 @@ public class EventDetailActivity  extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imageViewEvent = findViewById(R.id.eventImg);
-        editTextTitleEvent = findViewById(R.id.titleEt);
-        editTextDateFromEvent = findViewById(R.id.eventDateFrom);
-        editTextTimeFromEvent = findViewById(R.id.eventTimeFrom);
-        editTextDateToEvent = findViewById(R.id.eventDateTo);
-        editTextTimeToEvent = findViewById(R.id.eventTimeTo);
-        editTextSpinnerEvent = findViewById(R.id.eventCatSpin);
-        editTextLoctEvent = findViewById(R.id.eventLocEt);
-        editTextDescEvent = findViewById(R.id.descEt);
+        imageViewEvent = findViewById(R.id.myeventImg);
+        editTextTitleEvent = findViewById(R.id.myeventTit);
+        editTextDateFromEvent = findViewById(R.id.myeventDate);
+        editTextTimeFromEvent = findViewById(R.id.myeventTime);
+//        editTextDateToEvent = findViewById(R.id.eventDateTo);
+//        editTextTimeToEvent = findViewById(R.id.eventTimeTo);
+        editTextSpinnerEvent = findViewById(R.id.myeventCategory);
+        editTextLoctEvent = findViewById(R.id.myeventLocation);
+        editTextDescEvent = findViewById(R.id.myeventDescrip);
         editTextEventQuot = findViewById(R.id.eventQuot);
-        editTextEventSpeaker = findViewById(R.id.eventSpek);
+        editTextEventSpeaker = findViewById(R.id.myeventSpeaker);
         joinBtn = findViewById(R.id.joinBtn);
 
         checkUserStatus();
@@ -111,59 +112,6 @@ public class EventDetailActivity  extends AppCompatActivity {
                         String eTimeFrom = ""+ds.child("eTimeFrom").getValue();
                         String eTimeTo = ""+ds.child("eTimeTo").getValue();
 
-
-//                    //convert timestamp to dd/mm/yyy hh:mm am/pm
-//                    Calendar calendar = Calendar.getInstance(Locale.getDefault());
-//                    calendar.setTimeInMillis(Long.parseLong(pTimeStamp));
-//                    String pTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
-//
-//                    String month = "";
-//                    String date = pTime.substring(0, 2);
-//                    String time = pTime.substring(10);
-//
-//                    String b = pTime.substring(3, 5);
-//
-//                    switch (b) {
-//                        case "1":
-//                            month = "Jan";
-//                            break;
-//                        case "2":
-//                            month = "Feb";
-//                            break;
-//                        case "3":
-//                            month = "Mar";
-//                            break;
-//                        case "4":
-//                            month = "Apr";
-//                            break;
-//                        case "5":
-//                            month = "May";
-//                            break;
-//                        case "6":
-//                            month = "June";
-//                            break;
-//                        case "7":
-//                            month = "July";
-//                            break;
-//                        case "8":
-//                            month = "Aug";
-//                            break;
-//                        case "9":
-//                            month = "Sep";
-//                            break;
-//                        case "10":
-//                            month = "Oct";
-//                            break;
-//                        case "11":
-//                            month = "Nov";
-//                            break;
-//                        case "12":
-//                            month = "Des";
-//                            break;
-//                        default:
-//                            break;
-//                    }
-
                         //set data
                         editTextTitleEvent.setText(eTitle);
 
@@ -174,25 +122,25 @@ public class EventDetailActivity  extends AppCompatActivity {
                         }
                         editTextDateFromEvent.setText(eDateFrom);
                         editTextTimeFromEvent.setText(eTimeFrom);
-                        editTextDateToEvent.setText(eDateTo);
-                        editTextTimeToEvent.setText(eTimeTo);
+//                        editTextDateToEvent.setText(eDateTo);
+//                        editTextTimeToEvent.setText(eTimeTo);
                         editTextLoctEvent.setText(eLocation);
+//                        List<String> category = new ArrayList<String>();
+//                        category.add(eCategory);
+//
+//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EventDetailActivity.this,android.R.layout.simple_spinner_dropdown_item,category);
+//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        editTextSpinnerEvent.setAdapter(adapter);
 
-                        List<String> category = new ArrayList<String>();
-                        category.add(eCategory);
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EventDetailActivity.this,android.R.layout.simple_spinner_dropdown_item,category);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        editTextSpinnerEvent.setAdapter(adapter);
-
+                        editTextSpinnerEvent.setText(eCategory);
                         editTextEventSpeaker.setText(eSpeaker);
                         editTextEventQuot.setText(eQuota);
                         editTextDescEvent.setText(eDesc);
 
                         editTextTitleEvent.setEnabled(false);
                         editTextDateFromEvent.setEnabled(false);
-                        editTextDateToEvent.setEnabled(false);
-                        editTextTimeToEvent.setEnabled(false);
+//                        editTextDateToEvent.setEnabled(false);
+//                        editTextTimeToEvent.setEnabled(false);
                         editTextTimeFromEvent.setEnabled(false);
                         editTextLoctEvent.setEnabled(false);
                         editTextEventSpeaker.setEnabled(false);

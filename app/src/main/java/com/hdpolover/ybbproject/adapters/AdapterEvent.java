@@ -107,10 +107,16 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
 
     //view holder class
-    class MyHolderEvent extends RecyclerView.ViewHolder{
+    public static class MyHolderEvent extends RecyclerView.ViewHolder{
 
-        ImageView myeventImg;
-        TextView myeventTit, myeventDate, myeventTime, myeventLocation, myeventCategory, myeventSpeaker, myeventStatus;
+        public ImageView myeventImg;
+        public TextView myeventTit;
+        public TextView myeventDate;
+        public TextView myeventTime;
+        public TextView myeventLocation;
+        public TextView myeventCategory;
+        public TextView myeventSpeaker;
+        TextView myeventStatus;
         LinearLayout confirmStatusLayout;
 
         //view from row_event.xml
@@ -127,6 +133,9 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             myeventTime = itemView.findViewById(R.id.myeventTime);
             myeventStatus = itemView.findViewById(R.id.myeventStatus);
             confirmStatusLayout = itemView.findViewById(R.id.confirmStatusLayout);
+
+            //Event Detail
+
 
         }
     }

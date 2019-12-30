@@ -12,206 +12,237 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/myeventImg"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@color/placeholder_bg"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <ImageView
-                android:id="@+id/eventImg"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_add_image1"
-                android:adjustViewBounds="true" />
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+                android:padding="8dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_below="@id/eventImg"
-                    android:id="@+id/eventTitle"
-                    style="@style/parent">
-
-                    <EditText
-                        android:id="@+id/titleEt"
-                        style="@style/modifiedEditText"
-                        android:layout_height="49dp"
-                        android:hint="Title"
-                        android:maxLines="1"
-                        android:textColor="@color/primaryTextColor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/eventFrom"
+                <TextView
+                    android:id="@+id/myeventTit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/titleEt"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="From               "
-                        android:paddingRight="10dp"/>
-
-                    <EditText
-                        android:id="@+id/eventDateFrom"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="15dp"
-                        android:hint="Date"/>
-
-                    <EditText
-                        android:id="@+id/eventTimeFrom"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:hint="Time" />
-
-                </LinearLayout>
+                    android:text="Event Title"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="22sp"
+                    android:textColor="#000" />
 
                 <LinearLayout
-                    android:id="@+id/eventTo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/eventFrom"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="To                    "
-                        android:paddingRight="10dp"/>
-
-                    <EditText
-                        android:id="@+id/eventDateTo"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="15dp"
-                        android:hint="Date"/>
-
-                    <EditText
-                        android:id="@+id/eventTimeTo"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:hint="Time" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/eventCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="Category      "
-                        android:paddingRight="20dp"/>
-
-                    <Spinner
-                        android:id="@+id/eventCatSpin"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        />
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_calendar" />
+
+                        <TextView
+                            android:id="@+id/myeventDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:text="Desember 20, 2019"
+                            android:autoLink="all"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_person_grey"/>
+
+                        <TextView
+                            android:id="@+id/myeventSpeaker"
+                            android:layout_marginTop="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_marginBottom="5dp"
+                            android:text="Speaker"
+                            android:autoLink="all"/>
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventQuota"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
-                    style="@style/parent">
-
-                    <EditText
-                        android:id="@+id/eventQuot"
-                        style="@style/modifiedEditText"
-                        android:hint="Quota"
-                        android:inputType="number"
-                        android:textColor="@color/primaryTextColor" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventSpeaker"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
-                    style="@style/parent">
-
-                    <EditText
-                        android:id="@+id/eventSpek"
-                        style="@style/modifiedEditText"
-                        android:hint="Speaker"
-                        android:inputType="text"
-                        android:textColor="@color/primaryTextColor" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventLocation"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="5dp"
-                    style="@style/parent">
-
-                    <EditText
-                        android:id="@+id/eventLocEt"
-                        style="@style/modifiedEditText"
-                        android:hint="Location"
-                        android:inputType="text"
-                        android:textColor="@color/primaryTextColor" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventDesc"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="5dp"
-                    style="@style/parent">
-
-                    <EditText
-                        android:id="@+id/descEt"
-                        style="@style/modifiedEditText"
-                        android:hint="Description"
-                        android:inputType="textMultiLine"
-                        android:textColor="@color/primaryTextColor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <Button
-                    android:id="@+id/joinBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/primaryLightColor"
-                    android:text="Join!"
-                    android:textColor="@color/whiteTextColor"/>
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_time"/>
+
+                        <TextView
+                            android:id="@+id/myeventTime"
+                            android:layout_marginTop="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_marginBottom="5dp"
+                            android:text="12.30 PM"
+                            android:autoLink="all"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_folder"/>
+
+                        <TextView
+                            android:id="@+id/myeventCategory"
+                            android:layout_marginTop="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:layout_marginBottom="5dp"
+                            android:text="Category"/>
+"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_location"/>
+
+                        <TextView
+                            android:id="@+id/myeventLocation"
+                            android:layout_marginTop="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:text="Malang"
+                            android:autoLink="all"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/confirmStatusLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_person_grey"/>
+
+                        <TextView
+                            android:id="@+id/eventQuot"
+                            android:layout_marginTop="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#000"
+                            android:text="Quote"
+                            android:autoLink="all"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:textColor="#000"
+            android:text="Description"/>
+
+        <TextView
+            android:id="@+id/myeventDescrip"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textMultiLine"
+            android:textColor="#000"
+            android:hint="Desc"/>
+
+        <Button
+            android:id="@+id/joinBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/primaryLightColor"
+            android:text="Join!"
+            android:textColor="@color/whiteTextColor"/>
 
         </LinearLayout>
     </ScrollView>
