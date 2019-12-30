@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -55,6 +59,8 @@ import com.hdpolover.ybbproject.notifications.Response;
 import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -200,7 +206,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                showMoreOptions();
+                showMoreOptions(pDescTv.getText().toString(), pImageIv);
             }
         });
 
@@ -344,7 +350,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void showMoreOptions() {
+    private void showMoreOptions(final String pDesc, final ImageView pImageIv) {
         //creating popup menu currently having delete
         PopupMenu popupMenu = new PopupMenu(this, moreBtn, Gravity.END);
 
@@ -396,7 +402,26 @@ public class PostDetailActivity extends AppCompatActivity {
                 } else if (id == 2) {
                     Toast.makeText(getApplicationContext(), "Report clicked.", Toast.LENGTH_SHORT).show();
                 } else if (id == 3) {
-                    Toast.makeText(getApplicationContext(), "Share clicked.", Toast.LENGTH_SHORT).show();
+
+//                    if (bitmapDrawable == null) {
+//                        //post without image
+//                        shareTextOnly(pDesc);
+//                    } else {
+//                        //post with image
+//                        //convert image to bitmap
+//                        Bitmap bitmap = bitmapDrawable.getBitmap();
+//                        shareImageAndText(pDesc, bitmap);
+//                    }
+                    try {
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) pImageIv.getDrawable();
+                        //post with image
+                        // convert image to bitmap
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        shareImageAndText(pDesc, bitmap);
+                    } catch (Exception e) {
+                        //post without image
+                        shareTextOnly(pDesc);
+                    }
                 }
 
                 return false;
@@ -404,6 +429,52 @@ public class PostDetailActivity extends AppCompatActivity {
         });
         //show menu
         popupMenu.show();
+    }
+
+    private void shareTextOnly(String pDesc) {
+        //concantenate title and desc to share
+        String shareBody = pDesc;
+
+        //share intnet
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject here");
+        intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+
+    private void shareImageAndText(String pDesc, Bitmap bitmap) {
+        String shareBody = pDesc;
+
+        Uri uri = saveImageToShare(bitmap);
+
+        //share
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("iamge/png");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject here");
+        intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imageFolder = new File(getCacheDir(), "images");
+        Uri uri = null;
+
+        try {
+            imageFolder.mkdir();
+            File file = new File(imageFolder, "shared_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(this, "com.hdpolover.ybbproject.fileprovider", file);
+
+        } catch (Exception e) {
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return  uri;
     }
 
     private void beginDelete() {

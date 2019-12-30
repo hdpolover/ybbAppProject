@@ -87,6 +87,17 @@
             </intent-filter>
         </service>
 
+<!--        define file provider-->
+        <provider
+            android:authorities="com.hdpolover.ybbproject.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"/>
+        </provider>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id"
