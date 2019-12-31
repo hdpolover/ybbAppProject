@@ -128,8 +128,8 @@ public class HomeFragment extends Fragment {
 
         nestedScrollView = view.findViewById(R.id.nestedScrollViewHome);
 
-        //getUnfollowedPeople(myUid);
-        loadPeople();
+        getUnfollowedPeople(myUid);
+        //loadPeople();
         loadPosts();
 
         fab_add_post.setOnClickListener(new View.OnClickListener() {
@@ -246,14 +246,16 @@ public class HomeFragment extends Fragment {
 
                     if (!modelUser.getUid().equals(myUid)) {
                         if (idList.size() == 0) {
-                            Log.e("1", "0");
                             peopleList.add(modelUser);
                         } else {
+                            boolean isFollowed = true;
                             for (String id : idList) {
-                                if (!modelUser.getUid().equals(id)) {
-                                    peopleList.add(modelUser);
-                                    Log.e("2", id);
+                                if (modelUser.getUid().equals(id)) {
+                                    isFollowed = false;
                                 }
+                            }
+                            if (isFollowed) {
+                                peopleList.add(modelUser);
                             }
                         }
                     }
@@ -274,44 +276,6 @@ public class HomeFragment extends Fragment {
 //                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void setFollowedPeopleId() {
-
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows")
-                    .child(myUid).child("Followings");
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    //clear the list first before loading
-                    followedPeopleId.clear();
-
-                    for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                        Log.e("value", ""+ ds.getValue());
-                        followedPeopleId.add(ds.getKey());
-                        Log.e("id", "" + ds.getKey());
-                        Log.e("list size", "" + followedPeopleId.size());
-                    }
-
-//                if (dataSnapshot.child(myUid).exists()) {
-//                    if (dataSnapshot.child(myUid).child("Followings").exists()) {
-//                            for (DataSnapshot ds: dataSnapshot.getChildren()) {
-//                                Log.e("value", ""+ ds.getValue());
-//                                followedPeopleId.add(ds.getKey());
-//                                Log.e("id", "" + ds.getKey());
-//                                Log.e("list size", "" + followedPeopleId.size());
-//                            }
-//                    }
-//                } else {
-//                    Log.i("none", "user hasn't done anything in follows");
-//                }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
     }
 
     private void loadPeople() {
@@ -338,9 +302,9 @@ public class HomeFragment extends Fragment {
 //                        peopleList.add(modelPeopleSuggestion);
 //                        }}
 
-                        if (!modelUser.getUid().equals(myUid)) {
-                            peopleList.add(modelUser);
-                        }
+                    if (!modelUser.getUid().equals(myUid)) {
+                        peopleList.add(modelUser);
+                    }
 
 
                     //adapter
