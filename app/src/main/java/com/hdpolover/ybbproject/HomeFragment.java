@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterPeopleSuggestion;
 import com.hdpolover.ybbproject.adapters.AdapterPost;
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment {
 
     List<String> followedPeopleId;
     List<String> idList;
+    List<String> followedPeoplePostId;
 
     NestedScrollView nestedScrollView;
     ShimmerFrameLayout shimmerFrameLayoutPeople;
@@ -99,6 +101,7 @@ public class HomeFragment extends Fragment {
         postList = new ArrayList<>();
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
+        followedPeoplePostId = new ArrayList<>();
         idList = new ArrayList<>();
 
         checkUserStatus();
@@ -167,6 +170,7 @@ public class HomeFragment extends Fragment {
                         loadPosts();
                     } else if (chipContents[finalI2].equals("Followings")) {
                         Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
+                        loadFollowedPeoplePosts();
                     } else {
                         searchPostsOnChip(chipContents[finalI2]);
                     }
@@ -175,6 +179,32 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void loadFollowedPeoplePosts() {
+
+        for (String id: idList) {
+            //path of all posts
+            Query ref = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("uid").equalTo(id);
+            //get all data from this ref
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    followedPeoplePostId.clear();
+                    for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                        ModelPost modelPost = ds.getValue(ModelPost.class);
+
+                        followedPeoplePostId.add(modelPost.getpId());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    //in case of error
+                    Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void searchPostsOnChip(final String searchQuery) {
