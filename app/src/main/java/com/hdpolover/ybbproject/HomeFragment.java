@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView peopleSuggestionRecyclerView;
     List<ModelUser> peopleList;
+    List<ModelUser> searchedPeopleList;
     AdapterPeopleSuggestion adapterPeopleSuggestion;
 
     List<String> followedPeopleId;
@@ -104,6 +105,8 @@ public class HomeFragment extends Fragment {
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
         idList = new ArrayList<>();
+
+        searchedPeopleList = new ArrayList<>();
 
         checkUserStatus();
 
@@ -431,6 +434,37 @@ public class HomeFragment extends Fragment {
 
                     if (modelPost.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
                         postList.add(modelPost);
+                    }
+
+                    //adapter
+                    adapterPost = new AdapterPost(getActivity(), postList);
+                    //set adapter recycler view
+                    postRecyclerView.setAdapter(adapterPost);
+                    adapterPost.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //in case of error
+                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void searchPeople(final String searchQuery) {
+        //path of all posts
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        //get all data from this ref
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                searchedPeopleList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ModelUser modelUser = ds.getValue(ModelUser.class);
+
+                    if (modelUser.getUsername().toLowerCase().contains(searchQuery.toLowerCase())) {
+                        searchedPeopleList.add(modelUser);
                     }
 
                     //adapter

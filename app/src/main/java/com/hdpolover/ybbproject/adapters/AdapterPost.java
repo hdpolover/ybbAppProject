@@ -45,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hdpolover.ybbproject.AddPostActivity;
+import com.hdpolover.ybbproject.FeedbackActivity;
 import com.hdpolover.ybbproject.PostDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
@@ -425,18 +426,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                     intent.putExtra("editPostId", pId);
                     context.startActivity(intent);
                 } else if (id == 2) {
-                    Toast.makeText(context, "Report clicked.", Toast.LENGTH_SHORT).show();
+                    reportPost(pId);
                 } else if (id == 3) {
-
-//                    if (bitmapDrawable == null) {
-//                        //post without image
-//                        shareTextOnly(pDesc);
-//                    } else {
-//                        //post with image
-//                        //convert image to bitmap
-//                        Bitmap bitmap = bitmapDrawable.getBitmap();
-//                        shareImageAndText(pDesc, bitmap);
-//                    }
                     try {
                         BitmapDrawable bitmapDrawable = (BitmapDrawable) pImageIv.getDrawable();
                         //post with image
@@ -454,6 +445,69 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         });
         //show menu
         popupMenu.show();
+    }
+
+    private void reportPost(final String pId) {
+        //option camera/gallery to show in dialog
+        String[] options = {"Spam", "Inappropiate"};
+
+        //dialog
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        builder.setTitle("Why are you reporting this post?");
+        //set options to dialog
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    reportCurrentPost(pId, 0);
+                }
+                if (which == 1) {
+                   reportCurrentPost(pId, 1);
+                }
+            }
+        });
+        //create and show dialog
+        builder.create().show();
+    }
+
+    private void reportCurrentPost(String pId, int type) {
+        String reportType = "";
+        if (type == 0) {
+            reportType = "spam";
+        } else {
+            reportType = "inappropiate";
+        }
+
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        //each post will have a child "comments" taht willc ontain comments of that post
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reports").child("Posts");
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //put info in hashmap
+        hashMap.put("rId", timeStamp);
+        hashMap.put("pId", pId);
+        hashMap.put("timestamp", timeStamp);
+        hashMap.put("reporterId", myUid);
+        hashMap.put("violation", reportType);
+
+        //put this data in db
+        ref.child(timeStamp).setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //added
+                        Toast.makeText(context, "Thank you for reporting this post. We will review it and take further actions", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //failed
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
     }
 
     private void shareTextOnly(String pDesc) {
