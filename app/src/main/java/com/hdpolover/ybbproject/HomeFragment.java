@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
 
     RecyclerView postRecyclerView;
     List<ModelPost> postList;
+    List<ModelPost> followedPostList;
     AdapterPost adapterPost;
 
     RecyclerView peopleSuggestionRecyclerView;
@@ -59,7 +61,6 @@ public class HomeFragment extends Fragment {
 
     List<String> followedPeopleId;
     List<String> idList;
-    List<String> followedPeoplePostId;
 
     NestedScrollView nestedScrollView;
     ShimmerFrameLayout shimmerFrameLayoutPeople;
@@ -99,9 +100,9 @@ public class HomeFragment extends Fragment {
 
         //init post list
         postList = new ArrayList<>();
+        followedPostList = new ArrayList<>();
         peopleList = new ArrayList<>();
         followedPeopleId =  new ArrayList<>();
-        followedPeoplePostId = new ArrayList<>();
         idList = new ArrayList<>();
 
         checkUserStatus();
@@ -169,7 +170,7 @@ public class HomeFragment extends Fragment {
                     if (chipContents[finalI2].equals("All")) {
                         loadPosts();
                     } else if (chipContents[finalI2].equals("Followings")) {
-                        Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
                         loadFollowedPeoplePosts();
                     } else {
                         searchPostsOnChip(chipContents[finalI2]);
@@ -182,19 +183,39 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadFollowedPeoplePosts() {
-
-        for (String id: idList) {
             //path of all posts
-            Query ref = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("uid").equalTo(id);
+            Query ref = FirebaseDatabase.getInstance().getReference("Posts");
             //get all data from this ref
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    followedPeoplePostId.clear();
+                    followedPostList.clear();
                     for (DataSnapshot ds: dataSnapshot.getChildren()) {
                         ModelPost modelPost = ds.getValue(ModelPost.class);
 
-                        followedPeoplePostId.add(modelPost.getpId());
+                        boolean isFollowed = false;
+                        for (String id : idList) {
+                            if (modelPost.getUid().equals(id)) {
+                                isFollowed = true;
+                            }
+                        }
+                        if (isFollowed) {
+                            followedPostList.add(modelPost);
+                        }
+
+                        //adapter
+                        adapterPost = new AdapterPost(getActivity(), followedPostList);
+
+                        if (followedPostList.size() == 0) {
+                            noPostHomeLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            //set adapter recycler view
+                            noPostHomeLayout.setVisibility(View.GONE);
+                            postRecyclerView.setAdapter(adapterPost);
+                            adapterPost.notifyDataSetChanged();
+                            shimmerFrameLayoutPost.stopShimmer();
+                            shimmerFrameLayoutPost.setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -204,7 +225,7 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-        }
+
     }
 
     private void searchPostsOnChip(final String searchQuery) {
