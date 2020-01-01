@@ -24,7 +24,9 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".SettingChangePasswordActivity"></activity>
+        <activity android:name=".SettingMyAccountActivity" />
+        <activity android:name=".FeedbackActivity" />
         <activity android:name=".WebViewNewsActivity" />
         <activity
             android:name=".NoConnectionActivity"
@@ -68,7 +70,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddPostActivity" />
         <activity android:name=".HomeFragment" />
-        <activity android:name=".NewsFragment" android:theme="@style/AppThemeNo" />
+        <activity
+            android:name=".NewsFragment"
+            android:theme="@style/AppThemeNo" />
 
         <service
             android:name=".notifications.FirebaseService"
@@ -85,17 +89,15 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-<!--        define file provider-->
+        </service> <!-- define file provider -->
         <provider
-            android:authorities="com.hdpolover.ybbproject.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.hdpolover.ybbproject.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths"/>
+                android:resource="@xml/paths" />
         </provider>
 
         <meta-data

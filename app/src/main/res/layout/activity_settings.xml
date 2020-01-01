@@ -62,7 +62,7 @@
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:textColor="@color/colorBlack"
-                    android:text="Help"/>
+                    android:text="Help center"/>
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

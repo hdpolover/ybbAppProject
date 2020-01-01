@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     String uid;
 
-    MaterialCardView logoutBtn, aboutBtn, feedbackBtn;
+    MaterialCardView logoutBtn, aboutBtn, feedbackBtn, helpBtn, accountBtn;
     TextView ybbVersionTv;
 
     @Override
@@ -47,6 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         feedbackBtn = findViewById(R.id.feedbackBtn);
         aboutBtn = findViewById(R.id.aboutBtn);
+        helpBtn = findViewById(R.id.helpBtn);
+        accountBtn = findViewById(R.id.accountBtn);
         ybbVersionTv = findViewById(R.id.ybbVersionTv);
 
         ybbVersionTv.setText(getResources().getString(R.string.app_name) + " " + appVersionCheck.getAppVersion());
@@ -72,6 +74,14 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        accountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, SettingMyAccountActivity.class);
+                startActivity(intent);
             }
         });
 

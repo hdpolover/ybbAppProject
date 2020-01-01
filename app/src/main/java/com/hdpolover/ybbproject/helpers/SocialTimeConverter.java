@@ -95,6 +95,6 @@ public class SocialTimeConverter {
             default:
                 break;
         }
-        return month + " " + date + " at " + time;
+        return month + " " + date + " at" + time;
     }
 }
