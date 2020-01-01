@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment {
     ShimmerFrameLayout shimmerFrameLayoutPeople;
     ShimmerFrameLayout shimmerFrameLayoutPost;
     LinearLayout noPostHomeLayout;
+    LinearLayout verifiedAccountLayout;
 
     Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7;
     Chip activeChip;
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment {
 
         fab_add_post = view.findViewById(R.id.fab_add_post);
         peopleTv = view.findViewById(R.id.peopleTv);
+        verifiedAccountLayout = view.findViewById(R.id.verifiedAccountLayout);
 
         //init chips
         chip1 = view.findViewById(R.id.chip1);
@@ -109,6 +111,8 @@ public class HomeFragment extends Fragment {
         searchedPeopleList = new ArrayList<>();
 
         checkUserStatus();
+
+        checkVerifiedAccount();
 
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
@@ -183,6 +187,16 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void checkVerifiedAccount() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified()) {
+            verifiedAccountLayout.setVisibility(View.GONE);
+        } else {
+            verifiedAccountLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadFollowedPeoplePosts() {
@@ -561,6 +575,7 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPost.startShimmer();
         shimmerFrameLayoutPeople.startShimmer();
         checkUserStatus();
+        checkVerifiedAccount();
     }
 
     @Override
@@ -569,12 +584,14 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPeople.stopShimmer();
         shimmerFrameLayoutPost.stopShimmer();
         checkUserStatus();
+        checkVerifiedAccount();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         checkUserStatus();
+        checkVerifiedAccount();
     }
 
     //handle menu item click

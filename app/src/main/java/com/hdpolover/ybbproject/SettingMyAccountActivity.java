@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class SettingMyAccountActivity extends AppCompatActivity {
 
     String myUid;
     MaterialCardView changePassBtn, deleteAccBtn, changeEmailBtn;
+    Button sendVerifEmail;
 
     ProgressDialog progressDialog;
 
@@ -50,6 +52,8 @@ public class SettingMyAccountActivity extends AppCompatActivity {
         changeEmailBtn = findViewById(R.id.changeEmailBtn);
         deleteAccBtn = findViewById(R.id.deleteAccBtn);
 
+        sendVerifEmail = findViewById(R.id.sendVerifEmailBtn);
+
         changePassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +66,23 @@ public class SettingMyAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteAccount();
+            }
+        });
+
+        sendVerifEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                //send verification email
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                   Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
     }
@@ -126,12 +147,12 @@ public class SettingMyAccountActivity extends AppCompatActivity {
                                             } else {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "An error occured", Toast.LENGTH_SHORT).show();
+                                                finish();
                                             }
                                         }
                                     });
                                 } else {
                                     progressDialog.dismiss();
-                                    Log.d("failed", "Error auth failed");
                                     currentPasswordEt.setError("Current password is wrong");
                                     currentPasswordEt.setFocusable(true);
                                 }

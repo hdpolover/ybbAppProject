@@ -419,6 +419,17 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
+                            //send verification email
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "Email sent.");
+                                            }
+                                        }
+                                    });
+
                             //Toast.makeText(RegisterActivity.this, "Registered . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this, UploadProfileActivity.class));
                             finish();
