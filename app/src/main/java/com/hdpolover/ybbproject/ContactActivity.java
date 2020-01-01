@@ -69,8 +69,12 @@ public class ContactActivity extends AppCompatActivity {
         //init recyclerview
         recyclerView = findViewById(R.id.user_recyclerView);
         //set it's propertis
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+        recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
 
         //init user list
         userList = new ArrayList<>();
@@ -143,7 +147,8 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void showUsers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        //DatabaseReference
+        Query reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

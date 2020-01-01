@@ -40,6 +40,8 @@ import com.hdpolover.ybbproject.models.ModelChatlist;
 import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MessagesFragment extends Fragment {
@@ -73,11 +75,12 @@ public class MessagesFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerView);
-//
-//        //Layout for recyclerview
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        linearLayoutManager.setReverseLayout(true);
-//        linearLayoutManager.setStackFromEnd(true);
+
+        //Layout for recyclerview
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
 //
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(linearLayoutManager);
