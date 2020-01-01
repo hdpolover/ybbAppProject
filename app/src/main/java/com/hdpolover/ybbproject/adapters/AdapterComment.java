@@ -107,20 +107,28 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.MyHolder
         holder.nameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", uid);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if (uid.equals(myUid)) {
+                    Toast.makeText(context, "Go to Profile", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("uid", uid);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
 
         holder.avatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", uid);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if (uid.equals(myUid)) {
+                    Toast.makeText(context, "Go to Profile", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("uid", uid);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
     }

@@ -95,17 +95,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                checkPostExist(postId);
-//                Log.e("ee", isExist + "");
-//                if (isExist) {
-//                    Intent intent = new Intent(mContext, PostDetailActivity.class);
-//                    intent.putExtra("postId", postId);
-//                    intent.putExtra("uid", publisherId);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    mContext.startActivity(intent);
-//                } else {
-//                    Toast.makeText(mContext, "Post doesn't exist anymore...", Toast.LENGTH_SHORT).show();
-//                }
+                try {
                     if (postId.isEmpty()) {
                         Intent intent = new Intent(mContext, UserProfileActivity.class);
                         intent.putExtra("uid", userId);
@@ -118,7 +108,9 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                     }
-
+                } catch (Exception e) {
+                 Toast.makeText(mContext, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -161,26 +153,6 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
         });
         popupMenu.show();
     }
-
-//    private void deleteNotif(final String postid, String userid){
-//        Query fQuery = FirebaseDatabase.getInstance().getReference("Notifications").child(userid)
-//                .orderByChild("timestamp").equalTo(postid);
-//        fQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-//                    ds.getRef().removeValue();
-//                }
-//                //deleted
-//                Toast.makeText(mContext, "Deleted successfully", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     private void deleteNotif(final String postid, String userid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
