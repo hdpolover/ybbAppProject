@@ -59,7 +59,7 @@ public class MessagesFragment extends Fragment {
     FloatingActionButton fab;
 
     ImageView chatIv;
-    TextView chatTv;
+    TextView chatTv, clockTv;
 
     @Nullable
     @Override
@@ -69,6 +69,7 @@ public class MessagesFragment extends Fragment {
         fab = view.findViewById(R.id.fab);
         chatTv = view.findViewById(R.id.chatTv);
         chatIv = view.findViewById(R.id.chatIv);
+        //clockTv = view.findViewById(R.id.lastClockTv);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -87,7 +88,8 @@ public class MessagesFragment extends Fragment {
 
         chatList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(currentUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -96,6 +98,7 @@ public class MessagesFragment extends Fragment {
                     ModelChatlist chatlist = ds.getValue(ModelChatlist.class);
                     chatList.add(chatlist);
                 }
+
                 if (chatList.size() > 0) {
                     loadChats();
                     chatTv.setVisibility(View.GONE);
@@ -106,6 +109,7 @@ public class MessagesFragment extends Fragment {
                 }
             }
 
+            //clockTv.setText(ds.child("timestamp").getValue().toString());
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
