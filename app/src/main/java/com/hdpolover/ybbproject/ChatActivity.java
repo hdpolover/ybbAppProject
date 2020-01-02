@@ -79,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ImageView profileIv, messageIv;
-    TextView nameTv, userStatusTv;
+    TextView nameTv, userStatusTv, clockTv;
     EditText messageEt;
     ImageButton sendBtn, backBtn, attachBtn;
 
@@ -138,6 +138,7 @@ public class ChatActivity extends AppCompatActivity {
         attachBtn = findViewById(R.id.attachBtn);
         bottomNavigationView = findViewById(R.id.botton_navigation);
         messageIv = findViewById(R.id.messageIv);
+        clockTv = findViewById(R.id.lastClockTv);
 
 //        //badge
 //        bottomNavigationView.getOrCreateBadge(R.id.nav_messages);
@@ -546,6 +547,7 @@ public class ChatActivity extends AppCompatActivity {
 
         String timestamp = String.valueOf(System.currentTimeMillis());
 
+        clockTv.setText(timestamp);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", myUid);
         hashMap.put("receiver", hisUid);

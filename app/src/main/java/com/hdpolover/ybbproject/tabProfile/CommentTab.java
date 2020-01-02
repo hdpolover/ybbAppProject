@@ -4,10 +4,12 @@ package com.hdpolover.ybbproject.tabProfile;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,11 +93,106 @@ public class CommentTab extends Fragment {
         postsRecyclerView.setLayoutManager(layoutManager);
 
         //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
+        final DatabaseReference refPost = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
+        Query queryPost = refPost.orderByChild("uid").equalTo(uid);
+        Log.e("Query Post", queryPost.toString());
+
+        //init post list
+//        DatabaseReference refComment = firebaseDatabase.getInstance().getReference("Comments");
+//        //query to load posts
+//        Query queryComment = refComment.orderByChild(String.valueOf(queryPost.orderByChild("pId")));
         //get all data
-        query.addValueEventListener(new ValueEventListener() {
+        //Log.e("query", String.valueOf(queryComment));
+//        queryPost.orderByChild("pId").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                String idPost = dataSnapshot.getKey();
+//
+//                Log.e("IDPOST E", idPost);
+//                refPost.child(idPost).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        postList.clear();
+//                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                            ModelPost myPosts = ds.getValue(ModelPost.class);
+//
+//                            //add to list
+//                            postList.add(myPosts);
+//
+//                            //adapter
+//                            adapterPost = new AdapterPost(getContext(), postList);
+//                            //set this adapter to recyclerview
+//                            postsRecyclerView.setAdapter(adapterPost);
+//                        }
+//
+//                        if (postList.size() > 0) {
+//                            noDataIv.setVisibility(View.GONE);
+//                            noDataTv.setVisibility(View.GONE);
+//                        } else {
+//                            noDataIv.setVisibility(View.VISIBLE);
+//                            noDataTv.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        queryPost.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                postList.clear();
+//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    ModelPost myPosts = ds.getValue(ModelPost.class);
+//
+//                    //add to list
+//                    postList.add(myPosts);
+//
+//                    //adapter
+//                    adapterPost = new AdapterPost(getContext(), postList);
+//                    //set this adapter to recyclerview
+//                    postsRecyclerView.setAdapter(adapterPost);
+//                }
+//
+//                if (postList.size() > 0) {
+//                    noDataIv.setVisibility(View.GONE);
+//                    noDataTv.setVisibility(View.GONE);
+//                } else {
+//                    noDataIv.setVisibility(View.VISIBLE);
+//                    noDataTv.setVisibility(View.VISIBLE);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        queryPost.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();

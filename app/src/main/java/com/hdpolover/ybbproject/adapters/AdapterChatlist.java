@@ -60,12 +60,12 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         holder.nameTv.setText(userName);
         if(lastMessage == null || lastMessage.equals("default")){
             holder.lastMessageTv.setVisibility(View.GONE);
-            holder.lastClockTv.setVisibility(View.GONE);
+            //holder.lastClockTv.setVisibility(View.GONE);
         }
         else {
             holder.lastMessageTv.setVisibility(View.VISIBLE);
             holder.lastMessageTv.setText(lastMessage);
-            holder.lastClockTv.setText("09.00 PM");
+            //holder.lastClockTv.setText("09.00 PM");
         }
 
         try{
