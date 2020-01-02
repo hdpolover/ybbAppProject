@@ -25,6 +25,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class SettingMyAccountActivity extends AppCompatActivity {
 
@@ -98,12 +101,12 @@ public class SettingMyAccountActivity extends AppCompatActivity {
         //views to set in dialog
         final EditText currentPasswordEt = new EditText(this);
         currentPasswordEt.setHint("Enter your current password");
-        currentPasswordEt.setWidth(200);
+        currentPasswordEt.setWidth(150);
         currentPasswordEt.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
         /*set the min width of a Edit view to fit a text of n 'M' letter regardless of the actual text
         extension and text size*/
-        currentPasswordEt.setMinEms(20);
+        currentPasswordEt.setMinEms(15);
 
         linearLayout.addView(currentPasswordEt);
         linearLayout.setPadding(10, 10, 10, 10);
@@ -138,8 +141,12 @@ public class SettingMyAccountActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                //deleting user in the db
+                                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                                                reference.removeValue();
+
                                                 progressDialog.dismiss();
-                                                Toast.makeText(getApplicationContext(), "Account successfully changed", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "Account successfully deleted", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(SettingMyAccountActivity.this, MainActivity.class);
                                                 startActivity(intent);
@@ -158,6 +165,7 @@ public class SettingMyAccountActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

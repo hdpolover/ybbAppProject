@@ -89,7 +89,7 @@
                     android:textSize="20sp"
                     android:layout_gravity="center"
                     android:textColor="@color/colorBlack"
-                    android:text="Feedback"/>
+                    android:text="Send feedback"/>
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

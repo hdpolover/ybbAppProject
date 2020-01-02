@@ -1,13 +1,16 @@
 package com.hdpolover.ybbproject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -40,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
     boolean doubleBackToExit = false;
 
     ActionBar actionBar;
+    Toolbar toolbar;
 
     String mUID;
 
@@ -47,6 +51,7 @@ public class DashboardActivity extends AppCompatActivity {
         return active;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,8 @@ public class DashboardActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         //actionBar.setIcon(R.drawable.ybb_white_cropped);
         actionBar.setDisplayShowHomeEnabled(true);
+//        toolbar = findViewById(R.id.customToolbar);
+//        setSupportActionBar(toolbar);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();

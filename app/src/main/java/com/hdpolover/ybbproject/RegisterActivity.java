@@ -425,7 +425,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Log.d(TAG, "Email sent.");
+                                                Log.e(TAG, "Email sent.");
                                             }
                                         }
                                     });
