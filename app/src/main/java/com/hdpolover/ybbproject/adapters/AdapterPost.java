@@ -234,7 +234,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Token token = ds.getValue(Token.class);
-                    Data data = new Data("1", postId, myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_calendar);
+                    Data data = new Data("1", postId, myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_notif);
 
 
                     Sender sender = new Sender(data, token.getToken());

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,19 +22,33 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.UserProfileActivity;
 import com.hdpolover.ybbproject.models.ModelUser;
+import com.hdpolover.ybbproject.notifications.APIService;
+import com.hdpolover.ybbproject.notifications.Client;
+import com.hdpolover.ybbproject.notifications.Data;
+import com.hdpolover.ybbproject.notifications.Response;
+import com.hdpolover.ybbproject.notifications.Sender;
+import com.hdpolover.ybbproject.notifications.Token;
 
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.MyHolder> {
 
     Context context;
     List<ModelUser> upvoterList;
 
-    String myUid;
+    String myUid, myName, publisherId;
+    ModelUser modelUser;
+
+    APIService apiService;
     //contructor
 
     public AdapterPostUpvoter(Context context, List<ModelUser> upvoterList) {
@@ -47,6 +62,9 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
         //inflate layout row_user.xml
         View view = LayoutInflater.from(context).inflate(R.layout.row_post_upvoter_detail, viewGroup, false);
 
+        //create api service
+        apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
+
         return new MyHolder(view);
     }
 
@@ -54,6 +72,8 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
     public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         myUid = firebaseUser.getUid();
+
+        setCurrentUserName(myUid);
 
         //get data
         final String hisUid = upvoterList.get(position).getUid();
@@ -73,20 +93,28 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
         holder.upvoterAvatarIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", hisUid);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if (hisUid.equals(myUid)) {
+                    Toast.makeText(context, "Go to Profile", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("uid", hisUid);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
 
         holder.upvoterNameTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, UserProfileActivity.class);
-                intent.putExtra("uid", hisUid);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                if (hisUid.equals(myUid)) {
+                    Toast.makeText(context, "Go to Profile", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(context, UserProfileActivity.class);
+                    intent.putExtra("uid", hisUid);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -101,6 +129,11 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
                                 .child("Followings").child(hisUid).setValue(true);
                         FirebaseDatabase.getInstance().getReference().child("Follows").child(hisUid)
                                 .child("Followers").child(myUid).setValue(true);
+
+                        publisherId = hisUid;
+                        addNotification(hisUid, "");
+                        myName = modelUser.getName();
+                        sendNotification(hisUid,  myName," started following you");
                     } else {
                         FirebaseDatabase.getInstance().getReference().child("Follows").child(myUid)
                                 .child("Followings").child(hisUid).removeValue();
@@ -112,6 +145,70 @@ public class AdapterPostUpvoter extends RecyclerView.Adapter<AdapterPostUpvoter.
         }
 
         isFollowing(hisUid, holder.followUpvoterBtn);
+    }
+
+    //for notification
+    private void sendNotification(final String hisUid, final String name, final String message) {
+        DatabaseReference allTokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = allTokens.orderByKey().equalTo(hisUid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Token token = ds.getValue(Token.class);
+                    Data data = new Data("2", "", myUid, name + "" + message, "New notification", hisUid, R.drawable.ic_notif);
+
+
+                    Sender sender = new Sender(data, token.getToken());
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Response>() {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void addNotification(String userid, String postid){
+        final String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", myUid);
+        hashMap.put("publisherid", publisherId);
+        hashMap.put("text", "started following you");
+        hashMap.put("postid", postid);
+        hashMap.put("timestamp", timeStamp);
+
+        reference.push().setValue(hashMap);
+    }
+
+    private void setCurrentUserName(String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                modelUser = dataSnapshot.getValue(ModelUser.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void isFollowing(final String followerId, final Button followBtn) {
