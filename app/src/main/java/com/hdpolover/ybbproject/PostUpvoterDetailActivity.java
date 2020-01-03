@@ -82,16 +82,7 @@ public class PostUpvoterDetailActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        //loadUpvoters();
-
         getLikes();
-
-//        followUpvoterBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Followed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
     }
 
@@ -120,9 +111,9 @@ public class PostUpvoterDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 postUptoversList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelUser modelUser = ds.getValue(ModelUser.class);
-                    for (String id : idList){
+                    for (String id : idList) {
                         try {
                             if (modelUser.getUid() != null) {
                                 if (modelUser.getUid().equals(id)) {
@@ -142,69 +133,7 @@ public class PostUpvoterDetailActivity extends AppCompatActivity {
 
             }
         });
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                postUptoversList.clear();
-//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    ModelUser user = ds.getValue(ModelUser.class);
-//
-//                    for (String id : idList){
-//                        if (user.getUid().equals(id.toString())){
-//                            postUptoversList.add(user);
-//                        }
-//                    }
-//
-//                    //adapter
-//                    adapterPostUpvoter = new AdapterPostUpvoter(getApplicationContext(), postUptoversList);
-//                    //set adapter to recycler view
-//                    recyclerView.setAdapter(adapterPostUpvoter);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
-
-//    private void loadUpvoters() {
-//        //layout linear for recyclerview
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        //set layout to recyclerview
-//        recyclerView.setLayoutManager(layoutManager);
-//
-//        //init comment list
-//        upvoterList = new ArrayList<>();
-//
-//        //path of the post, to get its comments
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts").child(postId).child("Upvoters");
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                upvoterList.clear();
-//                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-//                    ModelPostUptover modelPostUptover = ds.getValue(ModelPostUptover.class);
-//
-//                    upvoterList.add(modelPostUptover);
-//
-//                    //pass myUid
-//
-//                    //setup adapter
-//                    adapterPostUpvoter = new AdapterPostUpvoter(getApplicationContext(), upvoterList, myUid, postId);
-//                    //set adapter
-//                    recyclerView.setAdapter(adapterPostUpvoter);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//    }
 
     private void checkUserStatus() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
