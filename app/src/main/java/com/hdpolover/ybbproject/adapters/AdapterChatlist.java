@@ -3,6 +3,7 @@ package com.hdpolover.ybbproject.adapters;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.models.ModelChat;
 import com.hdpolover.ybbproject.models.ModelUser;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,18 +56,24 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
         String userImage = userList.get(position).getImage();
         String userName = userList.get(position).getName();
         String lastMessage = lastMessageMap.get(hisUid);
-        //String lastClock = lastClockMap.get(hisUid);
+        String lastClock = lastClockMap.get(hisUid);
 
         //set data
         holder.nameTv.setText(userName);
         if(lastMessage == null || lastMessage.equals("default")){
             holder.lastMessageTv.setVisibility(View.GONE);
-            //holder.lastClockTv.setVisibility(View.GONE);
+            holder.lastClockTv.setVisibility(View.GONE);
         }
         else {
+            //convert
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(Long.parseLong(lastClock));
+            String time = DateFormat.format("hh:mm aa", cal).toString();
+
             holder.lastMessageTv.setVisibility(View.VISIBLE);
             holder.lastMessageTv.setText(lastMessage);
-            //holder.lastClockTv.setText("09.00 PM");
+            holder.lastClockTv.setVisibility(View.VISIBLE);
+            holder.lastClockTv.setText(time);
         }
 
         try{
@@ -94,7 +102,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
     }
 
     public void setLastClockMap (String userId, String lastClock){
-        lastMessageMap.put(userId, lastClock);
+        lastClockMap.put(userId, lastClock);
     }
 
     @Override
