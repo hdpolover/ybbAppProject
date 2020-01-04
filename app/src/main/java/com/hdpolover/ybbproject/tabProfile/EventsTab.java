@@ -67,7 +67,6 @@ public class EventsTab extends Fragment {
         //shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
-        placeholders = view.findViewById(R.id.placeholdersEvent);
 
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
@@ -115,9 +114,9 @@ public class EventsTab extends Fragment {
                     //adapter
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    Log.e("iz", eventList.size() + "");
                     if (eventList.size() == 0) {
-                        Log.e("iz1", eventList.size() + "");
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         noMyEventLayout.setVisibility(View.VISIBLE);
                     } else {
                         noMyEventLayout.setVisibility(View.GONE);
@@ -128,7 +127,6 @@ public class EventsTab extends Fragment {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                     }
-
 
                 }
 

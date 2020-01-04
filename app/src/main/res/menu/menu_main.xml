@@ -18,4 +18,9 @@
         android:icon="@drawable/ic_settings"
         android:title="Settings" />
 
+    <item android:id="@+id/action_more"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_report_white"
+        android:title="More" />
+
 </menu>

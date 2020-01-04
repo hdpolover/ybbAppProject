@@ -51,10 +51,12 @@ public class CommentTab extends Fragment {
 
     List<ModelPost> postList;
     AdapterPost adapterPost;
-    String uid, postId;
+    String myUid, postId;
 
     TextView noDataTv;
     ImageView noDataIv;
+
+    List<String> postIdList;
 
     public CommentTab() {
         // Required empty public constructor
@@ -78,6 +80,7 @@ public class CommentTab extends Fragment {
         checkUserStatus();
 
         postList = new ArrayList<>();
+        postIdList = new ArrayList<>();
 
         loadMyPostsComment();
 
@@ -92,121 +95,49 @@ public class CommentTab extends Fragment {
         //set this layout to recyclerview
         postsRecyclerView.setLayoutManager(layoutManager);
 
-        //init post list
-        final DatabaseReference refPost = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query queryPost = refPost.orderByChild("uid").equalTo(uid);
-        Log.e("Query Post", queryPost.toString());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postIdList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        String uid = ""+ds1.child("uid").getValue().toString();
+                        if (uid.equals(myUid)) {
+                            postIdList.add(ds.getKey());
+                        }
+                    }
+                }
+            }
 
-        //init post list
-//        DatabaseReference refComment = firebaseDatabase.getInstance().getReference("Comments");
-//        //query to load posts
-//        Query queryComment = refComment.orderByChild(String.valueOf(queryPost.orderByChild("pId")));
-        //get all data
-        //Log.e("query", String.valueOf(queryComment));
-//        queryPost.orderByChild("pId").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                String idPost = dataSnapshot.getKey();
-//
-//                Log.e("IDPOST E", idPost);
-//                refPost.child(idPost).addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        postList.clear();
-//                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                            ModelPost myPosts = ds.getValue(ModelPost.class);
-//
-//                            //add to list
-//                            postList.add(myPosts);
-//
-//                            //adapter
-//                            adapterPost = new AdapterPost(getContext(), postList);
-//                            //set this adapter to recyclerview
-//                            postsRecyclerView.setAdapter(adapterPost);
-//                        }
-//
-//                        if (postList.size() > 0) {
-//                            noDataIv.setVisibility(View.GONE);
-//                            noDataTv.setVisibility(View.GONE);
-//                        } else {
-//                            noDataIv.setVisibility(View.VISIBLE);
-//                            noDataTv.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        queryPost.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                postList.clear();
-//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    ModelPost myPosts = ds.getValue(ModelPost.class);
-//
-//                    //add to list
-//                    postList.add(myPosts);
-//
-//                    //adapter
-//                    adapterPost = new AdapterPost(getContext(), postList);
-//                    //set this adapter to recyclerview
-//                    postsRecyclerView.setAdapter(adapterPost);
-//                }
-//
-//                if (postList.size() > 0) {
-//                    noDataIv.setVisibility(View.GONE);
-//                    noDataTv.setVisibility(View.GONE);
-//                } else {
-//                    noDataIv.setVisibility(View.VISIBLE);
-//                    noDataTv.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-        queryPost.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Posts");
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                    ModelPost modelPost = ds.getValue(ModelPost.class);
 
-                    //add to list
-                    postList.add(myPosts);
-
+                    boolean isPost = false;
+                    for (String id : postIdList) {
+                        if (modelPost.getpId().equals(id)) {
+                            isPost = true;
+                        }
+                    }
+                    if (isPost) {
+                        postList.add(modelPost);
+                    }
+                }
                     //adapter
                     adapterPost = new AdapterPost(getContext(), postList);
                     //set this adapter to recyclerview
                     postsRecyclerView.setAdapter(adapterPost);
-                }
 
                 if (postList.size() > 0) {
                     noDataIv.setVisibility(View.GONE);
@@ -219,7 +150,7 @@ public class CommentTab extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -229,7 +160,7 @@ public class CommentTab extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             //user is signed in stay here
-            uid = user.getUid();
+            myUid = user.getUid();
         }
     }
 

@@ -528,6 +528,7 @@ public class HomeFragment extends Fragment {
         inflater.inflate(R.menu.menu_main, menu);
 
         menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_more).setVisible(false);
         //search view to search post by post title/desc
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)MenuItemCompat.getActionView(item);

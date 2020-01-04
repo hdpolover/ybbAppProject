@@ -43,6 +43,7 @@ public class hisCommentTab extends Fragment {
     RecyclerView postsRecyclerView;
 
     List<ModelPost> postList;
+    ArrayList<String> postIdList;
     AdapterPost adapterPost;
     String hisUid;
 
@@ -71,12 +72,14 @@ public class hisCommentTab extends Fragment {
         Intent intent = getActivity().getIntent();
         hisUid = intent.getStringExtra("uid");
 
+        postIdList = new ArrayList<>();
         postList = new ArrayList<>();
 
         loadMyPostsComment();
 
         return view;
     }
+
 
     private void loadMyPostsComment() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -86,26 +89,49 @@ public class hisCommentTab extends Fragment {
         //set this layout to recyclerview
         postsRecyclerView.setLayoutManager(layoutManager);
 
-        //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(hisUid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postIdList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        String uid = ""+ds1.child("uid").getValue().toString();
+                        if (uid.equals(hisUid)) {
+                            postIdList.add(ds.getKey());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Posts");
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                    ModelPost modelPost = ds.getValue(ModelPost.class);
 
-                    //add to list
-                    postList.add(myPosts);
-
-                    //adapter
-                    adapterPost = new AdapterPost(getContext(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
+                    boolean isPost = false;
+                    for (String id : postIdList) {
+                        if (modelPost.getpId().equals(id)) {
+                            isPost = true;
+                        }
+                    }
+                    if (isPost) {
+                        postList.add(modelPost);
+                    }
                 }
+                //adapter
+                adapterPost = new AdapterPost(getContext(), postList);
+                //set this adapter to recyclerview
+                postsRecyclerView.setAdapter(adapterPost);
 
                 if (postList.size() > 0) {
                     noDataIv.setVisibility(View.GONE);
@@ -118,7 +144,7 @@ public class hisCommentTab extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

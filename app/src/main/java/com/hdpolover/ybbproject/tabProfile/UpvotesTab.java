@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,9 @@ public class UpvotesTab extends Fragment {
     RecyclerView postsRecyclerView;
 
     List<ModelPost> postList;
+    ArrayList<String> postIdList;
     AdapterPost adapterPost;
-    String uid;
+    String myUid;
 
     TextView noDataTv;
     ImageView noDataIv;
@@ -75,6 +77,7 @@ public class UpvotesTab extends Fragment {
 
         checkUserStatus();
 
+        postIdList = new ArrayList<>();
         postList = new ArrayList<>();
 
         loadPostsUpvotes();
@@ -91,19 +94,43 @@ public class UpvotesTab extends Fragment {
         postsRecyclerView.setLayoutManager(layoutManager);
 
         //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = firebaseDatabase.getInstance().getReference("PostUpvotes");
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                postIdList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1 : ds.getChildren()) {
+                        String uid = "" + ds1.getKey();
+                        if (uid.equals(myUid)) {
+                            postIdList.add(ds.getKey());
+                        }
+                    }
+                }
+            }
 
-                    //add to list
-                    postList.add(myPosts);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Posts");
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    ModelPost modelPost = ds.getValue(ModelPost.class);
+
+                    boolean isPost = false;
+                    for (String id : postIdList) {
+                        if (modelPost.getpId().equals(id)) {
+                            isPost = true;
+                        }
+                    }
+                    if (isPost) {
+                        postList.add(modelPost);
+                    }
 
                     //adapter
                     adapterPost = new AdapterPost(getContext(), postList);
@@ -133,7 +160,7 @@ public class UpvotesTab extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             //user is signed in stay here
-            uid = user.getUid();
+            myUid = user.getUid();
         }
     }
 

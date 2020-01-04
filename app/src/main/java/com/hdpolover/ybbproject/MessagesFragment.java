@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterChatlist;
 import com.hdpolover.ybbproject.adapters.AdapterUsers;
@@ -177,7 +178,7 @@ public class MessagesFragment extends Fragment {
     }
 
     private void lastMessage(final String userId) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        Query reference = FirebaseDatabase.getInstance().getReference("Chats").orderByChild("timestamp");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -204,7 +205,6 @@ public class MessagesFragment extends Fragment {
                             theLastMessage = chat.getMessage();
                         }
                         theLastClock = chat.getTimestamp();
-                        Log.e("TIME", chat.getTimestamp());
                     }
                 }
 
@@ -326,6 +326,7 @@ public class MessagesFragment extends Fragment {
         //hide searchview, as we dont need it here
         menu.findItem(R.id.action_settings).setVisible(false);
         menu.findItem(R.id.action_notif).setVisible(false);
+        menu.findItem(R.id.action_more).setVisible(false);
 
         //searchView
         MenuItem item = menu.findItem(R.id.action_search);

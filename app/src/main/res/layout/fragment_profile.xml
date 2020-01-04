@@ -271,7 +271,6 @@
 
 
 </com.google.android.material.appbar.AppBarLayout>
-    <!--    </androidx.appcompat.widget.Toolbar>-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

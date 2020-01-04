@@ -43,6 +43,7 @@ public class hisUpvotesTab extends Fragment {
     RecyclerView postsRecyclerView;
 
     List<ModelPost> postList;
+    ArrayList<String> postIdList;
     AdapterPost adapterPost;
     String hisUid;
 
@@ -71,6 +72,7 @@ public class hisUpvotesTab extends Fragment {
         Intent intent = getActivity().getIntent();
         hisUid = intent.getStringExtra("uid");
 
+        postIdList = new ArrayList<>();
         postList = new ArrayList<>();
 
         loadMyPostsComment();
@@ -87,19 +89,43 @@ public class hisUpvotesTab extends Fragment {
         postsRecyclerView.setLayoutManager(layoutManager);
 
         //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(hisUid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
+        DatabaseReference ref = firebaseDatabase.getInstance().getReference("PostUpvotes");
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                postIdList.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1 : ds.getChildren()) {
+                        String uid = "" + ds1.getKey();
+                        if (uid.equals(hisUid)) {
+                            postIdList.add(ds.getKey());
+                        }
+                    }
+                }
+            }
 
-                    //add to list
-                    postList.add(myPosts);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Posts");
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    ModelPost modelPost = ds.getValue(ModelPost.class);
+
+                    boolean isPost = false;
+                    for (String id : postIdList) {
+                        if (modelPost.getpId().equals(id)) {
+                            isPost = true;
+                        }
+                    }
+                    if (isPost) {
+                        postList.add(modelPost);
+                    }
 
                     //adapter
                     adapterPost = new AdapterPost(getContext(), postList);
