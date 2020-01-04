@@ -50,10 +50,6 @@ public class SettingChangePasswordActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String providerId = user.getProviderId();
 
-        Log.e("pr", providerId);
-
-
-
         checkUserStatus();
 
         saveNewPassBtn.setOnClickListener(new View.OnClickListener() {
@@ -81,9 +77,21 @@ public class SettingChangePasswordActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(newPassword.length() < 6){
+                    newPasswordEt.setError("Password must not be at least 6 characters");
+                    newPasswordEt.setFocusable(true);
+                    return;
+                }
+
                 if(!confirmNewPassword.equals(newPassword)){
                     confirmNewPasswordEt.setError("Passwords do not match");
                     confirmNewPasswordEt.setFocusable(true);
+                    return;
+                }
+
+                if(!newPassword.equals(currentPassword)){
+                    newPasswordEt.setError("New password must not be the same with the current one");
+                    newPasswordEt.setFocusable(true);
                     return;
                 }
 
@@ -94,13 +102,13 @@ public class SettingChangePasswordActivity extends AppCompatActivity {
     }
 
     private void updateOldPassword(String currentPassword, final String newPassword) {
-        progressDialog.setMessage("Updating...");
+        progressDialog.setMessage("Updating password...");
         progressDialog.show();
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
-
+        
         user.reauthenticate(credential)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
