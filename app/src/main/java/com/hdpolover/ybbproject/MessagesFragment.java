@@ -69,7 +69,7 @@ public class MessagesFragment extends Fragment {
         fab = view.findViewById(R.id.fab);
         chatTv = view.findViewById(R.id.chatTv);
         chatIv = view.findViewById(R.id.chatIv);
-        //clockTv = view.findViewById(R.id.lastClockTv);
+        clockTv = view.findViewById(R.id.lastClockTv);
 
         //init firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -182,7 +182,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String theLastMessage = "default";
-                String theLastClock = "0000";
+                String theLastClock = "";
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     ModelChat chat = ds.getValue(ModelChat.class);
                     if (chat == null) {
@@ -200,18 +200,16 @@ public class MessagesFragment extends Fragment {
 
                         if (chat.getType().equals("image")) {
                             theLastMessage = "Sent a photo";
-                            theLastClock = String.valueOf(chat.getTimestamp());
-                            Log.e("jam if", theLastClock);
                         } else {
                             theLastMessage = chat.getMessage();
-                            theLastClock = String.valueOf(chat.getTimestamp());
-                            Log.e("jam else", theLastClock);
                         }
+                        theLastClock = chat.getTimestamp();
+                        Log.e("TIME", chat.getTimestamp());
                     }
                 }
 
                 adapterChatlist.setLastMessageMap(userId, theLastMessage);
-                //adapterChatlist.setLastClockMap(userId, theLastClock);
+                adapterChatlist.setLastClockMap(userId, theLastClock);
                 adapterChatlist.notifyDataSetChanged();
             }
 

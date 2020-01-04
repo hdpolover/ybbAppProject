@@ -70,13 +70,15 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(Long.parseLong(timeStamp));
-        String time = DateFormat.format("hh:mm aa", cal).toString();
+        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+
+//        String date = dateTime.substring(0, 10);
+//        String time = dateTime.substring(10);
 
         if(type.equals("text")){
             //text message
             myHolder.messageTv.setVisibility(View.VISIBLE);
             myHolder.messageIv.setVisibility(View.GONE);
-
             myHolder.messageTv.setText(message);
         }else{
             myHolder.messageTv.setVisibility(View.GONE);
@@ -87,7 +89,8 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
         //set data
         myHolder.messageTv.setText(message);
-        myHolder.timeTv.setText(time);
+//        myHolder.dateTv.setText(date);
+        myHolder.timeTv.setText(dateTime);
         try {
             Glide.with(context).load(imageUrl).into(myHolder.profileIv);
         } catch (Exception e) {
@@ -208,7 +211,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
         //views
         ImageView profileIv, messageIv;
-        TextView messageTv, timeTv, isSeenTv;
+        TextView messageTv, timeTv, isSeenTv, dateTv;
         LinearLayout messageLayout; // forclick to show delete
 
         public MyHolder(@NonNull View itemView) {
@@ -218,6 +221,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             profileIv = itemView.findViewById(R.id.profileIv);
             messageIv = itemView.findViewById(R.id.messageIv);
             messageTv = itemView.findViewById(R.id.messageTv);
+            //dateTv = itemView.findViewById(R.id.dateTv);
             timeTv = itemView.findViewById(R.id.timeTv);
             isSeenTv = itemView.findViewById(R.id.isSeenTv);
             messageLayout = itemView.findViewById(R.id.messageLayout);
