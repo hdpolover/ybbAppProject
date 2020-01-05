@@ -150,6 +150,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 loadContents();
+
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -172,8 +174,6 @@ public class HomeFragment extends Fragment {
         getUnfollowedPeople(myUid);
         loadPosts();
         manageChips();
-
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void manageChips() {
