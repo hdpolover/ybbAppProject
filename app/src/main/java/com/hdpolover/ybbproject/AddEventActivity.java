@@ -2,6 +2,7 @@ package com.hdpolover.ybbproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -36,6 +38,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +59,8 @@ import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 import java.io.ByteArrayOutputStream;
 import java.nio.FloatBuffer;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,13 +70,11 @@ import java.util.Locale;
 import java.util.logging.SimpleFormatter;
 
 import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
 public class AddEventActivity extends AppCompatActivity {
-
-    FirebaseUser firebaseUser;
-    FirebaseAuth firebaseAuth;
 
     //permission constants
     private static final int STORAGE_REQUEST_CODE = 200;
@@ -83,28 +86,21 @@ public class AddEventActivity extends AppCompatActivity {
     //image picked will be the same in this uri
     Uri image_rui = null;
 
-    String uid;
+    String myUid;
+    String finalEventStart, finalEventEnd;
 
     ProgressDialog pd;
-    String editImage;
 
-    private DatePickerDialog datePickerDialog1 , datePickerDialog2;
-    private SimpleDateFormat dateFormatter;
+    EditText eTitleEt, eDescEt, eStartEt, eEndEt, eLocationEt, eSpekearEt, eQuotaEt;
+    ImageView eImageIv;
+    Spinner eCategorySpinner;
 
-    private TimePickerDialog timePickerDialog1, timePickerDialog2;
-//    private SimpleTimeFormat simpleTimeFormat;
-
-    EditText titleEt, descEt, dateEtFrom, dateEtTo, timeEtFrom, timeEtTo, eventLocEt, eventSpekEt, eventQuotaEt;
-    ImageView imgEt;
-    Spinner categoryEt;
+    public static final String DATE_TIME_FORMAT = "EEE dd/MM/yyy hh:mm a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-
-        firebaseAuth = firebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Create New Event");
@@ -118,12 +114,20 @@ public class AddEventActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        titleEt = findViewById(R.id.titleEt);
-        descEt = findViewById(R.id.descEt);
+        eTitleEt = findViewById(R.id.eTitleEt);
+        eDescEt = findViewById(R.id.eDescEt);
+        eStartEt = findViewById(R.id.eStartEt);
+        eEndEt = findViewById(R.id.eEndEt);
+        eCategorySpinner = findViewById(R.id.eCategorySpinner);
+        eSpekearEt = findViewById(R.id.eSpekearEt);
+        eQuotaEt = findViewById(R.id.eQuotaEt);
+        eLocationEt = findViewById(R.id.eLocationEt);
+        eImageIv = findViewById(R.id.eImageIv);
+
+        setEventCategoryList();
 
         //get image from camera/gallery on click
-        imgEt = findViewById(R.id.eventImg);
-        imgEt.setOnClickListener(new View.OnClickListener() {
+        eImageIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePickDialog();
@@ -131,50 +135,25 @@ public class AddEventActivity extends AppCompatActivity {
         });
 
         //DatePicker
-        dateFormatter = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
-        dateEtFrom = findViewById(R.id.eventDateFrom);
-        dateEtFrom.setOnClickListener(new View.OnClickListener() {
+        eStartEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleDateButton1();
+                handleStartDateTime();
             }
         });
 
-//        simpleTimeFormat = new SimpleTimeFormat();
-        timeEtFrom = findViewById(R.id.eventTimeFrom);
-        timeEtFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleTimeButton1();
-            }
-        });
-
-        dateEtTo = findViewById(R.id.eventDateTo);
-        dateEtTo.setOnClickListener(new View.OnClickListener() {
+        eEndEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleDateButton2();
+                handleEndDateTime();
             }
         });
-        timeEtTo = findViewById(R.id.eventTimeTo);
-        timeEtTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleTimeButton2();
-            }
-        });
-
-        categoryEt = findViewById(R.id.eventCatSpin);
-        eventSpekEt = findViewById(R.id.eventSpek);
-        eventLocEt = findViewById(R.id.eventLocEt);
-        categoryLoation();
-
-        eventQuotaEt = findViewById(R.id.eventQuot);
     }
 
     private void checkUserStatus() {
-        if (firebaseUser != null) {
-            uid = firebaseUser.getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            myUid = user.getUid();
         } else {
             startActivity(new Intent(AddEventActivity.this, MainActivity.class));
         }
@@ -234,12 +213,12 @@ public class AddEventActivity extends AppCompatActivity {
         //for post-image name, post-id, post-publish-time
         final String timeStamp = String.valueOf(System.currentTimeMillis());
 
-        String filePathAndName = "Events/" + uid + "/event_banner_" + timeStamp;
+        String filePathAndName = "Events/" + myUid + "/event_image_" + timeStamp;
 
         //try the post with image
         try {
             //get image from image view
-            Bitmap bitmap = ((BitmapDrawable)imgEt.getDrawable()).getBitmap();
+            Bitmap bitmap = ((BitmapDrawable)eImageIv.getDrawable()).getBitmap();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             //image compress
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
@@ -256,46 +235,52 @@ public class AddEventActivity extends AppCompatActivity {
                             while (!uriTask.isSuccessful());
 
                             String downloadUri = uriTask.getResult().toString();
+                            String title = eTitleEt.getText().toString().trim();
+                            String desc = eDescEt.getText().toString().trim();
+                            String speaker = eSpekearEt.getText().toString().trim();
+                            String quota = eQuotaEt.getText().toString().trim();
+                            String location = eLocationEt.getText().toString().trim();
+                            String category = eCategorySpinner.getSelectedItem().toString().trim();
 
                             if (uriTask.isSuccessful()) {
                                 //uri is receiveed upload post
                                 HashMap<Object, String> hashMap = new HashMap<>();
                                 //put post info
-                                hashMap.put("uid", uid);
+                                hashMap.put("uid", myUid);
                                 hashMap.put("eId", timeStamp);
-                                hashMap.put("eTitle", titleEt.getText().toString());
-                                hashMap.put("eDesc", descEt.getText().toString());
+                                hashMap.put("eTitle", title);
+                                hashMap.put("eDesc", desc);
                                 hashMap.put("eImage", downloadUri);
-                                hashMap.put("eLocation", eventLocEt.getText().toString());
-                                hashMap.put("eDateFrom", dateEtFrom.getText().toString());
-                                hashMap.put("eTimeFrom", timeEtFrom.getText().toString());
-                                hashMap.put("eDateTo", dateEtTo.getText().toString());
-                                hashMap.put("eTimeTo", timeEtTo.getText().toString());
-                                hashMap.put("eCategory", categoryEt.getSelectedItem().toString());
-                                hashMap.put("eQuota", eventQuotaEt.getText().toString());
-                                hashMap.put("eParticipants", "0");
+                                hashMap.put("eLocation", location);
+                                hashMap.put("eStart", finalEventStart);
+                                hashMap.put("eEnd", finalEventEnd);
+                                hashMap.put("eCategory", category);
+                                hashMap.put("eQuota", quota);
                                 hashMap.put("eCreatedOn", timeStamp);
-                                hashMap.put("eSpeaker", eventSpekEt.getText().toString());
+                                hashMap.put("eSpeaker", speaker);
                                 hashMap.put("eConfirmStatus", "pending");
                                 hashMap.put("eStatus", "upcoming");
 
                                 //path to store post data
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Events");
                                 //put data in this ref
-                                ref.child(uid).child(timeStamp).setValue(hashMap)
+                                ref.child(myUid).child(timeStamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 pd.dismiss();
-                                                Toast.makeText(AddEventActivity.this, "Event successfully created...", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddEventActivity.this, "Event successfully created", Toast.LENGTH_SHORT).show();
 
                                                 //reset views
-                                                titleEt.setText("");
-                                                dateEtFrom.setText("");
-                                                timeEtFrom.setText("");
-                                                descEt.setText("");
-                                                imgEt.setImageURI(null);
+                                                eTitleEt.setText("");
+                                                eDescEt.setText("");
+                                                eLocationEt.setText("");
+                                                eQuotaEt.setText("");
+                                                eImageIv.setImageURI(null);
                                                 image_rui = null;
+                                                eStartEt.setText("");
+                                                eEndEt.setText("");
+                                                eSpekearEt.setText("");
 
                                                 finish();
                                             }
@@ -331,13 +316,12 @@ public class AddEventActivity extends AppCompatActivity {
                 //get uri of image
                 image_rui = data.getData();
 
-                imgEt.setImageURI(image_rui);
+                eImageIv.setImageURI(image_rui);
 
                 try {
-                    Picasso.get().load(image_rui)
-                            .fit()
+                    Glide.with(getApplicationContext()).load(image_rui)
                             .centerCrop()
-                            .into(imgEt);
+                            .into(eImageIv);
                 } catch (Exception e) {
 
                 }
@@ -346,63 +330,121 @@ public class AddEventActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void handleDateButton1() {
-
-         Calendar calendar = Calendar.getInstance();
-         datePickerDialog1 = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-             @Override
-             public void onDateSet(DatePicker datePicker, int year1, int month1, int day1) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year1, month1, day1);
-
-                dateEtFrom.setText(dateFormatter.format(newDate.getTime()));
-             }
-         },calendar.get(YEAR), calendar.get(MONTH), calendar.get(DAY_OF_MONTH));
-         datePickerDialog1.show();
-
-    }
-
-    private void handleTimeButton1() {
+    private void handleStartDateTime() {
         Calendar calendar = Calendar.getInstance();
+        int YEAR = calendar.get(Calendar.YEAR);
+        int MONTH = calendar.get(Calendar.MONTH);
+        int DATE = calendar.get(Calendar.DATE);
 
-        timePickerDialog1 = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onTimeSet(TimePicker timePicker, int hour1, int minute1) {
-                timeEtFrom.setText(hour1+"."+minute1);
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.YEAR, year);
+                calendar1.set(Calendar.MONTH, month);
+                calendar1.set(Calendar.DATE, date);
+
+                final String startDate = DateFormat.format("EEE dd/MM/yyy", calendar1).toString();
+
+                final Calendar calendar = Calendar.getInstance();
+                int HOUR = calendar.get(Calendar.HOUR);
+                int MINUTE = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar2.set(Calendar.HOUR, hour);
+                        calendar2.set(Calendar.MINUTE, minute);
+
+                        String startTime = DateFormat.format("hh:mm aa", calendar2).toString();
+
+                        String startDateTime = startDate + " " + startTime;
+                        String prettyDateTime = startDateTime.substring(0, 3) + ", " + startDateTime.substring(4, 14) +
+                                " at" + startDateTime.substring(14);
+                        eStartEt.setText(prettyDateTime);
+
+                        //convert start date time to milis
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+                        LocalDateTime localDate = LocalDateTime.parse(startDateTime, formatter);
+                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+                        finalEventStart = timeInMilliseconds + "";
+                    }
+                }, HOUR, MINUTE, DateFormat.is24HourFormat(AddEventActivity.this));
+                timePickerDialog.show();
             }
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), DateFormat.is24HourFormat(this));
-        timePickerDialog1.show();
+        }, YEAR, MONTH, DATE);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        datePickerDialog.show();
     }
 
-    private void handleDateButton2() {
+    private void handleEndDateTime() {
         Calendar calendar = Calendar.getInstance();
+        int YEAR = calendar.get(Calendar.YEAR);
+        int MONTH = calendar.get(Calendar.MONTH);
+        int DATE = calendar.get(Calendar.DATE);
 
-        datePickerDialog2 = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year2, int month2, int day2) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year2, month2, day2);
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
-                dateEtTo.setText(dateFormatter.format(newDate.getTime()));
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.set(Calendar.YEAR, year);
+                calendar1.set(Calendar.MONTH, month);
+                calendar1.set(Calendar.DATE, date);
+
+                final String endDate = DateFormat.format("EEE dd/MM/yyy", calendar1).toString();
+
+                final Calendar calendar = Calendar.getInstance();
+                int HOUR = calendar.get(Calendar.HOUR);
+                int MINUTE = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar2.set(Calendar.HOUR, hour);
+                        calendar2.set(Calendar.MINUTE, minute);
+
+                        String endTime = DateFormat.format("hh:mm aa", calendar2).toString();
+                        String endDateTime = endDate + " " + endTime;
+
+                        //convert start date time to milis
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+                        LocalDateTime localDate = LocalDateTime.parse(endDateTime, formatter);
+                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+                        finalEventEnd = timeInMilliseconds + "";
+
+                        try {
+                            if (Long.parseLong(finalEventEnd) < Long.parseLong(finalEventStart)) {
+                                Toast.makeText(getApplicationContext(), "Invalid Event End date. Try again.", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Event Start date must not be empty.", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        String prettyDateTime = endDateTime.substring(0, 3) + ", " + endDateTime.substring(4, 14) +
+                                " at" + endDateTime.substring(14);
+                        eEndEt.setText(prettyDateTime);
+                    }
+                }, HOUR, MINUTE, DateFormat.is24HourFormat(AddEventActivity.this));
+                timePickerDialog.show();
             }
-        },calendar.get(YEAR), calendar.get(MONTH), calendar.get(DAY_OF_MONTH));
-        datePickerDialog2.show();
+        }, YEAR, MONTH, DATE);
 
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        datePickerDialog.show();
     }
 
-    private void handleTimeButton2() {
-        Calendar calendar = Calendar.getInstance();
-
-        timePickerDialog2 = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hour2, int minute2) {
-                timeEtTo.setText(hour2+"."+minute2);
-            }
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), DateFormat.is24HourFormat(this));
-        timePickerDialog2.show();
-    }
-
-    private void categoryLoation(){
+    private void setEventCategoryList(){
         List<String> category = new ArrayList<String>();
         category.add("Seminar");
         category.add("Discussion");
@@ -410,7 +452,7 @@ public class AddEventActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEventActivity.this,android.R.layout.simple_spinner_dropdown_item,category);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoryEt.setAdapter(adapter);
+        eCategorySpinner.setAdapter(adapter);
     }
 
     @Override
@@ -429,7 +471,7 @@ public class AddEventActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (!TextUtils.isEmpty(titleEt.getText().toString()) && image_rui != null) {
+        if (!TextUtils.isEmpty(eTitleEt.getText().toString()) && image_rui != null) {
             createEvent();
         } else {
             Toast.makeText(getApplicationContext(), "Some fields are empty...", Toast.LENGTH_SHORT).show();

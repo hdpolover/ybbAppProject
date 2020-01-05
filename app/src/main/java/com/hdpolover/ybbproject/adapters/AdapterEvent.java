@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hdpolover.ybbproject.EventDetailActivity;
 import com.hdpolover.ybbproject.R;
+import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
 import com.hdpolover.ybbproject.models.ModelEvent;
 
 import java.util.List;
@@ -52,11 +53,10 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
         // get data
         final String uid = eventList.get(position).getUid();
-        final String eId = eventList.get(position).getEId();
+        final String eId = eventList.get(position).geteId();
         String eImage = eventList.get(position).geteImage();
         String eTitle = eventList.get(position).geteTitle();
-        String eDate = eventList.get(position).geteDateFrom();
-        String eTime = eventList.get(position).geteTimeFrom();
+        String eDate = eventList.get(position).geteStart();
         String eSpeaker = eventList.get(position).geteSpeaker();
         String eConfirmStatus = eventList.get(position).geteConfirmStatus();
         String eLocation = eventList.get(position).geteLocation();
@@ -64,28 +64,29 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         String eStatus = eventList.get(position).geteStatus();
 
         //set data
-        holder.myeventTit.setText(eTitle);
-        holder.myeventDate.setText(eDate);
-        holder.myeventTime.setText(eTime);
-        holder.myeventLocation.setText(eLocation);
-        holder.myeventSpeaker.setText(eSpeaker);
-        holder.myeventCategory.setText(eCategory);
+        holder.eTitleTv.setText(eTitle);
+        //get time and date
+        SocialTimeConverter stc = new SocialTimeConverter();
+        holder.eStartDateTv.setText(stc.getEventStartDate(Long.parseLong(eDate)));
+        holder.eStartTimeTv.setText(stc.getEventStartTime(Long.parseLong(eDate)));
+
+        holder.eLocationTv.setText(eLocation);
+        holder.eSpeakerTv.setText(eSpeaker);
+        holder.eCategoryTv.setText(eCategory);
 
         if (!uid.equals(myUid)) {
             holder.confirmStatusLayout.setVisibility(View.GONE);
         } else {
-            holder.myeventStatus.setText(eConfirmStatus);
+            holder.eStatusTv.setText(eConfirmStatus);
         }
 
         //event Image
-
             try {
-                Glide.with(context).load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.myeventImg);
+                Glide.with(context).load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(holder.eImageIv);
             }
             catch (Exception e) {
 
             }
-
 
         //handle button click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -109,14 +110,8 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
     //view holder class
     public static class MyHolderEvent extends RecyclerView.ViewHolder{
 
-        public ImageView myeventImg;
-        public TextView myeventTit;
-        public TextView myeventDate;
-        public TextView myeventTime;
-        public TextView myeventLocation;
-        public TextView myeventCategory;
-        public TextView myeventSpeaker;
-        TextView myeventStatus;
+        public ImageView eImageIv;
+        public TextView eTitleTv, eStartDateTv, eStartTimeTv, eCategoryTv, eLocationTv, eSpeakerTv, eStatusTv;
         LinearLayout confirmStatusLayout;
 
         //view from row_event.xml
@@ -124,19 +119,15 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
             super(itemView);
 
             //init view
-            myeventImg = itemView.findViewById(R.id.myeventImg);
-            myeventTit = itemView.findViewById(R.id.myeventTit);
-            myeventDate = itemView.findViewById(R.id.myeventDate);
-            myeventLocation = itemView.findViewById(R.id.myeventLocation);
-            myeventCategory = itemView.findViewById(R.id.myeventCategory);
-            myeventSpeaker = itemView.findViewById(R.id.myeventSpeaker);
-            myeventTime = itemView.findViewById(R.id.myeventTime);
-            myeventStatus = itemView.findViewById(R.id.myeventStatus);
+            eTitleTv = itemView.findViewById(R.id.eTitleTv);
+            eImageIv = itemView.findViewById(R.id.eImageIv);
+            eStartDateTv = itemView.findViewById(R.id.eStartDateTv);
+            eStartTimeTv = itemView.findViewById(R.id.eStartTimeTv);
+            eCategoryTv = itemView.findViewById(R.id.eCategoryTv);
+            eLocationTv = itemView.findViewById(R.id.eLocationTv);
+            eSpeakerTv = itemView.findViewById(R.id.eSpeakerTv);
+            eStatusTv = itemView.findViewById(R.id.eStatusTv);
             confirmStatusLayout = itemView.findViewById(R.id.confirmStatusLayout);
-
-            //Event Detail
-
-
         }
     }
 }

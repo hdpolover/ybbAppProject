@@ -18,7 +18,7 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/eventImg"
+                android:id="@+id/eImageIv"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_marginTop="20dp"
@@ -34,12 +34,11 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_below="@id/eventImg"
                     android:id="@+id/eventTitle"
                     style="@style/parent">
 
                     <EditText
-                        android:id="@+id/titleEt"
+                        android:id="@+id/eTitleEt"
                         style="@style/modifiedEditText"
                         android:layout_height="49dp"
                         android:hint="Title"
@@ -47,39 +46,29 @@
                         android:textColor="@color/primaryTextColor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <LinearLayout
                     android:id="@+id/eventFrom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/titleEt"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="From               "
-                        android:paddingRight="10dp"/>
-
-                    <EditText
-                        android:id="@+id/eventDateFrom"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="15dp"
-                        android:hint="Date"/>
-
-                    <EditText
-                        android:id="@+id/eventTimeFrom"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:text="Start"/>
+
+                    <EditText
+                        android:id="@+id/eStartEt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="false"
                         android:layout_marginTop="15dp"
-                        android:hint="Time" />
+                        android:layout_weight="1"
+                        android:hint="Date and time"/>
 
                 </LinearLayout>
 
@@ -91,30 +80,21 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="To                    "
-                        android:paddingRight="10dp"/>
-
-                    <EditText
-                        android:id="@+id/eventDateTo"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="15dp"
-                        android:hint="Date"/>
-
-                    <EditText
-                        android:id="@+id/eventTimeTo"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/colorBlack"
+                        android:text="End"/>
+
+                    <EditText
+                        android:id="@+id/eEndEt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="false"
                         android:layout_marginTop="15dp"
-                        android:hint="Time" />
+                        android:layout_weight="1"
+                        android:hint="Date and time"/>
 
                 </LinearLayout>
 
@@ -125,14 +105,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="Category      "
-                        android:paddingRight="20dp"/>
+                        android:textColor="@color/colorBlack"
+                        android:text="Category"/>
 
                     <Spinner
-                        android:id="@+id/eventCatSpin"
+                        android:id="@+id/eCategorySpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -141,15 +121,15 @@
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/eventQuota"
+                    android:id="@+id/eQuota"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
                     style="@style/parent">
 
                     <EditText
-                        android:id="@+id/eventQuot"
+                        android:id="@+id/eQuotaEt"
                         style="@style/modifiedEditText"
-                        android:hint="Quota"
+                        android:hint="Event Quota"
                         android:inputType="number"
                         android:textColor="@color/primaryTextColor" />
 
@@ -162,7 +142,7 @@
                     style="@style/parent">
 
                     <EditText
-                        android:id="@+id/eventSpek"
+                        android:id="@+id/eSpekearEt"
                         style="@style/modifiedEditText"
                         android:hint="Speaker"
                         android:inputType="text"
@@ -177,7 +157,7 @@
                     style="@style/parent">
 
                     <EditText
-                        android:id="@+id/eventLocEt"
+                        android:id="@+id/eLocationEt"
                         style="@style/modifiedEditText"
                         android:hint="Location"
                         android:inputType="text"
@@ -192,7 +172,7 @@
                     style="@style/parent">
 
                     <EditText
-                        android:id="@+id/descEt"
+                        android:id="@+id/eDescEt"
                         style="@style/modifiedEditText"
                         android:hint="Description"
                         android:inputType="textMultiLine"

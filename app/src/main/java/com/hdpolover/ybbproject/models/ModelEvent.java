@@ -1,30 +1,27 @@
 package com.hdpolover.ybbproject.models;
 
 public class ModelEvent {
-    String eConfirmStatus, uid, eDateFrom, eDateTo, eDesc, eId, eImage, eLocation,
-            eStatus, eTimeFrom, eTimeTo, eTitle,eCategory, eSpeaker, eCreatedOn, eParticipants, eQuota;
+    String eConfirmStatus, uid, eStart, eEnd, eDesc, eId, eImage, eLocation,
+            eStatus, eTitle, eCategory, eSpeaker, eCreatedOn, eQuota;
 
     public ModelEvent() {
 
     }
 
-    public ModelEvent(String eConfirmStatus, String uid, String eDateFrom, String eDateTo, String eDesc, String eId, String eImage, String eLocation, String eStatus, String eTimeFrom, String eTimeTo, String eTitle, String eCategory, String eSpeaker, String eCreatedOn, String eParticipants, String eQuota) {
+    public ModelEvent(String eConfirmStatus, String uid, String eStart, String eEnd, String eDesc, String eId, String eImage, String eLocation, String eStatus, String eTitle, String eCategory, String eSpeaker, String eCreatedOn, String eQuota) {
         this.eConfirmStatus = eConfirmStatus;
         this.uid = uid;
-        this.eDateFrom = eDateFrom;
-        this.eDateTo = eDateTo;
+        this.eStart = eStart;
+        this.eEnd = eEnd;
         this.eDesc = eDesc;
         this.eId = eId;
         this.eImage = eImage;
         this.eLocation = eLocation;
         this.eStatus = eStatus;
-        this.eTimeFrom = eTimeFrom;
-        this.eTimeTo = eTimeTo;
         this.eTitle = eTitle;
         this.eCategory = eCategory;
         this.eSpeaker = eSpeaker;
         this.eCreatedOn = eCreatedOn;
-        this.eParticipants = eParticipants;
         this.eQuota = eQuota;
     }
 
@@ -44,20 +41,20 @@ public class ModelEvent {
         this.uid = uid;
     }
 
-    public String geteDateFrom() {
-        return eDateFrom;
+    public String geteStart() {
+        return eStart;
     }
 
-    public void seteDateFrom(String eDateFrom) {
-        this.eDateFrom = eDateFrom;
+    public void seteStart(String eStart) {
+        this.eStart = eStart;
     }
 
-    public String geteDateTo() {
-        return eDateTo;
+    public String geteEnd() {
+        return eEnd;
     }
 
-    public void seteDateTo(String eDateTo) {
-        this.eDateTo = eDateTo;
+    public void seteEnd(String eEnd) {
+        this.eEnd = eEnd;
     }
 
     public String geteDesc() {
@@ -68,11 +65,11 @@ public class ModelEvent {
         this.eDesc = eDesc;
     }
 
-    public String getEId() {
+    public String geteId() {
         return eId;
     }
 
-    public void setEId(String eId) {
+    public void seteId(String eId) {
         this.eId = eId;
     }
 
@@ -98,22 +95,6 @@ public class ModelEvent {
 
     public void seteStatus(String eStatus) {
         this.eStatus = eStatus;
-    }
-
-    public String geteTimeFrom() {
-        return eTimeFrom;
-    }
-
-    public void seteTimeFrom(String eTimeFrom) {
-        this.eTimeFrom = eTimeFrom;
-    }
-
-    public String geteTimeTo() {
-        return eTimeTo;
-    }
-
-    public void seteTimeTo(String eTimeTo) {
-        this.eTimeTo = eTimeTo;
     }
 
     public String geteTitle() {
@@ -146,14 +127,6 @@ public class ModelEvent {
 
     public void seteCreatedOn(String eCreatedOn) {
         this.eCreatedOn = eCreatedOn;
-    }
-
-    public String geteParticipants() {
-        return eParticipants;
-    }
-
-    public void seteParticipants(String eParticipants) {
-        this.eParticipants = eParticipants;
     }
 
     public String geteQuota() {

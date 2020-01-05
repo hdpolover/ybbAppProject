@@ -283,6 +283,25 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void getComments() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child("Followings");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                idList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    idList.add(snapshot.getKey());
+                }
+                showPeople();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void getUnfollowedPeople(final String uid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(uid).child("Followings");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {

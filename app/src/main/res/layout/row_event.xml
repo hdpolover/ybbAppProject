@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/myeventImg"
+            android:id="@+id/eImageIv"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:src="@color/placeholder_bg"/>
@@ -32,7 +32,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/myeventTit"
+                    android:id="@+id/eTitleTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Event Title"
@@ -60,14 +60,14 @@
                             android:src="@drawable/ic_calendar" />
 
                         <TextView
-                            android:id="@+id/myeventDate"
+                            android:id="@+id/eStartDateTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
                             android:layout_marginBottom="5dp"
+                            android:autoLink="all"
                             android:gravity="center"
-                            android:text="Desember 20, 2019"
-                            android:autoLink="all"/>
+                            android:text="Desember 20, 2019" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -83,7 +83,7 @@
                         android:src="@drawable/ic_person_grey"/>
 
                     <TextView
-                        android:id="@+id/myeventSpeaker"
+                        android:id="@+id/eSpeakerTv"
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                         android:src="@drawable/ic_time"/>
 
                     <TextView
-                        android:id="@+id/myeventTime"
+                        android:id="@+id/eStartTimeTv"
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                         android:src="@drawable/ic_folder"/>
 
                     <TextView
-                        android:id="@+id/myeventCategory"
+                        android:id="@+id/eCategoryTv"
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                             android:src="@drawable/ic_location"/>
 
                         <TextView
-                            android:id="@+id/myeventLocation"
+                            android:id="@+id/eLocationTv"
                             android:layout_marginTop="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
                             android:src="@drawable/ic_link"/>
 
                         <TextView
-                            android:id="@+id/myeventStatus"
+                            android:id="@+id/eStatusTv"
                             android:layout_marginTop="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

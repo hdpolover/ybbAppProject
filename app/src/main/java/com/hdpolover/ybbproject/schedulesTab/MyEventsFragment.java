@@ -95,7 +95,6 @@ public class MyEventsFragment extends Fragment {
                         noMyEventLayout.setVisibility(View.GONE);
                         //set adapter to recycle
                         recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
                         adapterEvent.notifyDataSetChanged();
                     }
 

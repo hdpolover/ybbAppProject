@@ -24,13 +24,13 @@ public class SocialTimeConverter {
 
         final long diff = now - time;
         if (diff < MINUTE_MILLIS) {
-            return "Just now";
+            return "just now";
         } else if (diff < 2 * MINUTE_MILLIS) {
-            return "A minute ago";
+            return "a minute ago";
         } else if (diff < 50 * MINUTE_MILLIS) {
             return diff / MINUTE_MILLIS + " minutes ago";
         } else if (diff < 90 * MINUTE_MILLIS) {
-            return "An hour ago";
+            return "an hour ago";
         } else if (diff < 24 * HOUR_MILLIS) {
             return diff / HOUR_MILLIS + " hours ago";
 //        } else if (diff < 48 * HOUR_MILLIS) {
@@ -96,5 +96,124 @@ public class SocialTimeConverter {
                 break;
         }
         return month + " " + date + " at" + time;
+    }
+
+    public static String getEventStartDate(long timeLong) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeLong);
+        String convertedTime = DateFormat.format("EEE dd/MM/yyy", calendar).toString();
+
+        String day = convertedTime.substring(0, 3);
+        String month = "";
+        String date = convertedTime.substring(4, 6);
+        String year = convertedTime.substring(10);
+
+        String b = convertedTime.substring(7, 9);
+
+        switch (b) {
+            case "01":
+                month = "Jan";
+                break;
+            case "02":
+                month = "Feb";
+                break;
+            case "03":
+                month = "Mar";
+                break;
+            case "04":
+                month = "Apr";
+                break;
+            case "05":
+                month = "May";
+                break;
+            case "06":
+                month = "Jun";
+                break;
+            case "07":
+                month = "Jul";
+                break;
+            case "08":
+                month = "Aug";
+                break;
+            case "09":
+                month = "Sep";
+                break;
+            case "10":
+                month = "Oct";
+                break;
+            case "11":
+                month = "Nov";
+                break;
+            case "12":
+                month = "Dec";
+                break;
+            default:
+                break;
+        }
+        return day + ", " + month + " " + date + ", " + year;
+    }
+
+    public static String getEventStartTime(long timeLong) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeLong);
+        String convertedTime = DateFormat.format("hh:mm aa", calendar).toString();
+
+        return convertedTime;
+    }
+
+    public static String getEventDateDetail(long timeLong) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeLong);
+        String convertedTime = DateFormat.format("EEE dd/MM/yyy hh:mm aa", calendar).toString();
+
+        String day = convertedTime.substring(0, 3);
+        String month = "";
+        String date = convertedTime.substring(4, 6);
+        String year = convertedTime.substring(10, 14);
+        String time = convertedTime.substring(16);
+
+        String b = convertedTime.substring(7, 9);
+
+        switch (b) {
+            case "01":
+                month = "Jan";
+                break;
+            case "02":
+                month = "Feb";
+                break;
+            case "03":
+                month = "Mar";
+                break;
+            case "04":
+                month = "Apr";
+                break;
+            case "05":
+                month = "May";
+                break;
+            case "06":
+                month = "Jun";
+                break;
+            case "07":
+                month = "Jul";
+                break;
+            case "08":
+                month = "Aug";
+                break;
+            case "09":
+                month = "Sep";
+                break;
+            case "10":
+                month = "Oct";
+                break;
+            case "11":
+                month = "Nov";
+                break;
+            case "12":
+                month = "Dec";
+                break;
+            default:
+                break;
+        }
+        return day + ", " + month + " " + date + ", " + year + " at " + time;
     }
 }
