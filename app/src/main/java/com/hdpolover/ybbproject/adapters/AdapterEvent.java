@@ -61,7 +61,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         String eConfirmStatus = eventList.get(position).geteConfirmStatus();
         String eLocation = eventList.get(position).geteLocation();
         String eCategory = eventList.get(position).geteCategory();
-        String eStatus = eventList.get(position).geteStatus();
 
         //set data
         holder.eTitleTv.setText(eTitle);

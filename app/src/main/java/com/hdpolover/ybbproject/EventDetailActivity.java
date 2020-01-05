@@ -1,9 +1,12 @@
 package com.hdpolover.ybbproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,7 +54,6 @@ public class EventDetailActivity  extends AppCompatActivity {
 
     String myUid, eId, uid;
 
-    List<String> joinedIdList;
     int eQuotaLeft;
     int eQuota;
 
@@ -89,35 +91,35 @@ public class EventDetailActivity  extends AppCompatActivity {
         uid = intent.getStringExtra("uid");
 
         showEventDetails();
-        getEventQuotaLeft();
-        Log.e("left", eQuotaLeft+"");
-        Log.e("q", eQuota +"");
+
+        Log.e("uid", uid);
+        Log.e("my", myUid);
 
         if (uid.equals(myUid)) {
-            joinBtn.setEnabled(false);
-            joinBtn.setText("Quota left: " + eQuotaLeft);
+            getEventQuotaLeft();
         } else {
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (eQuotaLeft < eQuota) {
-                        if (checkCurrentlyJoined()) {
-                            joinBtn.setText("JOINED");
-                            joinBtn.setEnabled(false);
-                        } else {
+            if (eQuotaLeft < eQuota) {
+                if (checkCurrentlyJoined()) {
+                    joinBtn.setText("JOINED");
+                    joinBtn.setEnabled(false);
+                } else {
+                    joinBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
                             joinEvent();
                         }
-                    } else {
-                        if (checkCurrentlyJoined()) {
-                            joinBtn.setText("QUOTA FULL");
-                            joinBtn.setEnabled(false);
-                        } else {
-                            joinBtn.setText("JOINED");
-                            joinBtn.setEnabled(false);
-                        }
-                    }
+                    });
                 }
-            });
+            } else {
+                if (checkCurrentlyJoined()) {
+                    joinBtn.setText("QUOTA FULL");
+                    joinBtn.setEnabled(false);
+                } else {
+                    joinBtn.setText("JOINED");
+                    joinBtn.setEnabled(false);
+                }
+            }
+
         }
     }
 
@@ -128,9 +130,15 @@ public class EventDetailActivity  extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
                     eQuotaLeft = eQuota;
+
+                    joinBtn.setEnabled(false);
+                    joinBtn.setText("Quota left: " + eQuotaLeft);
                 } else {
                     int left = Integer.parseInt(dataSnapshot.getChildrenCount() + "");
                     eQuotaLeft = eQuota - left;
+
+                    joinBtn.setEnabled(false);
+                    joinBtn.setText("Quota left: " + eQuotaLeft);
                 }
             }
 
@@ -166,15 +174,11 @@ public class EventDetailActivity  extends AppCompatActivity {
     }
 
     private void joinEvent(){
-        //post without image
-        HashMap<Object, String> hashMap = new HashMap<>();
-        //put post info
-        hashMap.put("uid", uid);
 
         //path to store post data
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId).child(myUid);
         //put data in this ref
-        ref.child(uid).setValue(hashMap)
+        ref.setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -258,7 +262,7 @@ public class EventDetailActivity  extends AppCompatActivity {
                         eCategoryTv.setText(eCategory);
 
                         //set confirm status
-                        if (uid.equals(myUid)) {
+                        if (!uid.equals(myUid)) {
                             confirmStatusDetailLayout.setVisibility(View.GONE);
                         } else {
                             eConfirmStatusTv.setText(eConfirmStatus);
@@ -271,6 +275,7 @@ public class EventDetailActivity  extends AppCompatActivity {
 
                         //set Quota
                         eQuota = Integer.parseInt(quota);
+                        eQuotaLeft = eQuota;
                         eQuotaTv.setText(quota);
 
                         //get creator data
@@ -299,6 +304,91 @@ public class EventDetailActivity  extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+    }
+
+    private void reportEvent(final String eventId) {
+        //option camera/gallery to show in dialog
+        String[] options = {"Spam", "Inappropiate"};
+
+        //dialog
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Why are you reporting this event?");
+        //set options to dialog
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    reportCurrentEvent(eventId, 0);
+                }
+                if (which == 1) {
+                    reportCurrentEvent(eventId, 1);
+                }
+            }
+        });
+        //create and show dialog
+        builder.create().show();
+    }
+
+    private void reportCurrentEvent(String eId, int type) {
+        String reportType = "";
+        if (type == 0) {
+            reportType = "spam";
+        } else {
+            reportType = "inappropiate";
+        }
+
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
+        //each post will have a child "comments" taht willc ontain comments of that post
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reports").child("Events");
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //put info in hashmap
+        hashMap.put("rId", timeStamp);
+        hashMap.put("eId", eId);
+        hashMap.put("timestamp", timeStamp);
+        hashMap.put("reporterId", myUid);
+
+        //put this data in db
+        ref.child(reportType).child(eId).setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //added
+                        Toast.makeText(getApplication(), "Thank you for reporting this event. We will review it and take further actions.", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //failed
+                        Toast.makeText(getApplication(), "Report Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        menu.findItem(R.id.action_notif).setVisible(false);
+        menu.findItem(R.id.action_settings).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //get item id
+        int id = item.getItemId();
+        if (id == R.id.action_more) {
+            reportEvent(eId);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

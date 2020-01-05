@@ -24,6 +24,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.chip.Chip;
@@ -73,6 +74,8 @@ public class HomeFragment extends Fragment {
     Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7;
     Chip activeChip;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     public HomeFragment() {
         //required empty constructor
     }
@@ -85,6 +88,7 @@ public class HomeFragment extends Fragment {
         fab_add_post = view.findViewById(R.id.fab_add_post);
         peopleTv = view.findViewById(R.id.peopleTv);
         verifiedAccountLayout = view.findViewById(R.id.verifiedAccountLayout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshHome);
 
         //init chips
         chip1 = view.findViewById(R.id.chip1);
@@ -111,10 +115,6 @@ public class HomeFragment extends Fragment {
 
         searchedPeopleList = new ArrayList<>();
 
-        checkUserStatus();
-
-        checkVerifiedAccount();
-
         //recycler view and its properties
         postRecyclerView = view.findViewById(R.id.postRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -140,9 +140,18 @@ public class HomeFragment extends Fragment {
 
         nestedScrollView = view.findViewById(R.id.nestedScrollViewHome);
 
-        getUnfollowedPeople(myUid);
-        //loadPeople();
-        loadPosts();
+        loadContents();
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.primaryColor,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadContents();
+            }
+        });
 
         fab_add_post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +160,23 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        return view;
+    }
+
+    private void loadContents() {
+        shimmerFrameLayoutPost.startShimmer();
+        shimmerFrameLayoutPeople.startShimmer();
+
+        checkUserStatus();
+        checkVerifiedAccount();
+        getUnfollowedPeople(myUid);
+        loadPosts();
+        manageChips();
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void manageChips() {
         final ArrayList<Chip> chips = new ArrayList<>();
         chips.add(chip1);
         chips.add(chip2);
@@ -178,7 +204,6 @@ public class HomeFragment extends Fragment {
                     if (chipContents[finalI2].equals("All")) {
                         loadPosts();
                     } else if (chipContents[finalI2].equals("Followings")) {
-                        //Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show();
                         loadFollowedPeoplePosts();
                     } else {
                         searchPostsOnChip(chipContents[finalI2]);
@@ -186,8 +211,6 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-
-        return view;
     }
 
     private void checkVerifiedAccount() {
@@ -279,25 +302,6 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //in case of error
                 Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void getComments() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child("Followings");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                idList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    idList.add(snapshot.getKey());
-                }
-                showPeople();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
