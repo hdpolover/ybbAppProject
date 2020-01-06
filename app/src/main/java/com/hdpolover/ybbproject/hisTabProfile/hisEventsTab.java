@@ -64,10 +64,6 @@ public class hisEventsTab extends Fragment {
         Intent intent = getActivity().getIntent();
         hisUid = intent.getStringExtra("uid");
 
-//        SharedPreferences sp = getContext().getSharedPreferences("OtherUserID",MODE_PRIVATE);
-//        hisUid = sp.getString("hisUid", "");
-//        Log.e("his", hisUid);
-
         //init event list
         eventList = new ArrayList<>();
 
@@ -83,6 +79,8 @@ public class hisEventsTab extends Fragment {
         adapterEvent = new AdapterEvent(getContext(), eventList);
         recyclerView.setAdapter(adapterEvent);
 
+        noMyEventLayout.setVisibility(View.GONE);
+
         loadEvents();
 
         return view;
@@ -91,37 +89,38 @@ public class hisEventsTab extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(hisUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.getKey().equals(hisUid)) {
+                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    eventList.add(modelEvent);
+                        eventList.add(modelEvent);
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    Log.e("iz", eventList.size() + "");
-                    if (eventList.size() == 0) {
-                        Log.e("iz1", eventList.size() + "");
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noMyEventLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noMyEventLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
+
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
+                        noMyEventLayout.setVisibility(View.VISIBLE);
                     }
 
-
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
-
             }
 
             @Override
@@ -131,54 +130,6 @@ public class hisEventsTab extends Fragment {
             }
         });
     }
-
-
-//    private void loadEvents() {
-//        //path of all event
-//
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
-//        //get all data from this ref
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                eventList.clear();
-//                for (DataSnapshot ds: dataSnapshot.getChildren()){
-//                    if (ds.child(hisUid).exists()) {
-//                        ModelEvent modelEvent = ds.child(hisUid).getValue(ModelEvent.class);
-//
-//                        eventList.add(modelEvent);
-//
-//                        //adapter
-//                        adapterEvent = new AdapterEvent(getActivity(), eventList);
-//
-//                        if (eventList.size() == 0) {
-//                            noMyEventLayout.setVisibility(View.VISIBLE);
-//                        } else {
-//                            noMyEventLayout.setVisibility(View.GONE);
-//                            //set adapter to recycle
-//                            recyclerView.setAdapter(adapterEvent);
-//                            Collections.reverse(eventList);
-//                            adapterEvent.notifyDataSetChanged();
-//                        }
-//                    } else {
-//                        Log.e("exno", eventList.size()+"");
-//                        noMyEventLayout.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    shimmerFrameLayout.stopShimmer();
-//                    shimmerFrameLayout.setVisibility(View.GONE);
-//
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                //in case of errors
-//                Toast.makeText(getContext(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
     @Override
     public void onResume() {

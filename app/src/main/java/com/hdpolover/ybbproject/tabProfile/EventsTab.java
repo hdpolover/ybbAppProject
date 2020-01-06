@@ -68,6 +68,8 @@ public class EventsTab extends Fragment {
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
 
+        noMyEventLayout.setVisibility(View.GONE);
+
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -84,14 +86,7 @@ public class EventsTab extends Fragment {
         recyclerView.setAdapter(adapterEvent);
 
         checkUserStatus();
-        Log.e("myUid", myUid);
-        Log.e("hisUid", hisUid);
 
-//        if (hisUid.equals(myUid)) {
-//            loadEvents(myUid);
-//        } else {
-//            loadEvents(hisUid);
-//        }
         loadEvents(myUid);
 
         return view;
@@ -99,7 +94,6 @@ public class EventsTab extends Fragment {
 
     private void loadEvents(String uid) {
         //path of all event
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(uid);
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -115,8 +109,6 @@ public class EventsTab extends Fragment {
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
 
                     if (eventList.size() == 0) {
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
                         noMyEventLayout.setVisibility(View.VISIBLE);
                     } else {
                         noMyEventLayout.setVisibility(View.GONE);
@@ -124,9 +116,10 @@ public class EventsTab extends Fragment {
                         recyclerView.setAdapter(adapterEvent);
                         Collections.reverse(eventList);
                         adapterEvent.notifyDataSetChanged();
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
                     }
+
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
 
                 }
 

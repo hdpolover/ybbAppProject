@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,7 @@ import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
@@ -47,8 +50,8 @@ public class hisCommentTab extends Fragment {
     AdapterPost adapterPost;
     String hisUid;
 
-    TextView noDataTv;
-    ImageView noDataIv;
+    LinearLayout noCommentsLayout;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     public hisCommentTab() {
         // Required empty public constructor
@@ -65,8 +68,10 @@ public class hisCommentTab extends Fragment {
         firebaseDatabase = firebaseDatabase.getInstance();
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
-        noDataIv = view.findViewById(R.id.noDataIv);
-        noDataTv = view.findViewById(R.id.noDataTv);
+        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
+        noCommentsLayout = view.findViewById(R.id.noCommentsLayout);
+
+        noCommentsLayout.setVisibility(View.GONE);
 
         //get myUid of clicked user
         Intent intent = getActivity().getIntent();
@@ -75,6 +80,17 @@ public class hisCommentTab extends Fragment {
         postIdList = new ArrayList<>();
         postList = new ArrayList<>();
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        //show newest post first
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        //set this layout to recyclerview
+        postsRecyclerView.setLayoutManager(layoutManager);
+        //adapter
+        adapterPost = new AdapterPost(getActivity(), postList);
+        //set adapter to recycle
+        postsRecyclerView.setAdapter(adapterPost);
+
         loadMyPostsComment();
 
         return view;
@@ -82,13 +98,6 @@ public class hisCommentTab extends Fragment {
 
 
     private void loadMyPostsComment() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,18 +136,22 @@ public class hisCommentTab extends Fragment {
                     if (isPost) {
                         postList.add(modelPost);
                     }
-                }
-                //adapter
-                adapterPost = new AdapterPost(getContext(), postList);
-                //set this adapter to recyclerview
-                postsRecyclerView.setAdapter(adapterPost);
 
-                if (postList.size() > 0) {
-                    noDataIv.setVisibility(View.GONE);
-                    noDataTv.setVisibility(View.GONE);
-                } else {
-                    noDataIv.setVisibility(View.VISIBLE);
-                    noDataTv.setVisibility(View.VISIBLE);
+                    //adapter
+                    adapterPost = new AdapterPost(getActivity(), postList);
+
+                    if (postList.size() == 0) {
+                        noCommentsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noCommentsLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        postsRecyclerView.setAdapter(adapterPost);
+                        Collections.reverse(postList);
+                        adapterPost.notifyDataSetChanged();
+                    }
+
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -147,5 +160,17 @@ public class hisCommentTab extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shimmerFrameLayout.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }

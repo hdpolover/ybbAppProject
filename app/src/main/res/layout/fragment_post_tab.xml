@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,29 +8,75 @@
     android:background="@color/colorWhite"
     tools:context=".tabProfile.PostTab">
 
-    <TextView
-        android:id="@+id/noDataTv"
-        android:layout_gravity="center"
-        android:layout_marginBottom="70dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="You have no posts."
-        android:textColor="@color/primaryColor"/>
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/noDataIv"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_undraw_no_data"/>
+        <LinearLayout
+            android:id="@+id/noPostsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_posts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/noDataTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="90dp"
+                android:layout_marginBottom="50dp"
+                android:text="This user has no posts"
+                android:textAlignment="center"
+                android:textColor="@color/primaryColor"
+                android:textSize="20sp" />
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/noDataIv"
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_undraw_no_data"/>
+
+        </LinearLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:shimmer_duration="800">
+
+            <LinearLayout
+                android:id="@+id/placeholdersEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Adding 10 rows of placeholders -->
+                <include layout="@layout/placeholder_event"/>
+
+                <include layout="@layout/placeholder_event"/>
+
+                <include layout="@layout/placeholder_event"/>
+
+                <include layout="@layout/placeholder_event"/>
+
+                <include layout="@layout/placeholder_event"/>
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerview_posts">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

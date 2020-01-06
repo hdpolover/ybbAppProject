@@ -2,6 +2,7 @@ package com.hdpolover.ybbproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -106,6 +107,9 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
         noPostHomeLayout = view.findViewById(R.id.noPostHomeLayout);
 
+        //hide layouts on create
+        noPostHomeLayout.setVisibility(View.GONE);
+
         //init post list
         postList = new ArrayList<>();
         followedPostList = new ArrayList<>();
@@ -149,9 +153,15 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadContents();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadContents();
 
-                swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2500);
             }
         });
 
@@ -177,6 +187,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void manageChips() {
+
         final ArrayList<Chip> chips = new ArrayList<>();
         chips.add(chip1);
         chips.add(chip2);
@@ -254,9 +265,10 @@ public class HomeFragment extends Fragment {
                             noPostHomeLayout.setVisibility(View.GONE);
                             postRecyclerView.setAdapter(adapterPost);
                             adapterPost.notifyDataSetChanged();
-                            shimmerFrameLayoutPost.stopShimmer();
-                            shimmerFrameLayoutPost.setVisibility(View.GONE);
                         }
+
+                        shimmerFrameLayoutPost.stopShimmer();
+                        shimmerFrameLayoutPost.setVisibility(View.GONE);
                     }
                 }
 
@@ -295,6 +307,9 @@ public class HomeFragment extends Fragment {
                         postRecyclerView.setAdapter(adapterPost);
                         adapterPost.notifyDataSetChanged();
                     }
+
+                    shimmerFrameLayoutPost.stopShimmer();
+                    shimmerFrameLayoutPost.setVisibility(View.GONE);
                 }
             }
 
@@ -440,14 +455,10 @@ public class HomeFragment extends Fragment {
                         noPostHomeLayout.setVisibility(View.GONE);
                         postRecyclerView.setAdapter(adapterPost);
                         adapterPost.notifyDataSetChanged();
-                        shimmerFrameLayoutPost.stopShimmer();
-                        shimmerFrameLayoutPost.setVisibility(View.GONE);
                     }
-//                    //set adapter recycler view
-//                    postRecyclerView.setAdapter(adapterPost);
-//                    adapterPost.notifyDataSetChanged();
-//                    shimmerFrameLayoutPost.stopShimmer();
-//                    shimmerFrameLayoutPost.setVisibility(View.GONE);
+
+                    shimmerFrameLayoutPost.stopShimmer();
+                    shimmerFrameLayoutPost.setVisibility(View.GONE);
                 }
             }
 
@@ -479,6 +490,8 @@ public class HomeFragment extends Fragment {
                     //set adapter recycler view
                     postRecyclerView.setAdapter(adapterPost);
                     adapterPost.notifyDataSetChanged();
+                    shimmerFrameLayoutPost.stopShimmer();
+                    shimmerFrameLayoutPost.setVisibility(View.GONE);
                 }
             }
 
@@ -625,17 +638,10 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //get item id
         int id = item.getItemId();
-//        if (id == R.id.action_logout) {
-//            firebaseAuth.signOut();
-//            checkUserStatus();
-//        }
+
         if (id == R.id.action_notif) {
             startActivity(new Intent(getActivity(), NotificationActivity.class));
         }
-//        if (id == R.id.action_add_post) {
-//            startActivity(new Intent(getActivity(), AddPostActivity.class));
-//        }
-
 
         return super.onOptionsItemSelected(item);
     }

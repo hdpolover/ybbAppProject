@@ -68,6 +68,9 @@ public class EventsFragment extends Fragment {
         //init event list
         eventList = new ArrayList<>();
 
+        //hide the layout on create
+        noEventLayout.setVisibility(View.GONE);
+
         loadEvents();
 
         return view;
@@ -75,7 +78,6 @@ public class EventsFragment extends Fragment {
 
     private void loadEvents() {
         //path of all event
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -99,7 +101,6 @@ public class EventsFragment extends Fragment {
                             noEventLayout.setVisibility(View.GONE);
                             //set adapter to recycle
                             recyclerView.setAdapter(adapterEvent);
-                            Collections.reverse(eventList);
                             adapterEvent.notifyDataSetChanged();
                         }
 

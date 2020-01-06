@@ -11,12 +11,6 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
-    <!--    <androidx.appcompat.widget.Toolbar-->
-    <!--        android:id="@+id/appbar"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="#FFF">-->
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -269,7 +263,6 @@
 
     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-
 </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -280,4 +273,5 @@
         android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </androidx.viewpager.widget.ViewPager>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

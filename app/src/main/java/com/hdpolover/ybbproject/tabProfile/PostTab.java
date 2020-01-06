@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,7 @@ import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
@@ -53,8 +56,8 @@ public class PostTab extends Fragment {
     AdapterPost adapterPost;
     String uid;
 
-    TextView noDataTv;
-    ImageView noDataIv;
+    LinearLayout noPostsLayout;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     public PostTab() {
         // Required empty public constructor
@@ -72,12 +75,25 @@ public class PostTab extends Fragment {
         firebaseDatabase = firebaseDatabase.getInstance();
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
-        noDataIv = view.findViewById(R.id.noDataIv);
-        noDataTv = view.findViewById(R.id.noDataTv);
+        noPostsLayout = view.findViewById(R.id.noPostsLayout);
+        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
+
+        noPostsLayout.setVisibility(View.GONE);
 
         checkUserStatus();
 
         postList = new ArrayList<>();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        //show newest post first
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        //set this layout to recyclerview
+        postsRecyclerView.setLayoutManager(layoutManager);
+        //adapter
+        adapterPost = new AdapterPost(getContext(), postList);
+        //set this adapter to recyclerview
+        postsRecyclerView.setAdapter(adapterPost);
 
         loadMyPosts();
 
@@ -86,13 +102,6 @@ public class PostTab extends Fragment {
     }
 
     private void loadMyPosts() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
@@ -109,17 +118,20 @@ public class PostTab extends Fragment {
                     postList.add(myPosts);
 
                     //adapter
-                    adapterPost = new AdapterPost(getContext(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
-                }
+                    adapterPost = new AdapterPost(getActivity(), postList);
 
-                if (postList.size() > 0) {
-                    noDataIv.setVisibility(View.GONE);
-                    noDataTv.setVisibility(View.GONE);
-                } else {
-                    noDataIv.setVisibility(View.VISIBLE);
-                    noDataTv.setVisibility(View.VISIBLE);
+                    if (postList.size() == 0) {
+                        noPostsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noPostsLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        postsRecyclerView.setAdapter(adapterPost);
+                        Collections.reverse(postList);
+                        adapterPost.notifyDataSetChanged();
+                    }
+
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -137,5 +149,17 @@ public class PostTab extends Fragment {
             //user is signed in stay here
             uid = user.getUid();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shimmerFrameLayout.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }

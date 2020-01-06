@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +31,7 @@ import com.hdpolover.ybbproject.adapters.AdapterPost;
 import com.hdpolover.ybbproject.models.ModelPost;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
@@ -46,8 +49,8 @@ public class hisPostTab extends Fragment {
     AdapterPost adapterPost;
     String hisUid;
 
-    TextView noDataTv;
-    ImageView noDataIv;
+    LinearLayout noPostsLayout;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     public hisPostTab() {
         // Required empty public constructor
@@ -64,21 +67,11 @@ public class hisPostTab extends Fragment {
         firebaseDatabase = firebaseDatabase.getInstance();
         storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
-        noDataIv = view.findViewById(R.id.noDataIv);
-        noDataTv = view.findViewById(R.id.noDataTv);
+        noPostsLayout = view.findViewById(R.id.noPostsLayout);
+        shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
 
-        //get myUid of clicked user
-        Intent intent = getActivity().getIntent();
-        hisUid = intent.getStringExtra("uid");
+        noPostsLayout.setVisibility(View.GONE);
 
-        postList = new ArrayList<>();
-
-        loadMyPostsComment();
-
-        return view;
-    }
-
-    private void loadMyPostsComment() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //show newest post first
         layoutManager.setStackFromEnd(true);
@@ -86,6 +79,22 @@ public class hisPostTab extends Fragment {
         //set this layout to recyclerview
         postsRecyclerView.setLayoutManager(layoutManager);
 
+        //get myUid of clicked user
+        Intent intent = getActivity().getIntent();
+        hisUid = intent.getStringExtra("uid");
+
+        postList = new ArrayList<>();
+
+        //adapter
+        adapterPost = new AdapterPost(getActivity(), postList);
+        postsRecyclerView.setAdapter(adapterPost);
+
+        loadMyPostsComment();
+
+        return view;
+    }
+
+    private void loadMyPostsComment() {
         //init post list
         DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
@@ -102,18 +111,22 @@ public class hisPostTab extends Fragment {
                     postList.add(myPosts);
 
                     //adapter
-                    adapterPost = new AdapterPost(getContext(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
+                    adapterPost = new AdapterPost(getActivity(), postList);
+
+                    if (postList.size() == 0) {
+                        noPostsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noPostsLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        postsRecyclerView.setAdapter(adapterPost);
+                        Collections.reverse(postList);
+                        adapterPost.notifyDataSetChanged();
+                    }
+
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
 
-                if (postList.size() > 0) {
-                    noDataIv.setVisibility(View.GONE);
-                    noDataTv.setVisibility(View.GONE);
-                } else {
-                    noDataIv.setVisibility(View.VISIBLE);
-                    noDataTv.setVisibility(View.VISIBLE);
-                }
             }
 
             @Override
@@ -121,5 +134,17 @@ public class hisPostTab extends Fragment {
                 //Toast.makeText(getContext(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shimmerFrameLayout.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        shimmerFrameLayout.stopShimmer();
     }
 }
