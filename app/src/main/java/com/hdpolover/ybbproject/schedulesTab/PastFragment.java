@@ -32,7 +32,7 @@ public class PastFragment extends Fragment {
 
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
-    LinearLayout noMyEventLayout;
+    LinearLayout noPastLayout;
 
     RecyclerView recyclerView;
     List<ModelEvent> eventList;
@@ -52,7 +52,11 @@ public class PastFragment extends Fragment {
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEventPast);
-        noMyEventLayout = view.findViewById(R.id.noPastLayout);
+        noPastLayout = view.findViewById(R.id.noPastLayout);
+
+
+        //init event list
+        eventList = new ArrayList<>();
 
         //recycler view
         recyclerView = view.findViewById(R.id.eventPastRecyclerView);
@@ -63,9 +67,11 @@ public class PastFragment extends Fragment {
 
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
+        //adapter
+        adapterEvent = new AdapterEvent(getActivity(), eventList);
+        //set adapter to recycle
+        recyclerView.setAdapter(adapterEvent);
 
-        //init event list
-        eventList = new ArrayList<>();
 
         loadEvents();
 
@@ -92,9 +98,9 @@ public class PastFragment extends Fragment {
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
 
                     if (eventList.size() == 0) {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        noPastLayout.setVisibility(View.VISIBLE);
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
+                        noPastLayout.setVisibility(View.GONE);
                         //set adapter to recycle
                         recyclerView.setAdapter(adapterEvent);
                         Collections.reverse(eventList);

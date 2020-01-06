@@ -9,36 +9,6 @@
     tools:context=".newsTab.InfoFragment"
     android:orientation="vertical">
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/noNotifLayout"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_centerInParent="true">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/noNotifTv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="150dp"-->
-<!--            android:text="There is currently no info posted."-->
-<!--            android:layout_gravity="center"-->
-<!--            android:textStyle="bold"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textColor="@color/primaryColor"/>-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/noNotifIv"-->
-<!--            android:layout_below="@+id/noNotifTv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="100dp"-->
-<!--            android:layout_marginRight="100dp"-->
-<!--            android:layout_marginBottom="100dp"-->
-<!--            android:src="@drawable/ic_undraw_no_news"/>-->
-
-<!--    </LinearLayout>-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

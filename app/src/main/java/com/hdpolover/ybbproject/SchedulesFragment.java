@@ -45,6 +45,7 @@ public class SchedulesFragment extends Fragment {
 
     FloatingActionButton fab_add_event;
 
+    List<ModelEvent> eventList;
 
     @Nullable
     @Override
@@ -77,6 +78,39 @@ public class SchedulesFragment extends Fragment {
         setHasOptionsMenu(true); //to show menu option in fragment
         super.onCreate(savedInstanceState);
     }
+
+//    private void searchPosts(final String searchQuery) {
+//        //path of all posts
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+//        //get all data from this ref
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                postList.clear();
+//                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+//                    ModelPost modelPost = ds.getValue(ModelPost.class);
+//
+//                    if (modelPost.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
+//                        postList.add(modelPost);
+//                    }
+//
+//                    //adapter
+//                    adapterPost = new AdapterPost(getActivity(), postList);
+//                    //set adapter recycler view
+//                    postRecyclerView.setAdapter(adapterPost);
+//                    adapterPost.notifyDataSetChanged();
+//                    shimmerFrameLayoutPost.stopShimmer();
+//                    shimmerFrameLayoutPost.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                //in case of error
+//                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     //Inflate options menu
 

@@ -32,7 +32,7 @@ public class UpcomingFragment extends Fragment {
 
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
-    LinearLayout noMyEventLayout;
+    LinearLayout noUpcomingLayout;
 
     RecyclerView recyclerView;
     List<ModelEvent> eventList;
@@ -52,7 +52,12 @@ public class UpcomingFragment extends Fragment {
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEventUpcoming);
-        noMyEventLayout = view.findViewById(R.id.noUpcomingLayout);
+        noUpcomingLayout = view.findViewById(R.id.noUpcomingLayout);
+
+        noUpcomingLayout.setVisibility(View.GONE);
+
+        //init event list
+        eventList = new ArrayList<>();
 
         //recycler view
         recyclerView = view.findViewById(R.id.eventUpcomingRecyclerView);
@@ -63,9 +68,10 @@ public class UpcomingFragment extends Fragment {
 
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        //init event list
-        eventList = new ArrayList<>();
+        //adapter
+        adapterEvent = new AdapterEvent(getActivity(), eventList);
+        //set adapter to recycle
+        recyclerView.setAdapter(adapterEvent);
 
         loadEvents();
 
@@ -92,9 +98,9 @@ public class UpcomingFragment extends Fragment {
                     adapterEvent = new AdapterEvent(getActivity(), eventList);
 
                     if (eventList.size() == 0) {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        noUpcomingLayout.setVisibility(View.VISIBLE);
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
+                        noUpcomingLayout.setVisibility(View.GONE);
                         //set adapter to recycle
                         recyclerView.setAdapter(adapterEvent);
                         Collections.reverse(eventList);

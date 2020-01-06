@@ -54,6 +54,11 @@ public class MyEventsFragment extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
 
+        noMyEventLayout.setVisibility(View.GONE);
+
+        //init event list
+        eventList = new ArrayList<>();
+
         //recycler view
         recyclerView = view.findViewById(R.id.myEventsRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -63,9 +68,10 @@ public class MyEventsFragment extends Fragment {
 
         //set layout to recyclerView
         recyclerView.setLayoutManager(linearLayoutManager);
+        //adapter
+        adapterEvent = new AdapterEvent(getActivity(), eventList);
+        recyclerView.setAdapter(adapterEvent);
 
-        //init event list
-        eventList = new ArrayList<>();
 
         loadEvents();
 

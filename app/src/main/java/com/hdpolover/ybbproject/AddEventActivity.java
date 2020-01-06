@@ -472,7 +472,23 @@ public class AddEventActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (!TextUtils.isEmpty(eTitleEt.getText().toString()) && image_rui != null) {
-            createEvent();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Attention");
+            builder.setMessage("You cannot edit the event once published. Are you sure all the data are correct?");
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    createEvent();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            //show dialog
+            builder.create().show();
         } else {
             Toast.makeText(getApplicationContext(), "Some fields are empty...", Toast.LENGTH_SHORT).show();
         }
