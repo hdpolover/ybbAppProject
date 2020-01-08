@@ -664,6 +664,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 //dismiss progress dialog
                 progressDialog.dismiss();
+                e.printStackTrace();
                 //error, get and show message
                 Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }

@@ -5,21 +5,46 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\YbbProjet\\keystore\\upload-keystore.jks')
+            storePassword 'ybb123'
+            keyAlias = 'upload'
+            keyPassword 'ybb123'
+        }
+        debug {
+            storeFile file('D:\\YbbProjet\\keystore\\upload-keystore.jks')
+            storePassword 'ybb123'
+            keyAlias = 'upload'
+            keyPassword 'ybb123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.hdpolover.ybbproject"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.1.4"
+        versionCode 8
+        versionName "0.1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        signingConfig signingConfigs.debug
     }
     buildTypes {
         release {
-            shrinkResources true // This must be first
-            minifyEnabled true   // This must be after shrinkResources
+            //shrinkResources true // This must be first
+            minifyEnabled false   // This must be after shrinkResources
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = false
+            renderscriptDebuggable = false
+            jniDebuggable = false
+            signingConfig signingConfigs.release
+            FirebasePerformance {
+                // Set this flag to 'false' to disable @AddTrace annotation processing and
+                // automatic HTTP/S network request monitoring
+                // for a specific build variant at compile time.
+                instrumentationEnabled false
+            }
         }
         debug {
             FirebasePerformance {
