@@ -37,11 +37,6 @@ import java.util.List;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class hisPostTab extends Fragment {
-    //firebase
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    FirebaseDatabase firebaseDatabase;
-    StorageReference storageReference;
 
     RecyclerView postsRecyclerView;
 
@@ -62,10 +57,6 @@ public class hisPostTab extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_post_tab, container, false);
 
-        firebaseAuth = firebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        firebaseDatabase = firebaseDatabase.getInstance();
-        storageReference = getInstance().getReference(); //firebase storage refence
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
         noPostsLayout = view.findViewById(R.id.noPostsLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
@@ -96,7 +87,7 @@ public class hisPostTab extends Fragment {
 
     private void loadMyPostsComment() {
         //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
         Query query = ref.orderByChild("uid").equalTo(hisUid);
         //get all data

@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (Exception e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -524,7 +524,6 @@ public class MainActivity extends AppCompatActivity {
                                 updateUI();
                             } else if (!task.getResult().getAdditionalUserInfo().isNewUser()){
                                 String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                Log.e("suck", "" + uids);
 
                                 startActivity(new Intent(MainActivity.this, DashboardActivity.class));
                                 finish();
@@ -664,7 +663,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 //dismiss progress dialog
                 progressDialog.dismiss();
-                e.printStackTrace();
                 //error, get and show message
                 Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -726,7 +724,6 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             } else if (!task.getResult().getAdditionalUserInfo().isNewUser()){
                                 String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                Log.e("suck", "" + uids);
 
                                 startActivity(new Intent(MainActivity.this, DashboardActivity.class));
                                 finish();
