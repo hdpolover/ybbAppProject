@@ -182,8 +182,8 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
             countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
             cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
         } else {
-            Toast.makeText(this, "Location not Detected. Please Enable Your Location", Toast.LENGTH_SHORT).show();
-            showAlert();
+            Toast.makeText(this, "Location not detected. Please enable your location setting", Toast.LENGTH_SHORT).show();
+            checkLocation();
         }
     }
 
@@ -231,11 +231,15 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
     }
 
     public void onLocationChanged(Location location) {
-        countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
-        cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
+        try {
+            countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
+            cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
 
-        //create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //create a LatLng Object for use with maps
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        } catch (Exception e) {
+            checkLocation();
+        }
     }
 
     private boolean checkLocation() {

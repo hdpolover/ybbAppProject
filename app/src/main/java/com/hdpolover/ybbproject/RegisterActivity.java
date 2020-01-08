@@ -80,8 +80,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     //    Declare as instance of FirebaseAuth
     private FirebaseAuth mAuth;
     FirebaseUser user;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
 
     //location
     private static final String TAG = "RegisterActivity";
@@ -244,6 +242,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
         } else {
             Toast.makeText(this, "Location not Detected. Please Enable Your Location", Toast.LENGTH_SHORT).show();
+            checkLocation();
         }
     }
 
@@ -291,11 +290,15 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     }
 
     public void onLocationChanged(Location location) {
-        countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
-        cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
+        try {
+            countryTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(0));
+            cityTv.setText(getCountryName(this, mLocation.getLatitude(), mLocation.getLongitude()).get(1));
 
-        //create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            //create a LatLng Object for use with maps
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        } catch (Exception e) {
+            checkLocation();
+        }
     }
 
     private boolean checkLocation() {
@@ -386,10 +389,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             String job = mJobEt.getText().toString().substring(0, 1).toUpperCase()
                                     + mJobEt.getText().toString().substring(1);
 
-                            //substring for get name
-                            //String subName = "@";
-                            //String name = email.substring(0, email.indexOf(subName));
-
                             //when user is registered store user info in firebase realtime database too
                             //using hashmap
                             HashMap<Object, String> hashMap = new HashMap<>();
@@ -449,23 +448,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             }
         });
     }
-
-//    private String getRandomUsername() {
-//        String username = "";
-//        String salt = "";
-//
-//        Random rnd = new Random();
-//        int numLetters = 5;
-//
-//        String randomLetters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-//
-//        for (int n=0; n<numLetters; n++) {
-//            salt += randomLetters.charAt(rnd.nextInt(randomLetters.length()));
-//        }
-//
-//        username = "ybb" + salt;
-//        return username;
-//    }
 
     @Override
     public boolean onSupportNavigateUp() {
