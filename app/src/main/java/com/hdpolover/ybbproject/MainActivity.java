@@ -648,29 +648,27 @@ public class MainActivity extends AppCompatActivity {
                             //dismiss progress dialog
                             progressDialog.dismiss();
 
-                            Log.e("p", isPhotoPassed+"");
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user.isEmailVerified()) {
                                 try {
                                     SharedPreferences sp = getSharedPreferences("StatusPhoto", Context.MODE_PRIVATE);
-                                    sp.getString("isPhotoPassed", "");
-                                    isPhotoPassed = true;
-
+                                    String result = sp.getString("isPhotoPassed", "false");
+                                    if (result.equals("false")) {
+                                        isPhotoPassed = false;
+                                    } else {
+                                        isPhotoPassed = true;
+                                    }
                                 }catch (Exception e){
                                     isPhotoPassed = false;
                                     Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
 
-                                Log.e("p", isPhotoPassed+"");
-
                                 if (isPhotoPassed) {
                                     //user is logged in
-                                    Log.e("a", "harusnya ke dashboard");
                                     startActivity(new Intent(MainActivity.this, DashboardActivity.class));
                                     finish();
                                 } else {
-                                    Log.e("a", "harusnya ke upload");
                                     //user is logged in
                                     startActivity(new Intent(MainActivity.this, UploadProfileActivity.class));
                                     finish();
@@ -752,36 +750,40 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
                                 finish();
                             } else if (!task.getResult().getAdditionalUserInfo().isNewUser()){
-                                String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                                String uids = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//                                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+//                                finish();
+                                // Sign in success, update UI with the signed-in user's information
+//                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if (user.isEmailVerified()) {
+                                    try {
+                                        SharedPreferences sp = getSharedPreferences("StatusPhoto", Context.MODE_PRIVATE);
+                                        String result = sp.getString("isPhotoPassed", "false");
+                                        if (result.equals("false")) {
+                                            isPhotoPassed = false;
+                                        } else {
+                                            isPhotoPassed = true;
+                                        }
+                                    }catch (Exception e){
+                                        isPhotoPassed = false;
+                                        Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
 
-                                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                                finish();
+                                    if (isPhotoPassed) {
+                                        //user is logged in
+                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                        finish();
+                                    } else {
+                                        //user is logged in
+                                        startActivity(new Intent(MainActivity.this, UploadProfileActivity.class));
+                                        finish();
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Please check your email inbox to verify your account. Try logging in later.",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
-
-//                            String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//                            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//                            DatabaseReference uidRef = rootRef.child(myUid);
-//
-//                            ValueEventListener valueEventListener = new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                    if (dataSnapshot.child("phone").getValue(String.class).equals("")){
-//                                        //after logged in
-//                                        startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
-//                                        finish();
-//                                    }else{
-//                                        //after logged in
-//                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-//                                        finish();
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError databaseError) {
-//                                    Log.d(TAG, databaseError.getMessage());
-//                                }
-//                            };
-//                            uidRef.addListenerForSingleValueEvent(valueEventListener);
 
                         } else {
                             // If sign in fails, display a message to the user.

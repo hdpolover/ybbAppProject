@@ -298,7 +298,7 @@ public class UploadProfileActivity extends AppCompatActivity {
                                             public void onFailure(@NonNull Exception e) {
                                                 //failed addding post
                                                 pd.dismiss();
-                                                Toast.makeText(UploadProfileActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(UploadProfileActivity.this, "Please choose an image", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }
@@ -314,7 +314,7 @@ public class UploadProfileActivity extends AppCompatActivity {
                     });
         } catch (Exception e) {
             pd.dismiss();
-            Toast.makeText(UploadProfileActivity.this, "An error occured... " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(UploadProfileActivity.this, "Please choose an image", Toast.LENGTH_SHORT).show();
         }
     }
 
