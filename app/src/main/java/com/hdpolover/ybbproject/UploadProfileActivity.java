@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -76,6 +78,11 @@ public class UploadProfileActivity extends AppCompatActivity {
         pd = new ProgressDialog(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        SharedPreferences sp = getSharedPreferences("StatusPhoto", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("isPhotoPassed", "true");
+        editor.apply();
 
         profileIv = findViewById(R.id.profileIv);
         skipBtn = findViewById(R.id.skipBtn);

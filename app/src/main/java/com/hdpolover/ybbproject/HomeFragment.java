@@ -149,7 +149,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.primaryColor,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
-                android.R.color.holo_blue_dark);
+                android.R.color.holo_red_light);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -228,8 +228,10 @@ public class HomeFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user.isEmailVerified()) {
+            Log.e("e", "verified");
             verifiedAccountLayout.setVisibility(View.GONE);
         } else {
+            Log.e("e", "not verified");
             verifiedAccountLayout.setVisibility(View.VISIBLE);
         }
     }

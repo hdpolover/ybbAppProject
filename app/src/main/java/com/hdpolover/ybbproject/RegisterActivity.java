@@ -353,7 +353,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             // Sign in success, dismiss dialog and start register activity
                             progressDialog.dismiss();
 
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                             //Get user email and myUid from auth
                             String email = user.getEmail();
@@ -411,10 +411,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                             hashMap.put("education", "--");
                             hashMap.put("interest", "--");
 
-                            //firebase database instance
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
                             //path to store user data name Users
-                            DatabaseReference reference = database.getReference("Users");
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
@@ -424,14 +422,18 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Log.e(TAG, "Email sent.");
+                                                Toast.makeText(getApplicationContext(),
+                                                        "A verification link has been sent to your email. Please check your inbox.", Toast.LENGTH_LONG).show();
+                                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                                finish();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "An error occured", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
 
-                            //Toast.makeText(RegisterActivity.this, "Registered . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, UploadProfileActivity.class));
-                            finish();
+//                            startActivity(new Intent(RegisterActivity.this, UploadProfileActivity.class));
+//                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss();

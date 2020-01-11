@@ -92,35 +92,38 @@ public class EventsTab extends Fragment {
         return view;
     }
 
-    private void loadEvents(String uid) {
+    private void loadEvents(final String uid) {
         //path of all event
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(uid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.getKey().equals(uid)) {
+                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    eventList.add(modelEvent);
+                        eventList.add(modelEvent);
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    if (eventList.size() == 0) {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noMyEventLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noMyEventLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
+                        noMyEventLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
-
                 }
 
             }

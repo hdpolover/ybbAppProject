@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -122,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 1240;
 
     private static final int MY_REQUEST_CODE = 1007;
+
+    boolean isPhotoPassed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -643,11 +647,38 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //dismiss progress dialog
                             progressDialog.dismiss();
+
+                            Log.e("p", isPhotoPassed+"");
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //user is logged in
-                            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                            finish();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user.isEmailVerified()) {
+                                try {
+                                    SharedPreferences sp = getSharedPreferences("StatusPhoto", Context.MODE_PRIVATE);
+                                    sp.getString("isPhotoPassed", "");
+                                    isPhotoPassed = true;
+
+                                }catch (Exception e){
+                                    isPhotoPassed = false;
+                                    Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                Log.e("p", isPhotoPassed+"");
+
+                                if (isPhotoPassed) {
+                                    //user is logged in
+                                    Log.e("a", "harusnya ke dashboard");
+                                    startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                                    finish();
+                                } else {
+                                    Log.e("a", "harusnya ke upload");
+                                    //user is logged in
+                                    startActivity(new Intent(MainActivity.this, UploadProfileActivity.class));
+                                    finish();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Please check your email inbox to verify your account. Try logging in later.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             //dismiss progress dialog
                             progressDialog.dismiss();
@@ -711,14 +742,12 @@ public class MainActivity extends AppCompatActivity {
                                 hashMap.put("education", "--");
                                 hashMap.put("interest", "--");
 
-
                                 //firebase database instance
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 //path to store user data name Users
                                 DatabaseReference reference = database.getReference("Users");
                                 //put data within hashmap in database
                                 reference.child(uid).setValue(hashMap);
-                                Log.e("success", "updated" + uid);
 
                                 startActivity(new Intent(MainActivity.this, OtherMethodActivity.class));
                                 finish();
@@ -776,7 +805,7 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            updateUI();
+            //updateUI();
         }
     }
 

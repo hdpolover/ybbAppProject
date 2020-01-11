@@ -350,9 +350,21 @@ public class OtherMethodActivity extends AppCompatActivity implements GoogleApiC
                             //put data within hashmap in database
                             reference.child(uid).setValue(hashMap);
 
-                            //Toast.makeText(OtherMethodActivity.this, "Login Success . . .\n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(OtherMethodActivity.this, UploadProfileActivity.class));
-                            finish();
+                            //send verification email
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "A verification link has been sent to your email. Please check your inbox.", Toast.LENGTH_LONG).show();
+                                                startActivity(new Intent(OtherMethodActivity.this, MainActivity.class));
+                                                finish();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "An error occured", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss();

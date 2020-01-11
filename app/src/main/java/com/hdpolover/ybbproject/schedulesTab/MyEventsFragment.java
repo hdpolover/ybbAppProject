@@ -81,27 +81,31 @@ public class MyEventsFragment extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.getKey().equals(myUid)) {
+                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    eventList.add(modelEvent);
+                        eventList.add(modelEvent);
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    if (eventList.size() == 0) {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noMyEventLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noMyEventLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            adapterEvent.notifyDataSetChanged();
+                        }
                     } else {
-                        noMyEventLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        adapterEvent.notifyDataSetChanged();
+                        noMyEventLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();
