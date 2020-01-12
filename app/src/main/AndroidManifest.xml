@@ -24,7 +24,9 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingChangePasswordActivity"></activity>
+        <activity android:name=".HelpCenterActivity"></activity>
+        <activity android:name=".WebviewSettingActivity" />
+        <activity android:name=".SettingChangePasswordActivity" />
         <activity android:name=".SettingMyAccountActivity" />
         <activity android:name=".FeedbackActivity" />
         <activity android:name=".WebViewNewsActivity" />

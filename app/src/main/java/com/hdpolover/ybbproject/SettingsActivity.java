@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     String uid;
 
-    MaterialCardView logoutBtn, aboutBtn, feedbackBtn, helpBtn, accountBtn;
+    MaterialCardView logoutBtn, aboutBtn, feedbackBtn, helpBtn, accountBtn, tncBtn, ppBtn;
     TextView ybbVersionTv;
 
     @Override
@@ -49,9 +49,11 @@ public class SettingsActivity extends AppCompatActivity {
         aboutBtn = findViewById(R.id.aboutBtn);
         helpBtn = findViewById(R.id.helpBtn);
         accountBtn = findViewById(R.id.accountBtn);
+        tncBtn = findViewById(R.id.tncBtn);
+        ppBtn = findViewById(R.id.ppBtn);
         ybbVersionTv = findViewById(R.id.ybbVersionTv);
 
-        ybbVersionTv.setText(getResources().getString(R.string.app_name) + " " + appVersionCheck.getAppVersion());
+        ybbVersionTv.setText(getResources().getString(R.string.app_name) + " v " + appVersionCheck.getAppVersion());
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +83,32 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SettingsActivity.this, SettingMyAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, HelpCenterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tncBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, WebviewSettingActivity.class);
+                intent.putExtra("type", "tnc");
+                startActivity(intent);
+            }
+        });
+
+        ppBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, WebviewSettingActivity.class);
+                intent.putExtra("type", "pp");
                 startActivity(intent);
             }
         });

@@ -108,16 +108,6 @@ public class FeedbackActivity extends AppCompatActivity {
                     }
                 });
 
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord").child("All").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord1").child("Followings").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord2").child("Istanbul").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord3").child("IYS2020").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord4").child("").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord5").child("All").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord6").child("All").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord7").child("All").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord8").child("All").setValue(true);
-//        FirebaseDatabase.getInstance().getReference().child("Trendings").child("tWord9").child("All").setValue(true);
     }
 
     @Override

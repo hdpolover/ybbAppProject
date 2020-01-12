@@ -251,7 +251,7 @@ public class EventDetailActivity  extends AppCompatActivity {
                         eTitleTv.setText(eTitle);
 
                         try {
-                            Glide.with(getApplicationContext()).load(eImage).into(eImageIv);
+                            Glide.with(getApplicationContext()).load(eImage).placeholder(R.drawable.placeholder_ybb_news).into(eImageIv);
                         } catch (Exception e) {
 
                         }
