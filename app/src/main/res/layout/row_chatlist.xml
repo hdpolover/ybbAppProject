@@ -60,19 +60,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:maxLines="2"
-                    android:text="the last message" />
-
-
-                <TextView
-                    android:id="@+id/lastClockTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="09.00 PM"
-                    android:textColor="@color/primaryDarkColor"
-                    android:textAlignment="viewEnd"/>
+                    android:maxLines="1"
+                    android:text="the last message the last message the last message the last message" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/lastClockTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="09.00 PM"
+                android:textColor="@color/primaryDarkColor"
+                android:textAlignment="viewEnd"/>
 
         </RelativeLayout>
 
