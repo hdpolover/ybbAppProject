@@ -107,6 +107,8 @@ public class PastFragment extends Fragment {
                             Collections.reverse(eventList);
                             adapterEvent.notifyDataSetChanged();
                         }
+                    } else {
+                        noPastLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();

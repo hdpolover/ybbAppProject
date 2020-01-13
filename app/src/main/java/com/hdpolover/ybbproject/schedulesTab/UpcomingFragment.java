@@ -107,6 +107,8 @@ public class UpcomingFragment extends Fragment {
                             Collections.reverse(eventList);
                             adapterEvent.notifyDataSetChanged();
                         }
+                    } else {
+                        noUpcomingLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();
