@@ -8,219 +8,223 @@
     tools:context=".HomeFragment"
     android:orientation="vertical">
 
-<!--    <include layout="@layout/action_bar"/>-->
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollViewHome"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewHome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/verifiedAccountLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/verifiedAccountLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_warn_red"/>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_warn_red"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="#FF0000"
+                        android:text="Please check your email to verify your account."
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
                 <TextView
+                    android:id="@+id/peopleTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="#FF0000"
-                    android:text="Please check your email to verify your account."
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="People with the same interests"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerFrameLayoutPeople"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    app:shimmer_duration="800">
 
-            <TextView
-                android:id="@+id/peopleTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:text="People with the same interests"
-                android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerFrameLayoutPeople"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                app:shimmer_duration="800">
+                        <include layout="@layout/placeholder_people" />
 
-                <LinearLayout
+                        <include layout="@layout/placeholder_people" />
+
+                        <include layout="@layout/placeholder_people" />
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/peopleRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+
+                <HorizontalScrollView
+                    android:layout_margin="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:scrollbars="none">
 
-                    <include layout="@layout/placeholder_people" />
+                    <LinearLayout
+                        android:id="@+id/chipScrollLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                    <include layout="@layout/placeholder_people" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip1"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"
+                            android:clickable="true"/>
 
-                    <include layout="@layout/placeholder_people" />
-                </LinearLayout>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip2"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
 
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip3"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                  android:id="@+id/peopleRecyclerView"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="horizontal"/>
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip4"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
 
-            <HorizontalScrollView
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip5"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
 
-                <LinearLayout
-                    android:id="@+id/chipScrollLayout"
-                    android:layout_width="wrap_content"
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip6"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip7"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_height="wrap_content"
+                            android:elevation="3dp"
+                            android:text="Following"/>
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerFrameLayoutPost"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    app:shimmer_duration="800">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip1"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"
-                        android:clickable="true"/>
+                        android:orientation="vertical">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip2"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
+                        <include layout="@layout/placeholder_post" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip3"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
+                        <include layout="@layout/placeholder_post" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip4"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
+                        <include layout="@layout/placeholder_post" />
+                    </LinearLayout>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip5"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip6"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip7"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="3dp"
-                        android:text="Following"/>
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerFrameLayoutPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                app:shimmer_duration="800">
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <LinearLayout
+                    android:id="@+id/noPostHomeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <include layout="@layout/placeholder_post" />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="20sp"
+                        android:text="Posts not found.\nTry following more people."
+                        android:textColor="@color/primaryColor"/>
 
-                    <include layout="@layout/placeholder_post" />
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_undraw_no_data"/>
 
-                    <include layout="@layout/placeholder_post" />
                 </LinearLayout>
 
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <LinearLayout
-                android:id="@+id/noPostHomeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_gravity="center"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginBottom="20dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/postRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:text="Posts not found.\nTry following more people."
-                    android:textColor="@color/primaryColor"/>
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_undraw_no_data"/>
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/postRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="bottom|right"
+            app:pressedTranslationZ="12dp"
+            android:src="@drawable/ic_edit_white"/>
 
-    </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|right"
-        app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_edit_white"/>
+    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

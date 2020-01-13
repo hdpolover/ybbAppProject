@@ -264,6 +264,7 @@ public class HomeFragment extends Fragment {
                             noPostHomeLayout.setVisibility(View.VISIBLE);
                             postRecyclerView.setVisibility(View.GONE);
                         } else {
+                            postRecyclerView.setVisibility(View.VISIBLE);
                             //set adapter recycler view
                             noPostHomeLayout.setVisibility(View.GONE);
                             postRecyclerView.setAdapter(adapterPost);
