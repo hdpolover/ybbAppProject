@@ -90,22 +90,24 @@ public class PastFragment extends Fragment {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     if (ds.getKey().equals(myUid)) {
-                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                        for (DataSnapshot ds1: ds.getChildren()) {
+                            ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                        if (modelEvent.geteStatus().equals("past")) {
-                            eventList.add(modelEvent);
-                        }
+                            if (modelEvent.geteStatus().equals("past")) {
+                                eventList.add(modelEvent);
+                            }
 
-                        //adapter
-                        adapterEvent = new AdapterEvent(getActivity(), eventList);
+                            //adapter
+                            adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                        if (eventList.size() == 0) {
-                            noPastLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            //set adapter to recycle
-                            recyclerView.setAdapter(adapterEvent);
-                            Collections.reverse(eventList);
-                            adapterEvent.notifyDataSetChanged();
+                            if (eventList.size() == 0) {
+                                noPastLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                //set adapter to recycle
+                                recyclerView.setAdapter(adapterEvent);
+                                Collections.reverse(eventList);
+                                adapterEvent.notifyDataSetChanged();
+                            }
                         }
                     } else {
                         noPastLayout.setVisibility(View.VISIBLE);

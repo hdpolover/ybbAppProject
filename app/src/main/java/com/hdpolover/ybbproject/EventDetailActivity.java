@@ -2,6 +2,7 @@ package com.hdpolover.ybbproject;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -102,6 +103,7 @@ public class EventDetailActivity  extends AppCompatActivity {
                 if (checkCurrentlyJoined()) {
                     joinBtn.setText("JOINED");
                     joinBtn.setEnabled(false);
+                    joinBtn.setBackgroundColor(Color.GRAY);
                 } else {
                     joinBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -114,9 +116,11 @@ public class EventDetailActivity  extends AppCompatActivity {
                 if (checkCurrentlyJoined()) {
                     joinBtn.setText("QUOTA FULL");
                     joinBtn.setEnabled(false);
+                    joinBtn.setBackgroundColor(Color.GRAY);
                 } else {
                     joinBtn.setText("JOINED");
                     joinBtn.setEnabled(false);
+                    joinBtn.setBackgroundColor(Color.GRAY);
                 }
             }
 

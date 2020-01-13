@@ -632,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
                 //get and show proper error messager
-                Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -661,7 +661,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }catch (Exception e){
                                     isPhotoPassed = false;
-                                    Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
 
                                 if (isPhotoPassed) {
@@ -693,7 +693,7 @@ public class MainActivity extends AppCompatActivity {
                 //dismiss progress dialog
                 progressDialog.dismiss();
                 //error, get and show message
-                Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -767,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }catch (Exception e){
                                         isPhotoPassed = false;
-                                        Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(MainActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
 
                                     if (isPhotoPassed) {
@@ -796,7 +796,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 //get and show error message
-                Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

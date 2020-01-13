@@ -89,23 +89,25 @@ public class UpcomingFragment extends Fragment {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     if (ds.getKey().equals(myUid)) {
-                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                        for (DataSnapshot ds1: ds.getChildren()) {
+                            ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                        if (modelEvent.geteStatus().equals("upcoming")) {
-                            eventList.add(modelEvent);
-                        }
+                            if (modelEvent.geteStatus().equals("upcoming")) {
+                                    eventList.add(modelEvent);
+                            }
 
-                        //adapter
-                        adapterEvent = new AdapterEvent(getActivity(), eventList);
+                            //adapter
+                            adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                        if (eventList.size() == 0) {
-                            noUpcomingLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            noUpcomingLayout.setVisibility(View.GONE);
-                            //set adapter to recycle
-                            recyclerView.setAdapter(adapterEvent);
-                            Collections.reverse(eventList);
-                            adapterEvent.notifyDataSetChanged();
+                            if (eventList.size() == 0) {
+                                noUpcomingLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                noUpcomingLayout.setVisibility(View.GONE);
+                                //set adapter to recycle
+                                recyclerView.setAdapter(adapterEvent);
+                                Collections.reverse(eventList);
+                                adapterEvent.notifyDataSetChanged();
+                            }
                         }
                     } else {
                         noUpcomingLayout.setVisibility(View.VISIBLE);
