@@ -262,6 +262,7 @@ public class HomeFragment extends Fragment {
 
                         if (followedPostList.size() == 0) {
                             noPostHomeLayout.setVisibility(View.VISIBLE);
+                            postRecyclerView.setVisibility(View.GONE);
                         } else {
                             //set adapter recycler view
                             noPostHomeLayout.setVisibility(View.GONE);
@@ -304,6 +305,7 @@ public class HomeFragment extends Fragment {
                     if (postList.size() == 0) {
                         noPostHomeLayout.setVisibility(View.VISIBLE);
                     } else {
+                        postRecyclerView.setVisibility(View.VISIBLE);
                         //set adapter recycler view
                         noPostHomeLayout.setVisibility(View.GONE);
                         postRecyclerView.setAdapter(adapterPost);
@@ -453,6 +455,7 @@ public class HomeFragment extends Fragment {
                     if (postList.size() == 0) {
                         noPostHomeLayout.setVisibility(View.VISIBLE);
                     } else {
+                        postRecyclerView.setVisibility(View.VISIBLE);
                         //set adapter recycler view
                         noPostHomeLayout.setVisibility(View.GONE);
                         postRecyclerView.setAdapter(adapterPost);

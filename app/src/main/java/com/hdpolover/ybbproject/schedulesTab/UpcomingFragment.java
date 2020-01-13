@@ -81,30 +81,32 @@ public class UpcomingFragment extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.getKey().equals(myUid)) {
+                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    if (modelEvent.geteStatus().equals("upcoming")) {
-                        eventList.add(modelEvent);
-                    }
+                        if (modelEvent.geteStatus().equals("upcoming")) {
+                            eventList.add(modelEvent);
+                        }
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    if (eventList.size() == 0) {
-                        noUpcomingLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        noUpcomingLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
+                        if (eventList.size() == 0) {
+                            noUpcomingLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noUpcomingLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();

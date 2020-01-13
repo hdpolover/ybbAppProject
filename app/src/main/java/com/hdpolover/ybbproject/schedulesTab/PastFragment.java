@@ -54,6 +54,7 @@ public class PastFragment extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEventPast);
         noPastLayout = view.findViewById(R.id.noPastLayout);
 
+        noPastLayout.setVisibility(View.GONE);
 
         //init event list
         eventList = new ArrayList<>();
@@ -81,36 +82,36 @@ public class PastFragment extends Fragment {
     private void loadEvents() {
         //path of all event
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events").child(myUid);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Events");
         //get all data from this ref
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                    if (ds.getKey().equals(myUid)) {
+                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
 
-                    if (modelEvent.geteStatus().equals("past")) {
-                        eventList.add(modelEvent);
-                    }
+                        if (modelEvent.geteStatus().equals("past")) {
+                            eventList.add(modelEvent);
+                        }
 
-                    //adapter
-                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+                        //adapter
+                        adapterEvent = new AdapterEvent(getActivity(), eventList);
 
-                    if (eventList.size() == 0) {
-                        noPastLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        noPastLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        recyclerView.setAdapter(adapterEvent);
-                        Collections.reverse(eventList);
-                        adapterEvent.notifyDataSetChanged();
+                        if (eventList.size() == 0) {
+                            noPastLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            //set adapter to recycle
+                            recyclerView.setAdapter(adapterEvent);
+                            Collections.reverse(eventList);
+                            adapterEvent.notifyDataSetChanged();
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                 }
-
             }
 
             @Override

@@ -88,30 +88,30 @@ public class hisPostTab extends Fragment {
     private void loadMyPostsComment() {
         //init post list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(hisUid);
         //get all data
-        query.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
+                    if (ds.getKey().equals(hisUid)) {
+                        ModelPost myPosts = ds.getValue(ModelPost.class);
 
-                    //add to list
-                    postList.add(myPosts);
+                        //add to list
+                        postList.add(myPosts);
 
-                    //adapter
-                    adapterPost = new AdapterPost(getActivity(), postList);
+                        //adapter
+                        adapterPost = new AdapterPost(getActivity(), postList);
 
-                    if (postList.size() == 0) {
-                        noPostsLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        noPostsLayout.setVisibility(View.GONE);
-                        //set adapter to recycle
-                        postsRecyclerView.setAdapter(adapterPost);
-                        Collections.reverse(postList);
-                        adapterPost.notifyDataSetChanged();
+                        if (postList.size() == 0) {
+                            noPostsLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            noPostsLayout.setVisibility(View.GONE);
+                            //set adapter to recycle
+                            postsRecyclerView.setAdapter(adapterPost);
+                            Collections.reverse(postList);
+                            adapterPost.notifyDataSetChanged();
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();

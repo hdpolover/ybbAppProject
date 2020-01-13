@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="90dp"
                 android:layout_marginBottom="50dp"
-                android:text="This user has never commented\n on any posts"
+                android:text="You have never commented\n on any posts"
                 android:textAlignment="center"
                 android:textColor="@color/primaryColor"
                 android:textSize="20sp" />
