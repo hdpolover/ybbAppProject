@@ -103,43 +103,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/d"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:contentPadding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorBlack"
-                    android:text="Coming soon"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="..."
-                    android:textSize="15sp"/>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <Button
-            android:id="@+id/sendVerifEmailBtn"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send verification email"/>
-
     </LinearLayout>
 
 </LinearLayout>

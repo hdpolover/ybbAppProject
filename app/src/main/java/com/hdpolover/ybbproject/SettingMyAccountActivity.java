@@ -33,7 +33,6 @@ public class SettingMyAccountActivity extends AppCompatActivity {
 
     String myUid;
     MaterialCardView changePassBtn, deleteAccBtn, changeEmailBtn;
-    Button sendVerifEmail;
 
     ProgressDialog progressDialog;
 
@@ -55,8 +54,6 @@ public class SettingMyAccountActivity extends AppCompatActivity {
         changeEmailBtn = findViewById(R.id.changeEmailBtn);
         deleteAccBtn = findViewById(R.id.deleteAccBtn);
 
-        sendVerifEmail = findViewById(R.id.sendVerifEmailBtn);
-
         changePassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,22 +69,6 @@ public class SettingMyAccountActivity extends AppCompatActivity {
             }
         });
 
-        sendVerifEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                //send verification email
-                user.sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                   Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
     }
 
     private void deleteAccount() {

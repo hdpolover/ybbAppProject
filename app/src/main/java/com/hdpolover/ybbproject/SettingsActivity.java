@@ -75,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
         aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SettingsActivity.this, SettingAboutActivity.class));
             }
         });
 
