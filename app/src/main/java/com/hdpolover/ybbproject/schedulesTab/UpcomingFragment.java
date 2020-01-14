@@ -110,7 +110,9 @@ public class UpcomingFragment extends Fragment {
                             }
                         }
                     } else {
-                        noUpcomingLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noUpcomingLayout.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();

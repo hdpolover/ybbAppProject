@@ -110,7 +110,9 @@ public class PastFragment extends Fragment {
                             }
                         }
                     } else {
-                        noPastLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noPastLayout.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();

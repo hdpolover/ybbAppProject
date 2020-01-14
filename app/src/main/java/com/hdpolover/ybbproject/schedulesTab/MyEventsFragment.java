@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.schedulesTab;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +73,6 @@ public class MyEventsFragment extends Fragment {
         adapterEvent = new AdapterEvent(getActivity(), eventList);
         recyclerView.setAdapter(adapterEvent);
 
-
         loadEvents();
 
         return view;
@@ -107,7 +107,9 @@ public class MyEventsFragment extends Fragment {
                             }
                         }
                     } else {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
+                        if (eventList.size() == 0) {
+                            noMyEventLayout.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     shimmerFrameLayout.stopShimmer();
