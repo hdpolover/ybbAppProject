@@ -54,7 +54,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
-                    android:text="People with the same interests"
+                    android:text="People you may want to know"
                     android:textStyle="bold" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout

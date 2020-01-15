@@ -64,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     }catch (Exception e){
                         isUser = false;
-                        Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     if (isUser) {

@@ -35,7 +35,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class hisEventsTab extends Fragment {
 
-
     View view;
     ShimmerFrameLayout shimmerFrameLayout;
     LinearLayout noMyEventLayout;
@@ -49,8 +48,6 @@ public class hisEventsTab extends Fragment {
     public hisEventsTab() {
         // Required empty public constructor
     }
-
-
 
     @Nullable
     @Override
@@ -97,25 +94,28 @@ public class hisEventsTab extends Fragment {
                 eventList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     if (ds.getKey().equals(hisUid)) {
-                        ModelEvent modelEvent = ds.getValue(ModelEvent.class);
+                        for (DataSnapshot ds1 : ds.getChildren()) {
+                            ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                        eventList.add(modelEvent);
+                            eventList.add(modelEvent);
 
-                        //adapter
-                        adapterEvent = new AdapterEvent(getActivity(), eventList);
+                            //adapter
+                            adapterEvent = new AdapterEvent(getActivity(), eventList);
 
+                            if (eventList.size() == 0) {
+                                noMyEventLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                noMyEventLayout.setVisibility(View.GONE);
+                                //set adapter to recycle
+                                recyclerView.setAdapter(adapterEvent);
+                                Collections.reverse(eventList);
+                                adapterEvent.notifyDataSetChanged();
+                            }
+                        }
+                    } else {
                         if (eventList.size() == 0) {
                             noMyEventLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            noMyEventLayout.setVisibility(View.GONE);
-                            //set adapter to recycle
-                            recyclerView.setAdapter(adapterEvent);
-                            Collections.reverse(eventList);
-                            adapterEvent.notifyDataSetChanged();
                         }
-
-                    } else {
-                        noMyEventLayout.setVisibility(View.VISIBLE);
                     }
 
                     shimmerFrameLayout.stopShimmer();

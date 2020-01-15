@@ -50,9 +50,6 @@ import java.util.HashMap;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    FirebaseAuth firebaseAuth;
-    DatabaseReference userDbRef;
-
     ActionBar actionBar;
 
     //permission constants
@@ -74,7 +71,7 @@ public class AddPostActivity extends AppCompatActivity {
     String editDesc, editImage;
 
     //user info
-    String name, email, uid, dp;
+    String name, email, uid;
 
     //image picked will be the same in this uri
     Uri image_rui = null;

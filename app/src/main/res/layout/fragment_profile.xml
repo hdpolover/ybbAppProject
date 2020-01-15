@@ -104,7 +104,7 @@
                             android:layout_below="@+id/nameTv"
                             android:layout_centerInParent="true"
                             android:layout_marginTop="5dp"
-                            android:text="jrg.pisang"
+                            android:text="\@username"
                             android:textColor="@color/colorGray" />
 
                         <TextView
@@ -114,7 +114,7 @@
                             android:layout_below="@+id/usernameTv"
                             android:layout_centerInParent="true"
                             android:layout_marginTop="8dp"
-                            android:text="Software Engineer"
+                            android:text="Occupation"
                             android:textColor="@color/primaryDarkColor"
                             android:textSize="15sp" />
 
@@ -129,7 +129,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:text="Malang"
+                                android:text="City"
                                 android:textColor="@color/primaryDarkColor"
                                 android:textSize="16sp" />
 
@@ -145,7 +145,7 @@
                                 android:id="@+id/countryTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Indonesia"
+                                android:text="Country"
                                 android:textColor="@color/primaryDarkColor"
                                 android:textSize="16sp" />
                         </LinearLayout>

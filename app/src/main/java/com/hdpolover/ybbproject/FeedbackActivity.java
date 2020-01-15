@@ -103,7 +103,7 @@ public class FeedbackActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         //failed
                         pd.dismiss();
-                        Toast.makeText(FeedbackActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(FeedbackActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });

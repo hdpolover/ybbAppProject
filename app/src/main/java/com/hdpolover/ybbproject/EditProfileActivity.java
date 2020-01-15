@@ -52,10 +52,6 @@ public class EditProfileActivity extends AppCompatActivity {
             cityLiveEt, countryLiveEt, cityFromEt, countryFromEt, educationEt, interestEt;
     ImageView infoDateHintIv;
 
-    ChipGroup chipInterestGroup;
-    TextInputEditText textInputEditText;
-    MaterialButton addInterestBtn;
-
     //details
     EditText bioEt;
 
@@ -76,7 +72,6 @@ public class EditProfileActivity extends AppCompatActivity {
         pd = new ProgressDialog(this);
 
         checkUserStatus();
-        //getCurrentUserData(myUid, data);
 
         actionBar = getSupportActionBar();
         actionBar.setTitle("Edit Profile");
@@ -124,12 +119,77 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // if ()
+                if (fullnameEt == null || fullnameEt.getText().toString().isEmpty()){
+                    fullnameEt.setError("Full name must not be empty");
+                    fullnameEt.setFocusable(true);
+                    return;
+                }
+
+                if (occupationEt == null || occupationEt.getText().toString().isEmpty()){
+                    occupationEt.setError("Occupation must not be empty");
+                    occupationEt.setFocusable(true);
+                    return;
+                }
+
+                if (cityLiveEt == null || cityLiveEt.getText().toString().isEmpty()){
+                    cityLiveEt.setError("Current City must not be empty");
+                    cityLiveEt.setFocusable(true);
+                    return;
+                }
+
+                if (countryLiveEt == null || countryLiveEt.getText().toString().isEmpty()){
+                    countryLiveEt.setError("Current Country must not be empty");
+                    countryLiveEt.setFocusable(true);
+                    return;
+                }
+
+                if (usernameEt == null || usernameEt.getText().toString().isEmpty()){
+                    usernameEt.setError("Username must not be empty");
+                    usernameEt.setFocusable(true);
+                    return;
+                }
+
+                if (usernameEt.getText().toString().length() < 5) {
+                    usernameEt.setError("Username must be at least 5 characters");
+                    usernameEt.setFocusable(true);
+                    return;
+                }
+
+                if (usernameEt.getText().toString().contains(" ")) {
+                    usernameEt.setError("Username cannot contain white spaces");
+                    usernameEt.setFocusable(true);
+                    return;
+                }
+
+                if (username.equals(usernameEt.getText().toString())) {
+                    updateUserProfileInfo();
+                } else {
+                    if (checkExistingUsername(usernameEt.getText().toString().trim())) {
+                        usernameEt.setError("Username has already been taken");
+                        usernameEt.setFocusable(true);
+                        return;
+                    }
+                }
+
                 updateUserProfileInfo();
             }
         });
+    }
 
+    private  boolean checkExistingUsername(String input) {
+        boolean isSame = false;
 
+        for (String username : usernameList) {
+            if (username.equals(input)) {
+                isSame = true;
+            }
+        }
+
+        if (isSame) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void setUsernameList() {
@@ -150,8 +210,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void handleDateButton() {
         Calendar calendar = Calendar.getInstance();
@@ -187,24 +245,17 @@ public class EditProfileActivity extends AppCompatActivity {
                     //get data
                     fullnameEt.setText("" + ds.child("name").getValue());
                     usernameEt.setText("" + ds.child("username").getValue());
-                    username = "" + ds.child("username").getValue().toString();
+                    username = ds.child("username").getValue().toString();
                     phoneNumberEt.setText("" + ds.child("phone").getValue());
                     occupationEt.setText("" + ds.child("job").getValue());
                     cityLiveEt.setText("" + ds.child("city").getValue());
                     countryLiveEt.setText("" + ds.child("country").getValue());
                     cityFromEt.setText("" + ds.child("cityFrom").getValue());
                     countryFromEt.setText("" + ds.child("countryFrom").getValue());
-                    if(ds.child("birthDate").getValue().toString().equals("edit in your profile!")){
-                        birthDateEt.setText("");
-                        bioEt.setText("");
-                        educationEt.setText("");
-                        interestEt.setText("");
-                    }else{
-                        birthDateEt.setText("" + ds.child("birthDate").getValue());
-                        bioEt.setText("" + ds.child("bio").getValue());
-                        educationEt.setText(""+ds.child("education").getValue());
-                        interestEt.setText(""+ds.child("interest").getValue());
-                    }
+                    birthDateEt.setText("" + ds.child("birthDate").getValue());
+                    bioEt.setText("" + ds.child("bio").getValue());
+                    educationEt.setText(""+ds.child("education").getValue());
+                    interestEt.setText(""+ds.child("interest").getValue());
                 }
             }
 

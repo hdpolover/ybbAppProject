@@ -479,7 +479,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //failed
-                        Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -526,7 +526,7 @@ public class PostDetailActivity extends AppCompatActivity {
             uri = FileProvider.getUriForFile(this, "com.hdpolover.ybbproject.fileprovider", file);
 
         } catch (Exception e) {
-            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return  uri;
     }
@@ -579,7 +579,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         //failed, can;t go further
                         pd.dismiss();
-                        Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -712,7 +712,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         //failed
                         pd.dismiss();
-                        Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PostDetailActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });

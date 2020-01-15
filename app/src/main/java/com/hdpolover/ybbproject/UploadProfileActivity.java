@@ -309,7 +309,7 @@ public class UploadProfileActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             //failed upload
                             pd.dismiss();
-                            Toast.makeText(UploadProfileActivity.this, "Profile picture update failed..." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadProfileActivity.this, "Profile picture update failed...", Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e) {

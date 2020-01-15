@@ -290,7 +290,7 @@ public class AddEventActivity extends AppCompatActivity {
                                             public void onFailure(@NonNull Exception e) {
                                                 //failed addding post
                                                 pd.dismiss();
-                                                Toast.makeText(AddEventActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                               // Toast.makeText(AddEventActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }
@@ -301,11 +301,11 @@ public class AddEventActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             //failed upload
                             pd.dismiss();
-                            Toast.makeText(AddEventActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(AddEventActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

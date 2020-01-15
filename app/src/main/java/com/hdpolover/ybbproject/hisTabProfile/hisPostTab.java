@@ -87,14 +87,15 @@ public class hisPostTab extends Fragment {
 
     private void loadMyPostsComment() {
         //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        Query ref = FirebaseDatabase.getInstance().getReference("Posts");
         //get all data
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    if (ds.getKey().equals(hisUid)) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (ds.child("uid").getValue().equals(hisUid)) {
+                        // if (ds.getKey().equals(hisUid)) {
                         ModelPost myPosts = ds.getValue(ModelPost.class);
 
                         //add to list
@@ -111,6 +112,10 @@ public class hisPostTab extends Fragment {
                             postsRecyclerView.setAdapter(adapterPost);
                             Collections.reverse(postList);
                             adapterPost.notifyDataSetChanged();
+                        }
+                    } else {
+                        if (postList.size() == 0) {
+                            noPostsLayout.setVisibility(View.VISIBLE);
                         }
                     }
 

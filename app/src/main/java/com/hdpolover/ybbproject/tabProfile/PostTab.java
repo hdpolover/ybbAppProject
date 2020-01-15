@@ -109,8 +109,9 @@ public class PostTab extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    if (ds.getKey().equals(uid)) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    if (ds.child("uid").getValue().equals(uid)) {
+                        //if (ds.getKey().equals(uid)) {
                         ModelPost myPosts = ds.getValue(ModelPost.class);
 
                         //add to list
@@ -129,8 +130,13 @@ public class PostTab extends Fragment {
                             adapterPost.notifyDataSetChanged();
                         }
                     } else {
-                        noPostsLayout.setVisibility(View.VISIBLE);
+                        if (postList.size() == 0) {
+                            noPostsLayout.setVisibility(View.VISIBLE);
+                        }
                     }
+//                    } else {
+//                        noPostsLayout.setVisibility(View.VISIBLE);
+//                    }
 
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
@@ -144,7 +150,7 @@ public class PostTab extends Fragment {
         });
     }
 
-    private  void checkUserStatus() {
+    private void checkUserStatus() {
         //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {

@@ -253,7 +253,7 @@ public class HelpCenterActivity extends AppCompatActivity {
                                             public void onFailure(@NonNull Exception e) {
                                                 //failed
                                                 pd.dismiss();
-                                                Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                               // Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                             }
                                         });
@@ -265,7 +265,7 @@ public class HelpCenterActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             //failed upload
                             pd.dismiss();
-                            Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e) {
@@ -299,7 +299,7 @@ public class HelpCenterActivity extends AppCompatActivity {
                         public void onFailure(@NonNull Exception e) {
                             //failed
                             pd.dismiss();
-                            Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(HelpCenterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                     });

@@ -47,9 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.adapters.AdapterHisProfile;
-import com.hdpolover.ybbproject.adapters.AdapterPost;
-import com.hdpolover.ybbproject.adapters.AdapterProfile;
-import com.hdpolover.ybbproject.models.ModelPost;
 import com.hdpolover.ybbproject.models.ModelUser;
 import com.hdpolover.ybbproject.notifications.APIService;
 import com.hdpolover.ybbproject.notifications.Client;
@@ -72,9 +69,8 @@ public class UserProfileActivity extends AppCompatActivity {
     //views from xml
     ImageView profileIv, cameraIv;
     TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv;
-    Button messageBtn, followBtn, profileBtn;
+    Button messageBtn, followBtn;
     RecyclerView postsRecyclerView;
-    LinearLayout followsLayout;
 
     String myUid, hisUid, publisherId;
 
@@ -89,7 +85,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_profile);
+        setContentView(R.layout.fragment_profile_user);
 
         //create api service
         apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
@@ -111,10 +107,8 @@ public class UserProfileActivity extends AppCompatActivity {
         messageBtn = findViewById(R.id.messageBtn);
         followBtn = findViewById(R.id.followBtn);
         cameraIv = findViewById(R.id.cameraIv);
-        followsLayout = findViewById(R.id.followsLayout);
 
         cameraIv.setVisibility(View.GONE);
-        followsLayout.setVisibility(View.GONE);
 
         postsRecyclerView = findViewById(R.id.recyclerview_posts);
 
@@ -154,8 +148,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     String name = "" + ds.child("name").getValue();
-//                    String email = "" + ds.child("email").getValue();
-//                    String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
                     String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();
@@ -175,8 +167,6 @@ public class UserProfileActivity extends AppCompatActivity {
                         //if image is received then set
                         Glide.with(getApplicationContext()).load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
-                        //if there is any exception while getting image then set default
-                        //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);
                     }
                 }
             }

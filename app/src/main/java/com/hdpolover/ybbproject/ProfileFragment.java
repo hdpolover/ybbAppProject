@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -175,8 +176,6 @@ public class ProfileFragment extends Fragment {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     //get data
                     String name = "" + ds.child("name").getValue();
-                    String email = "" + ds.child("email").getValue();
-                    String phone = "" + ds.child("phone").getValue();
                     String image = "" + ds.child("image").getValue();
                     String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();
@@ -195,7 +194,7 @@ public class ProfileFragment extends Fragment {
 
                     try {
                         //if image is received then set
-                        Picasso.get().load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
+                        Glide.with(getContext()).load(image).placeholder(R.drawable.ic_undraw_profile_pic).into(profileIv);
                     } catch (Exception e) {
                         //if there is any exception while getting image then set default
                         //Picasso.get().load(R.drawable.ic_default_img_white).into(avatarIv);
@@ -484,12 +483,12 @@ public class ProfileFragment extends Fragment {
                         public void onFailure(@NonNull Exception e) {
                             //failed upload
                             pd.dismiss();
-                            Toast.makeText(getActivity(), "Profile picture update failed..." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Profile picture update failed...", Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e) {
             pd.dismiss();
-            Toast.makeText(getActivity(), "An error occured... " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "An error occured... ", Toast.LENGTH_SHORT).show();
         }
     }
 

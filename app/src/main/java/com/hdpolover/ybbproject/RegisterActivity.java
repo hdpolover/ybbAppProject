@@ -446,7 +446,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             public void onFailure(@NonNull Exception e) {
                 //error, dismiss progress dialog
                 progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

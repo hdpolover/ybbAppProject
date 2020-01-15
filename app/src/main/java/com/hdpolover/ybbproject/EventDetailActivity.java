@@ -183,7 +183,7 @@ public class EventDetailActivity  extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //failed
-                        Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
