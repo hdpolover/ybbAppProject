@@ -106,11 +106,12 @@ public class EditProfileActivity extends AppCompatActivity {
         infoDateHintIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "You can choose not to show your birthdate", Toast.LENGTH_LONG).show();
             }
         });
 
         setUserData();
+
         setUsernameList();
 
         birthDateEt.setOnClickListener(new View.OnClickListener() {
@@ -123,20 +124,8 @@ public class EditProfileActivity extends AppCompatActivity {
         saveProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    updateUserProfileInfo();
-//                for (String usernameList : usernameList) {
-//                    if(usernameList.equals(usernameInput)) {
-//                        check = true;
-//                    }
-//                }
-
-//                if(check) {
-//                    usernameEt.setError("Invalid email");
-//                    usernameEt.setFocusable(true);
-//                } else {
-//                    updateUserProfileInfo();
-//                }
+               // if ()
+                updateUserProfileInfo();
             }
         });
 
@@ -145,13 +134,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void setUsernameList() {
         //get post using the id of the post
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        Query ref = FirebaseDatabase.getInstance().getReference("Users").orderByChild("username");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usernameList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    usernameList.add("" + ds.child("username").getValue().toString());
+                        usernameList.add("" + ds.child("username").getValue().toString());
                 }
             }
 
@@ -161,6 +150,8 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void handleDateButton() {
         Calendar calendar = Calendar.getInstance();

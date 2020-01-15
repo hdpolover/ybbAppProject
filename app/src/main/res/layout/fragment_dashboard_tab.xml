@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tabProfile.DashboardTab">
+    tools:context=".tabProfile.DashboardTab"
+    android:background="@color/colorWhite">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -98,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Interest"
+                        android:text="Interests"
                         android:textColor="@color/primaryColor"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -133,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
-                        android:text="Contact"
+                        android:text="Contacts"
                         android:textColor="@color/primaryColor"
                         android:textSize="22sp"
                         android:textStyle="bold" />

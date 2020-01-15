@@ -55,7 +55,7 @@ public class EventDetailActivity  extends AppCompatActivity {
 
     String myUid, eId, uid;
 
-    int eQuotaLeft;
+    int eQuotaLeft = 0;
     int eQuota;
 
     @Override
@@ -93,56 +93,45 @@ public class EventDetailActivity  extends AppCompatActivity {
 
         showEventDetails();
 
-        Log.e("uid", uid);
-        Log.e("my", myUid);
-
         if (uid.equals(myUid)) {
-            getEventQuotaLeft();
+            getEventQuotaLeft(joinBtn);
         } else {
             if (eQuotaLeft < eQuota) {
                 if (checkCurrentlyJoined()) {
                     joinBtn.setText("JOINED");
-                    joinBtn.setEnabled(false);
-                    joinBtn.setBackgroundColor(Color.GRAY);
                 } else {
-                    joinBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            joinEvent();
-                        }
-                    });
+                    joinBtn.setText("JOINED");
                 }
             } else {
                 if (checkCurrentlyJoined()) {
                     joinBtn.setText("QUOTA FULL");
-                    joinBtn.setEnabled(false);
-                    joinBtn.setBackgroundColor(Color.GRAY);
                 } else {
                     joinBtn.setText("JOINED");
-                    joinBtn.setEnabled(false);
-                    joinBtn.setBackgroundColor(Color.GRAY);
                 }
             }
-
         }
     }
 
-    private void getEventQuotaLeft() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId);
+    private void getEventQuotaLeft(final Button join) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    eQuotaLeft = eQuota;
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    if (ds.getKey().equals(eId)) {
+                        if (dataSnapshot.getChildrenCount() > 0) {
+                            int left = Integer.parseInt(ds.getChildrenCount() + "");
+                            eQuotaLeft = eQuota - left;
 
-                    joinBtn.setEnabled(false);
-                    joinBtn.setText("Quota left: " + eQuotaLeft);
-                } else {
-                    int left = Integer.parseInt(dataSnapshot.getChildrenCount() + "");
-                    eQuotaLeft = eQuota - left;
+                            join.setBackgroundColor(Color.RED);
+                            join.setText("Quota left: " + eQuotaLeft);
+                        } else {
+                            eQuotaLeft = eQuota;
 
-                    joinBtn.setEnabled(false);
-                    joinBtn.setText("Quota left: " + eQuotaLeft);
+                            join.setBackgroundColor(Color.GRAY);
+                            join.setText("Quota left: " + eQuotaLeft);
+                        }
+                    }
                 }
             }
 
