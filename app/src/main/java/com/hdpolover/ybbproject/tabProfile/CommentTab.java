@@ -59,6 +59,7 @@ public class CommentTab extends Fragment {
     LinearLayout noCommentsLayout;
     ShimmerFrameLayout shimmerFrameLayout;
 
+    TextView noCommentTv;
 
     List<String> postIdList;
 
@@ -80,6 +81,9 @@ public class CommentTab extends Fragment {
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
         noCommentsLayout = view.findViewById(R.id.noCommentsLayout);
+        noCommentTv = view.findViewById(R.id.noCommentTv);
+
+        noCommentTv.setText("You have never commented on any posts");
 
         noCommentsLayout.setVisibility(View.GONE);
 

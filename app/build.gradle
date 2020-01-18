@@ -83,6 +83,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
 
     // (Recommended) Add the Google Analytics dependency.
     implementation 'com.google.firebase:firebase-analytics:17.2.1'

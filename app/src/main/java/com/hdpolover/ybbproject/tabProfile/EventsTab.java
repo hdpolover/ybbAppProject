@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -51,6 +52,7 @@ public class EventsTab extends Fragment {
     AdapterEvent adapterEvent;
 
     String myUid, hisUid;
+    TextView noEventTv;
 
     public EventsTab() {
         // Required empty public constructor
@@ -67,6 +69,9 @@ public class EventsTab extends Fragment {
         //shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
+        noEventTv = view.findViewById(R.id.noEventTv);
+
+        noEventTv.setText("You have no events");
 
         noMyEventLayout.setVisibility(View.GONE);
 

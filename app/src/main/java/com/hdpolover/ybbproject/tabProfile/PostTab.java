@@ -58,6 +58,7 @@ public class PostTab extends Fragment {
 
     LinearLayout noPostsLayout;
     ShimmerFrameLayout shimmerFrameLayout;
+    TextView noPostTv;
 
     public PostTab() {
         // Required empty public constructor
@@ -77,6 +78,9 @@ public class PostTab extends Fragment {
         postsRecyclerView = view.findViewById(R.id.recyclerview_posts);
         noPostsLayout = view.findViewById(R.id.noPostsLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayout);
+        noPostTv = view.findViewById(R.id.noPostTv);
+
+        noPostTv.setText("You have no posts");
 
         noPostsLayout.setVisibility(View.GONE);
 

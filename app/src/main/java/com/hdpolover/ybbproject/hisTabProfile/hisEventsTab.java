@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class hisEventsTab extends Fragment {
     AdapterEvent adapterEvent;
 
     String hisUid;
+    TextView noEventTv;
 
     public hisEventsTab() {
         // Required empty public constructor
@@ -56,6 +58,9 @@ public class hisEventsTab extends Fragment {
 
         shimmerFrameLayout = view.findViewById(R.id.shimmerFrameLayoutEvent);
         noMyEventLayout = view.findViewById(R.id.noMyEventLayout);
+        noEventTv = view.findViewById(R.id.noEventTv);
+
+        noEventTv.setText("This user has no events");
 
         //get myUid of clicked user
         Intent intent = getActivity().getIntent();
@@ -97,7 +102,9 @@ public class hisEventsTab extends Fragment {
                         for (DataSnapshot ds1 : ds.getChildren()) {
                             ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
-                            eventList.add(modelEvent);
+                            if (modelEvent.geteConfirmStatus().equals("approved")) {
+                                eventList.add(modelEvent);
+                            }
 
                             //adapter
                             adapterEvent = new AdapterEvent(getActivity(), eventList);

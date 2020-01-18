@@ -58,6 +58,7 @@ public class UpvotesTab extends Fragment {
 
     LinearLayout noUpvotesLayout;
     ShimmerFrameLayout shimmerFrameLayoutUpvotes;
+    TextView noUpvoteTv;
 
     public UpvotesTab() {
         // Required empty public constructor
@@ -77,6 +78,9 @@ public class UpvotesTab extends Fragment {
         postsRecyclerView = view.findViewById(R.id.upvotesRecyclerView);
         noUpvotesLayout = view.findViewById(R.id.noUpvotesLayout);
         shimmerFrameLayoutUpvotes = view.findViewById(R.id.shimmerFrameLayoutUpvotes);
+        noUpvoteTv = view.findViewById(R.id.noUpvoteTv);
+
+        noUpvoteTv.setText("You have never upvoted any posts");
 
         checkUserStatus();
 
