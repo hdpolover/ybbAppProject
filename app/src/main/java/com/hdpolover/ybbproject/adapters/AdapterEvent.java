@@ -19,6 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.EventDetailActivity;
 import com.hdpolover.ybbproject.R;
 import com.hdpolover.ybbproject.helpers.SocialTimeConverter;
@@ -31,6 +36,7 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
     Context context;
     List<ModelEvent> eventList;
     String myUid;
+    boolean isJoined;
 
     public AdapterEvent(Context context, List<ModelEvent> eventList) {
         this.context = context;
@@ -91,20 +97,52 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, EventDetailActivity.class);
-                intent.putExtra("eId", eId);
-                intent.putExtra("uid", uid);
-                context.startActivity(intent);
+                if (checkCurrentlyJoined(eId)) {
+                    //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, EventDetailActivity.class);
+                    intent.putExtra("eId", eId);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("isJoined", "true");
+                    context.startActivity(intent);
+                } else {
+                    //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, EventDetailActivity.class);
+                    intent.putExtra("eId", eId);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("isJoined", "false");
+                    context.startActivity(intent);
+                }
             }
         });
+    }
+
+    private boolean checkCurrentlyJoined(String e) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(e);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    if (ds.getKey().equals(myUid)) {
+                        isJoined = true;
+                    } else {
+                        isJoined = false;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return isJoined;
     }
 
     @Override
     public int getItemCount() {
         return eventList.size();
     }
-
 
     //view holder class
     public static class MyHolderEvent extends RecyclerView.ViewHolder{

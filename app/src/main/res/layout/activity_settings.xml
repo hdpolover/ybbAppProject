@@ -36,6 +36,7 @@
                     android:layout_gravity="center"
                     android:textColor="@color/colorBlack"
                     android:text="My account"/>
+
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -145,6 +146,34 @@
                     android:layout_gravity="center"
                     android:textColor="@color/colorBlack"
                     android:text="Privacy Policies"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/rateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:contentPadding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_star"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="Rate and Review YBB"/>
 
             </LinearLayout>
 

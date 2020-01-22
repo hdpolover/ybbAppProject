@@ -3,7 +3,10 @@ package com.hdpolover.ybbproject;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -23,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     String uid;
 
-    MaterialCardView logoutBtn, aboutBtn, feedbackBtn, helpBtn, accountBtn, tncBtn, ppBtn;
+    MaterialCardView logoutBtn, aboutBtn, feedbackBtn, helpBtn, accountBtn, tncBtn, ppBtn, rateBtn;
     TextView ybbVersionTv;
 
     @Override
@@ -52,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
         tncBtn = findViewById(R.id.tncBtn);
         ppBtn = findViewById(R.id.ppBtn);
         ybbVersionTv = findViewById(R.id.ybbVersionTv);
+        rateBtn = findViewById(R.id.rateBtn);
 
         ybbVersionTv.setText(getResources().getString(R.string.app_name) + " v " + appVersionCheck.getAppVersion());
 
@@ -113,6 +117,49 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        rateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rateApp();
+            }
+        });
+
+    }
+
+    /*
+     * Start with rating the app
+     * Determine if the Play Store is installed on the device
+     *
+     * */
+    public void rateApp()
+    {
+        try
+        {
+            Intent rateIntent = rateIntentForUrl("market://details");
+            startActivity(rateIntent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Intent rateIntent = rateIntentForUrl("https://play.google.com/store/apps/details");
+            startActivity(rateIntent);
+        }
+    }
+
+    private Intent rateIntentForUrl(String url)
+    {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("%s?id=%s", url, getPackageName())));
+        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
+        if (Build.VERSION.SDK_INT >= 21)
+        {
+            flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
+        }
+        else
+        {
+            //noinspection deprecation
+            flags |= Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET;
+        }
+        intent.addFlags(flags);
+        return intent;
     }
 
     private void checkUserStatus() {

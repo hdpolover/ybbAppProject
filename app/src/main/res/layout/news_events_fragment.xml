@@ -67,8 +67,6 @@
 
                     <include layout="@layout/placeholder_event"/>
 
-                    <include layout="@layout/placeholder_event"/>
-
                 </LinearLayout>
 
 

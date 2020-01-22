@@ -228,10 +228,8 @@ public class HomeFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user.isEmailVerified()) {
-            Log.e("e", "verified");
             verifiedAccountLayout.setVisibility(View.GONE);
         } else {
-            Log.e("e", "not verified");
             verifiedAccountLayout.setVisibility(View.VISIBLE);
         }
     }

@@ -1,5 +1,7 @@
 package com.hdpolover.ybbproject;
 
+import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,15 +55,21 @@ public class EventDetailActivity  extends AppCompatActivity {
     LinearLayout confirmStatusDetailLayout;
     Button joinBtn;
 
-    String myUid, eId, uid;
+    String myUid, eId, uid, joinStat;
 
     int eQuotaLeft = 0;
     int eQuota;
+
+    boolean isJoined = false;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+
+        progressDialog = new ProgressDialog(this);
 
         //action bar and its propertoes
         ActionBar actionBar = getSupportActionBar();
@@ -90,25 +98,23 @@ public class EventDetailActivity  extends AppCompatActivity {
         Intent intent = getIntent();
         eId = intent.getStringExtra("eId");
         uid = intent.getStringExtra("uid");
+        joinStat = intent.getStringExtra("isJoined");
 
         showEventDetails();
 
-        if (uid.equals(myUid)) {
-            getEventQuotaLeft(joinBtn);
+        if (joinStat.equals("true")) {
+            isJoined = true;
+            joinBtn.setText("JOINED");
+            joinBtn.setEnabled(false);
         } else {
-            if (eQuotaLeft < eQuota) {
-                if (checkCurrentlyJoined()) {
-                    joinBtn.setText("JOINED");
-                } else {
-                    joinBtn.setText("JOINED");
+            joinBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    joinEvent();
+                    isJoined = true;
+                    joinBtn.setEnabled(false);
                 }
-            } else {
-                if (checkCurrentlyJoined()) {
-                    joinBtn.setText("QUOTA FULL");
-                } else {
-                    joinBtn.setText("JOINED");
-                }
-            }
+            });
         }
     }
 
@@ -123,12 +129,10 @@ public class EventDetailActivity  extends AppCompatActivity {
                             int left = Integer.parseInt(ds.getChildrenCount() + "");
                             eQuotaLeft = eQuota - left;
 
-                            join.setBackgroundColor(Color.RED);
                             join.setText("Quota left: " + eQuotaLeft);
                         } else {
                             eQuotaLeft = eQuota;
 
-                            join.setBackgroundColor(Color.GRAY);
                             join.setText("Quota left: " + eQuotaLeft);
                         }
                     }
@@ -143,16 +147,15 @@ public class EventDetailActivity  extends AppCompatActivity {
     }
 
     private boolean checkCurrentlyJoined() {
-        final boolean[] isJoined = {false};
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     if (ds.getKey().equals(myUid)) {
-                        isJoined[0] = true;
+                        isJoined = true;
                     } else {
-                        isJoined[0] = false;
+                        isJoined = false;
                     }
                 }
             }
@@ -163,10 +166,12 @@ public class EventDetailActivity  extends AppCompatActivity {
             }
         });
 
-        return isJoined[0];
+        return isJoined;
     }
 
     private void joinEvent(){
+        progressDialog.setMessage("Joining...");
+        progressDialog.show();
 
         //path to store post data
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId).child(myUid);
@@ -176,14 +181,18 @@ public class EventDetailActivity  extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         //added
-                        Toast.makeText(getApplicationContext(), "Event successfully joined", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Event successfully joined", Toast.LENGTH_SHORT).show();
+                        joinBtn.setText("JOINED");
+                        joinBtn.setBackgroundColor(getResources().getColor(R.color.colorGray));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //failed
-                        //Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -274,9 +283,26 @@ public class EventDetailActivity  extends AppCompatActivity {
                         //get creator data
                         getUserData(eCreatorImageIv, eCreatorNameTv, uid);
                         eCreatedOnTv.setText(stc.getSocialTimeFormat(eCreatedOn));
+
+                        if (uid.equals(myUid)) {
+                            getEventQuotaLeft(joinBtn);
+                        } else {
+                            if (eQuotaLeft <= eQuota) {
+                                if (joinStat.equals("true")) {
+                                    joinBtn.setText("JOINED");
+                                } else {
+                                    joinBtn.setText("JOIN");
+                                }
+                            } else {
+                                if (joinStat.equals("true")) {
+                                    joinBtn.setText("JOINED");
+                                } else {
+                                    joinBtn.setText("QUOTA FULL");
+                                }
+                            }
+                        }
                     }
                 }
-
             }
 
             @Override
@@ -374,7 +400,6 @@ public class EventDetailActivity  extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

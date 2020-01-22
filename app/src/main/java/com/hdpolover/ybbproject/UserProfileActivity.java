@@ -1,42 +1,26 @@
 package com.hdpolover.ybbproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,11 +38,8 @@ import com.hdpolover.ybbproject.notifications.Data;
 import com.hdpolover.ybbproject.notifications.Response;
 import com.hdpolover.ybbproject.notifications.Sender;
 import com.hdpolover.ybbproject.notifications.Token;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,7 +49,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     //views from xml
     ImageView profileIv, cameraIv;
-    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv;
+    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv, followersTv, followingsTv;
     Button messageBtn, followBtn;
     RecyclerView postsRecyclerView;
 
@@ -85,7 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_profile_user);
+        setContentView(R.layout.fragment_profile);
 
         //create api service
         apiService = Client.getRetrofit("https://fcm.googleapis.com/").create(APIService.class);
@@ -107,6 +88,8 @@ public class UserProfileActivity extends AppCompatActivity {
         messageBtn = findViewById(R.id.messageBtn);
         followBtn = findViewById(R.id.followBtn);
         cameraIv = findViewById(R.id.cameraIv);
+        followersTv = findViewById(R.id.followersTv);
+        followingsTv = findViewById(R.id.followingsTv);
 
         cameraIv.setVisibility(View.GONE);
 
@@ -133,6 +116,8 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         hisUid = intent.getStringExtra("uid");
 
+        setUserFollows(followersTv, followingsTv);
+
         SharedPreferences sp = getSharedPreferences("OtherUserID", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("hisUid", hisUid);
@@ -155,10 +140,17 @@ public class UserProfileActivity extends AppCompatActivity {
                     String country = "" + ds.child("country").getValue();
 
                     //set data
-                    nameTv.setText(name);
-//                    emailTv.setText(email);
-//                    phoneTv.setText(phone);
-                    usernameTv.setText(username);
+                    if (name.length() > 21) {
+                        nameTv.setText(name.substring(0, 21) + "...");
+                    } else {
+                        nameTv.setText(name);
+                    }
+
+                    if (username.length() > 21) {
+                        usernameTv.setText(username.substring(0, 21) + "...");
+                    } else {
+                        usernameTv.setText(username);
+                    }
                     jobTv.setText(job);
                     cityTv.setText(city);
                     countryTv.setText(country);
@@ -211,8 +203,65 @@ public class UserProfileActivity extends AppCompatActivity {
 
         isFollowing(hisUid, followBtn);
 
-        //postList = new ArrayList<>();
-        //loadHistPosts();
+        followersTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(UserProfileActivity.this, UserFollowersActivity.class));
+                Intent intent = new Intent(getApplicationContext(), UserFollowersActivity.class);
+                intent.putExtra("hisUid", hisUid);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        followingsTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(UserProfileActivity.this, UserFollowingsActivity.class));
+                Intent intent = new Intent(getApplicationContext(), UserFollowingsActivity.class);
+                intent.putExtra("hisUid", hisUid);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setUserFollows(final TextView followersTv, final TextView followingsTv){
+        DatabaseReference followersRef = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(hisUid).child("Followers");
+        followersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    followersTv.setText("0 Followers");
+                } else {
+                    followersTv.setText(dataSnapshot.getChildrenCount() + " Followers");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference followingsRef = FirebaseDatabase.getInstance().getReference().child("Follows")
+                .child(hisUid).child("Followings");
+        followingsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    followingsTv.setText("0 Followings");
+                } else {
+                    followingsTv.setText(dataSnapshot.getChildrenCount() + " Followings");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setCurrentUserName(String uid) {

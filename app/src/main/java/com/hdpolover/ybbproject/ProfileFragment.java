@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
 
     //views from xml
     ImageView profileIv;
-    TextView nameTv, emailTv, phoneTv, usernameTv, jobTv, cityTv, countryTv, followersTv, followingsTv;
+    TextView nameTv, usernameTv, jobTv, cityTv, countryTv, followersTv, followingsTv;
     RecyclerView postsRecyclerView;
     Button messageBtn, followBtn, profileBtn;
 
@@ -106,9 +106,6 @@ public class ProfileFragment extends Fragment {
 
     //image picked will be the same in this uri
     Uri image_rui = null;
-
-    //for checking profile of cover photo
-    String profilePhoto;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -183,11 +180,17 @@ public class ProfileFragment extends Fragment {
                     String coutry = "" + ds.child("country").getValue();
 
                     //set data
-                    //set data
-                    nameTv.setText(name);
-//                    emailTv.setText(email);
-//                    phoneTv.setText(phone);
-                    usernameTv.setText(username);
+                    if (name.length() > 21) {
+                        nameTv.setText(name.substring(0, 21) + "...");
+                    } else {
+                        nameTv.setText(name);
+                    }
+
+                    if (username.length() > 21) {
+                        usernameTv.setText(username.substring(0, 21) + "...");
+                    } else {
+                        usernameTv.setText(username);
+                    }
                     jobTv.setText(job);
                     cityTv.setText(city);
                     countryTv.setText(coutry);
@@ -237,10 +240,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getActivity(), UserFollowingsActivity.class));
             }
         });
-
-        //postList = new ArrayList<>();
-
-        //loadMyPosts();
 
         return view;
     }

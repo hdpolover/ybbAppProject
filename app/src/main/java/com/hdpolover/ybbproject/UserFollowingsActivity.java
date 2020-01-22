@@ -29,7 +29,7 @@ public class UserFollowingsActivity extends AppCompatActivity {
 
     ActionBar actionBar;
 
-    String myUid;
+    String myUid, hisUid;
 
     RecyclerView recyclerView;
 
@@ -67,11 +67,20 @@ public class UserFollowingsActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        getFollowers();
+        //get myUid of clicked user
+        Intent intent = getIntent();
+        hisUid = intent.getStringExtra("hisUid");
+
+        if (hisUid.equals(myUid)) {
+            getFollowers(myUid);
+        } else {
+            getFollowers(hisUid);
+        }
+
     }
 
-    private void getFollowers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(myUid).child("Followings");
+    private void getFollowers(String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(uid).child("Followings");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
