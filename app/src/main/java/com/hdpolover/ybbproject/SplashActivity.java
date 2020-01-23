@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.landingPages.LandingPageActivity;
 import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.net.InetAddress;
@@ -70,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (isUser) {
                         //jump to dashboard activity after splash screen
                         //Log.e("is", isUser+"");
-                        Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, LandingPageActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
