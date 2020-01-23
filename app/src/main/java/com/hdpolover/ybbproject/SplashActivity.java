@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     private int loadingTime = 2500;
 
     boolean isUser;
+    String firstTime;
 
     ImageView ybbLogo;
 
@@ -68,17 +69,31 @@ public class SplashActivity extends AppCompatActivity {
                         //Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
-                    if (isUser) {
-                        //jump to dashboard activity after splash screen
-                        //Log.e("is", isUser+"");
-                        Intent intent = new Intent(SplashActivity.this, LandingPageActivity.class);
-                        startActivity(intent);
+                    try {
+                        SharedPreferences sp = getSharedPreferences("StatusLogin",MODE_PRIVATE);
+                        firstTime = sp.getString("firstTime","true");
+
+                    }catch (Exception e){
+                        firstTime = "true";
+                        //Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (firstTime.equals("true")) {
+                        startActivity(new Intent(SplashActivity.this, LandingPageActivity.class));
                         finish();
                     } else {
-                        //user not signed in
-                        Log.e("is", isUser+"");
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                        finish();
+                        if (isUser) {
+                            //jump to dashboard activity after splash screen
+                            //Log.e("is", isUser+"");
+                            Intent intent = new Intent(SplashActivity.this, DashboardActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            //user not signed in
+                            Log.e("is", isUser+"");
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                            finish();
+                        }
                     }
                 }
             }, loadingTime);

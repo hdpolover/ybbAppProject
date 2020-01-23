@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,7 @@ public class UserFollowersActivity extends AppCompatActivity {
     ActionBar actionBar;
 
     String myUid, hisUid;
+    TextView followersTv;
 
     RecyclerView recyclerView;
 
@@ -54,7 +56,7 @@ public class UserFollowersActivity extends AppCompatActivity {
 
         noFollows = findViewById(R.id.noFollows);
         nestedScrollView = findViewById(R.id.nestedScrollViewFollows);
-
+        followersTv = findViewById(R.id.followersTv);
 
         recyclerView = findViewById(R.id.userFollowersRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -69,16 +71,21 @@ public class UserFollowersActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        //get myUid of clicked user
-        Intent intent = getIntent();
-        hisUid = intent.getStringExtra("hisUid");
+        try {
+            //get myUid of clicked user
+            Intent intent = getIntent();
+            hisUid = intent.getStringExtra("hisUid");
 
-        if (hisUid.equals(myUid)) {
+            if (hisUid.equals(myUid)) {
+                getFollowers(myUid);
+                followersTv.setText("You have no followers yet");
+            } else {
+                getFollowers(hisUid);
+                followersTv.setText("This user has no followers yet");
+            }
+        } catch (Exception e) {
             getFollowers(myUid);
-        } else {
-            getFollowers(hisUid);
         }
-
     }
 
     private void getFollowers(String uid) {

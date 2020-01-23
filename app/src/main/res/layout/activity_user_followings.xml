@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserFollowingsActivity">
+    tools:context=".UserFollowingsActivity"
+    android:background="@color/colorWhite">
 
     <LinearLayout
         android:id="@+id/noFollows"
@@ -14,6 +15,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/followingsTv"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

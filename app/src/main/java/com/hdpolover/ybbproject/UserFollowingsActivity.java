@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +31,7 @@ public class UserFollowingsActivity extends AppCompatActivity {
     ActionBar actionBar;
 
     String myUid, hisUid;
+    TextView followingsTv;
 
     RecyclerView recyclerView;
 
@@ -53,6 +55,7 @@ public class UserFollowingsActivity extends AppCompatActivity {
 
         noFollows = findViewById(R.id.noFollows);
         nestedScrollView = findViewById(R.id.nestedScrollViewFollows);
+        followingsTv = findViewById(R.id.followingsTv);
 
         recyclerView = findViewById(R.id.userFollowingsRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -67,16 +70,21 @@ public class UserFollowingsActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-        //get myUid of clicked user
-        Intent intent = getIntent();
-        hisUid = intent.getStringExtra("hisUid");
+        try {
+            //get myUid of clicked user
+            Intent intent = getIntent();
+            hisUid = intent.getStringExtra("hisUid");
 
-        if (hisUid.equals(myUid)) {
+            if (hisUid.equals(myUid)) {
+                getFollowers(myUid);
+                followingsTv.setText("You have not followed anyone");
+            } else {
+                getFollowers(hisUid);
+                followingsTv.setText("This user has not followed anyone");
+            }
+        } catch (Exception e) {
             getFollowers(myUid);
-        } else {
-            getFollowers(hisUid);
         }
-
     }
 
     private void getFollowers(String uid) {

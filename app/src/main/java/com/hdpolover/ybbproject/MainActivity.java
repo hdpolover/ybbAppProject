@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("StatusLogin", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("isNew", "false");
+        editor.putString("firstTime", "false");
         editor.apply();
 
         //login button click

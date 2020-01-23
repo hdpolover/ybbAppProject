@@ -43,7 +43,6 @@ public class DashboardActivity extends AppCompatActivity {
     boolean doubleBackToExit = false;
 
     ActionBar actionBar;
-    Toolbar toolbar;
 
     String mUID;
 
