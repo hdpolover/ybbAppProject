@@ -30,10 +30,10 @@ public class LandingPageSliderAdapter extends PagerAdapter {
     };
 
     public String[] slide_headings = {
-            "Welcome to YBB",
-            "Contributing",
+            "Welcome to  YBB",
             "Collecting",
-            "Connecting"
+            "Connecting",
+            "Contributing"
     };
 
     public String[] slide_descs = {
