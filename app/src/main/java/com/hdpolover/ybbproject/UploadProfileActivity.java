@@ -51,7 +51,7 @@ public class UploadProfileActivity extends AppCompatActivity {
     String uid;
 
     ImageView profileIv;
-    Button skipBtn, finishBtn;
+    Button finishBtn;
 
     //permission constants
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -85,7 +85,6 @@ public class UploadProfileActivity extends AppCompatActivity {
         editor.apply();
 
         profileIv = findViewById(R.id.profileIv);
-        skipBtn = findViewById(R.id.skipBtn);
         finishBtn = findViewById(R.id.finishBtn);
 
         checkUserStatus();
@@ -100,15 +99,11 @@ public class UploadProfileActivity extends AppCompatActivity {
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadProfilePic();
-            }
-        });
-
-        skipBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UploadProfileActivity.this, DashboardActivity.class));
-                finish();
+                if (image_rui == null) {
+                    Toast.makeText(getApplicationContext(), "Please upload your profile picture so others can find you easily", Toast.LENGTH_LONG).show();
+                } else {
+                    uploadProfilePic();
+                }
             }
         });
     }

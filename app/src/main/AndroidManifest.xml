@@ -40,7 +40,7 @@
         <activity android:name=".UserFollowersActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".UploadProfileActivity" />
+        <activity android:name=".UploadProfileActivity" android:theme="@style/AppThemeNo" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".SettingsActivity" />

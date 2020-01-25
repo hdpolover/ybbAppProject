@@ -24,23 +24,23 @@ public class LandingPageSliderAdapter extends PagerAdapter {
 
     public int[] slide_images = {
         R.drawable.ybb_white_full,
-            R.drawable.landing1,
-            R.drawable.landing2,
-            R.drawable.landing3
+            R.drawable.connecting,
+            R.drawable.communicating,
+            R.drawable.contributing
     };
 
     public String[] slide_headings = {
-            "Welcome to  YBB",
-            "Collecting",
+            "Welcome to YBB",
             "Connecting",
+            "Communicating",
             "Contributing"
     };
 
-    public String[] slide_descs = {
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+     public String[] slide_descs = {
+            "A foundation that focuses on all instruments regarding development and empowerment of youth to prepare excellent future leaders",
+            "Finding global youths all over the world",
+            "Building strong international networking",
+            "Making real actions for the better future"
     };
 
     @Override
