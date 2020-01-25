@@ -102,19 +102,23 @@ public class EventDetailActivity  extends AppCompatActivity {
 
         showEventDetails();
 
-        if (joinStat.equals("true")) {
-            isJoined = true;
-            joinBtn.setText("JOINED");
+        if (uid.equals(myUid)) {
             joinBtn.setEnabled(false);
         } else {
-            joinBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    joinEvent();
-                    isJoined = true;
-                    joinBtn.setEnabled(false);
-                }
-            });
+            if (joinStat.equals("true")) {
+                isJoined = true;
+                joinBtn.setText("JOINED");
+                joinBtn.setEnabled(false);
+            } else {
+                joinBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        joinEvent();
+                        isJoined = true;
+                        joinBtn.setEnabled(false);
+                    }
+                });
+            }
         }
     }
 

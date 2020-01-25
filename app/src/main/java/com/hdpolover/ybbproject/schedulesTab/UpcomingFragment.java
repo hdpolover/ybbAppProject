@@ -129,6 +129,27 @@ public class UpcomingFragment extends Fragment {
         });
     }
 
+    public void getUserUpcomingEvents() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        if (ds1.getValue().toString().equals(myUid)) {
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
