@@ -122,6 +122,7 @@ public class SchedulesFragment extends Fragment {
         menu.findItem(R.id.action_settings).setVisible(false);
         menu.findItem(R.id.action_notif).setVisible(false);
         menu.findItem(R.id.action_more).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
         //search view to search post by post title/desc
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);

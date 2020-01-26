@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class EventDetailActivity  extends AppCompatActivity {
 
     ImageView eImageIv, eCreatorImageIv;
@@ -100,7 +99,7 @@ public class EventDetailActivity  extends AppCompatActivity {
         uid = intent.getStringExtra("uid");
         joinStat = intent.getStringExtra("isJoined");
 
-        showEventDetails();
+        showEventDetails(joinStat);
 
         if (uid.equals(myUid)) {
             joinBtn.setEnabled(false);
@@ -139,27 +138,10 @@ public class EventDetailActivity  extends AppCompatActivity {
 
                             join.setText("Quota left: " + eQuotaLeft);
                         }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private boolean checkCurrentlyJoined() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eId);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    if (ds.getKey().equals(myUid)) {
-                        isJoined = true;
                     } else {
-                        isJoined = false;
+                        eQuotaLeft = eQuota;
+
+                        join.setText("Quota left: " + eQuotaLeft);
                     }
                 }
             }
@@ -169,8 +151,6 @@ public class EventDetailActivity  extends AppCompatActivity {
 
             }
         });
-
-        return isJoined;
     }
 
     private void joinEvent(){
@@ -232,7 +212,7 @@ public class EventDetailActivity  extends AppCompatActivity {
         });
     }
 
-    private void showEventDetails() {
+    private void showEventDetails(final String join) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(uid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -292,13 +272,13 @@ public class EventDetailActivity  extends AppCompatActivity {
                             getEventQuotaLeft(joinBtn);
                         } else {
                             if (eQuotaLeft <= eQuota) {
-                                if (joinStat.equals("true")) {
+                                if (join.equals("true")) {
                                     joinBtn.setText("JOINED");
                                 } else {
                                     joinBtn.setText("JOIN");
                                 }
                             } else {
-                                if (joinStat.equals("true")) {
+                                if (join.equals("true")) {
                                     joinBtn.setText("JOINED");
                                 } else {
                                     joinBtn.setText("QUOTA FULL");

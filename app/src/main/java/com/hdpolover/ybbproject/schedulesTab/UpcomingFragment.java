@@ -1,6 +1,7 @@
 package com.hdpolover.ybbproject.schedulesTab;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class UpcomingFragment extends Fragment {
 
     String myUid;
 
+    List<String> upcomingIdList;
+
     public UpcomingFragment() {
 
     }
@@ -58,6 +61,7 @@ public class UpcomingFragment extends Fragment {
 
         //init event list
         eventList = new ArrayList<>();
+        upcomingIdList = new ArrayList<>();
 
         //recycler view
         recyclerView = view.findViewById(R.id.eventUpcomingRecyclerView);
@@ -74,6 +78,7 @@ public class UpcomingFragment extends Fragment {
         recyclerView.setAdapter(adapterEvent);
 
         loadEvents();
+        getUserUpcomingEventIds();
 
         return view;
     }
@@ -95,24 +100,24 @@ public class UpcomingFragment extends Fragment {
                             if (modelEvent.geteStatus().equals("upcoming")) {
                                     eventList.add(modelEvent);
                             }
-
-                            //adapter
-                            adapterEvent = new AdapterEvent(getActivity(), eventList);
-
-                            if (eventList.size() == 0) {
-                                noUpcomingLayout.setVisibility(View.VISIBLE);
-                            } else {
-                                noUpcomingLayout.setVisibility(View.GONE);
-                                //set adapter to recycle
-                                recyclerView.setAdapter(adapterEvent);
-                                Collections.reverse(eventList);
-                                adapterEvent.notifyDataSetChanged();
-                            }
                         }
                     } else {
                         if (eventList.size() == 0) {
                             noUpcomingLayout.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    //adapter
+                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+
+                    if (eventList.size() == 0) {
+                        noUpcomingLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noUpcomingLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
                     }
 
                     shimmerFrameLayout.stopShimmer();
@@ -129,16 +134,61 @@ public class UpcomingFragment extends Fragment {
         });
     }
 
-    public void getUserUpcomingEvents() {
+    public void getUserUpcomingEventIds() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                upcomingIdList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        if (ds1.getKey().equals(myUid)) {
+                            upcomingIdList.add(ds.getKey());
+                        }
+                    }
+                }
+
+                showUpcomingEvents();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void showUpcomingEvents() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     for (DataSnapshot ds1: ds.getChildren()) {
-                        if (ds1.getValue().toString().equals(myUid)) {
+                        ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
 
+                        boolean isJoined = false;
+                        for (String id : upcomingIdList) {
+                            if (modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("upcoming")) {
+                                isJoined = true;
+                            }
                         }
+                        if (isJoined) {
+                            eventList.add(modelEvent);
+                        }
+                    }
+
+                    //adapter
+                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+
+                    if (eventList.size() == 0) {
+                        noUpcomingLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noUpcomingLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
                     }
                 }
             }
@@ -149,6 +199,7 @@ public class UpcomingFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onResume() {

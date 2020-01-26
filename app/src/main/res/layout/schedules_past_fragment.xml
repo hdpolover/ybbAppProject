@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="150dp"
-                android:text="No upcoming events. Join one. "
+                android:text="No past events. Join one. "
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textSize="20sp"

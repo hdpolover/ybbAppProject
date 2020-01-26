@@ -1,5 +1,6 @@
 package com.hdpolover.ybbproject.adapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -36,7 +37,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
     Context context;
     List<ModelEvent> eventList;
     String myUid;
-    boolean isJoined;
 
     public AdapterEvent(Context context, List<ModelEvent> eventList) {
         this.context = context;
@@ -97,36 +97,37 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkCurrentlyJoined(eId)) {
-                    //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                if (uid.equals(myUid)) {
                     Intent intent = new Intent(context, EventDetailActivity.class);
                     intent.putExtra("eId", eId);
                     intent.putExtra("uid", uid);
                     intent.putExtra("isJoined", "true");
                     context.startActivity(intent);
                 } else {
-                    //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, EventDetailActivity.class);
-                    intent.putExtra("eId", eId);
-                    intent.putExtra("uid", uid);
-                    intent.putExtra("isJoined", "false");
-                    context.startActivity(intent);
+                    checkCurrentlyJoined(eId, uid);
                 }
             }
         });
     }
 
-    private boolean checkCurrentlyJoined(String e) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(e);
+    private void checkCurrentlyJoined(final String eventId, final String userId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants").child(eventId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean isEventJoined = false;
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     if (ds.getKey().equals(myUid)) {
-                        isJoined = true;
-                    } else {
-                        isJoined = false;
+                        isEventJoined = true;
                     }
+                }
+
+                if (isEventJoined) {
+                    Intent intent = new Intent(context, EventDetailActivity.class);
+                    intent.putExtra("eId", eventId);
+                    intent.putExtra("uid", userId);
+                    intent.putExtra("isJoined", "true");
+                    context.startActivity(intent);
                 }
             }
 
@@ -135,8 +136,6 @@ public class AdapterEvent extends RecyclerView.Adapter<AdapterEvent.MyHolderEven
 
             }
         });
-
-        return isJoined;
     }
 
     @Override

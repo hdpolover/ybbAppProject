@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,9 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hdpolover.ybbproject.landingPages.LandingPageActivity;
+import com.hdpolover.ybbproject.models.ModelEvent;
 import com.hdpolover.ybbproject.models.ModelUser;
 
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
@@ -55,6 +59,8 @@ public class SplashActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.splashanim);
         ybbLogo.startAnimation(animation);
 
+        checkEventStatus();
+
         if (isNetworkConnected() || isInternetAvailable()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -66,7 +72,6 @@ public class SplashActivity extends AppCompatActivity {
 
                     }catch (Exception e){
                         isUser = false;
-                        //Toast.makeText(SplashActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     try {
@@ -90,7 +95,6 @@ public class SplashActivity extends AppCompatActivity {
                             finish();
                         } else {
                             //user not signed in
-                            Log.e("is", isUser+"");
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
                             finish();
                         }
@@ -119,5 +123,40 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void checkEventStatus() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
+
+                        long eventStartDate = Long.parseLong(modelEvent.geteStart());
+                        long timeStamp = Long.parseLong(String.valueOf(System.currentTimeMillis()));
+
+                        if (timeStamp > eventStartDate) {
+                            updateEventStatus(modelEvent.geteId(), ds.getKey());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void updateEventStatus(String eId, String uid) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //put post info
+        hashMap.put("eStatus", "past");
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Events");
+        ref.child(uid).child(eId).updateChildren(hashMap);
     }
 }

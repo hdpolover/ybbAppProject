@@ -327,6 +327,7 @@ public class MessagesFragment extends Fragment {
         menu.findItem(R.id.action_settings).setVisible(false);
         menu.findItem(R.id.action_notif).setVisible(false);
         menu.findItem(R.id.action_more).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
 
         //searchView
         MenuItem item = menu.findItem(R.id.action_search);

@@ -40,6 +40,8 @@ public class PastFragment extends Fragment {
 
     String myUid;
 
+    List<String> pastIdList;
+
     public PastFragment() {
 
     }
@@ -58,6 +60,7 @@ public class PastFragment extends Fragment {
 
         //init event list
         eventList = new ArrayList<>();
+        pastIdList = new ArrayList<>();
 
         //recycler view
         recyclerView = view.findViewById(R.id.eventPastRecyclerView);
@@ -73,8 +76,8 @@ public class PastFragment extends Fragment {
         //set adapter to recycle
         recyclerView.setAdapter(adapterEvent);
 
-
         loadEvents();
+        getUserPastEventIds();
 
         return view;
     }
@@ -96,23 +99,23 @@ public class PastFragment extends Fragment {
                             if (modelEvent.geteStatus().equals("past")) {
                                 eventList.add(modelEvent);
                             }
-
-                            //adapter
-                            adapterEvent = new AdapterEvent(getActivity(), eventList);
-
-                            if (eventList.size() == 0) {
-                                noPastLayout.setVisibility(View.VISIBLE);
-                            } else {
-                                //set adapter to recycle
-                                recyclerView.setAdapter(adapterEvent);
-                                Collections.reverse(eventList);
-                                adapterEvent.notifyDataSetChanged();
-                            }
                         }
                     } else {
                         if (eventList.size() == 0) {
                             noPastLayout.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    //adapter
+                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+
+                    if (eventList.size() == 0) {
+                        noPastLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
                     }
 
                     shimmerFrameLayout.stopShimmer();
@@ -124,6 +127,72 @@ public class PastFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //in case of errors
                 Toast.makeText(getActivity(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getUserPastEventIds() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("EventParticipants");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pastIdList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        if (ds1.getKey().equals(myUid)) {
+                            pastIdList.add(ds.getKey());
+                        }
+                    }
+                }
+
+                showPastEvents();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void showPastEvents() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds1: ds.getChildren()) {
+                        ModelEvent modelEvent = ds1.getValue(ModelEvent.class);
+
+                        boolean isJoined = false;
+                        for (String id : pastIdList) {
+                            if (modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("past")) {
+                                isJoined = true;
+                            }
+                        }
+                        if (isJoined) {
+                            eventList.add(modelEvent);
+                        }
+                    }
+
+                    //adapter
+                    adapterEvent = new AdapterEvent(getActivity(), eventList);
+
+                    if (eventList.size() == 0) {
+                        noPastLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        noPastLayout.setVisibility(View.GONE);
+                        //set adapter to recycle
+                        recyclerView.setAdapter(adapterEvent);
+                        Collections.reverse(eventList);
+                        adapterEvent.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
