@@ -24,7 +24,7 @@ android {
         applicationId "com.hdpolover.ybbproject"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 12
+        versionCode 14
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

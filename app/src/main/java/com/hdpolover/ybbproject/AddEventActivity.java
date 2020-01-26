@@ -58,12 +58,14 @@ import org.ocpsoft.prettytime.format.SimpleTimeFormat;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.FloatBuffer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -367,12 +369,14 @@ public class AddEventActivity extends AppCompatActivity {
                         eStartEt.setText(prettyDateTime);
 
                         //convert start date time to milis
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
-                        LocalDateTime localDate = LocalDateTime.parse(startDateTime, formatter);
-                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+//                        LocalDateTime localDate = LocalDateTime.parse(startDateTime, formatter);
+//                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+                        long timeInMilliseconds = setToMilliseconds(startDateTime);
                         finalEventStart = timeInMilliseconds + "";
+                        Log.e("s", finalEventStart);
                     }
-                }, HOUR, MINUTE, DateFormat.is24HourFormat(AddEventActivity.this));
+                }, HOUR, MINUTE, false);
                 timePickerDialog.show();
             }
         }, YEAR, MONTH, DATE);
@@ -380,6 +384,24 @@ public class AddEventActivity extends AppCompatActivity {
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
         datePickerDialog.show();
+    }
+
+    public long setToMilliseconds(String date)
+    {
+        //String date_ = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyy hh:mm aa");
+        try
+        {
+            Date mDate = sdf.parse(date);
+            long timeInMilliseconds = mDate.getTime();
+            return timeInMilliseconds;
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
     private void handleEndDateTime() {
@@ -415,9 +437,10 @@ public class AddEventActivity extends AppCompatActivity {
                         String endDateTime = endDate + " " + endTime;
 
                         //convert start date time to milis
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
-                        LocalDateTime localDate = LocalDateTime.parse(endDateTime, formatter);
-                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+//                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+//                        LocalDateTime localDate = LocalDateTime.parse(endDateTime, formatter);
+//                        long timeInMilliseconds = localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli();
+                        long timeInMilliseconds = setToMilliseconds(endDateTime);
                         finalEventEnd = timeInMilliseconds + "";
 
                         try {
@@ -434,7 +457,7 @@ public class AddEventActivity extends AppCompatActivity {
                                 " at" + endDateTime.substring(14);
                         eEndEt.setText(prettyDateTime);
                     }
-                }, HOUR, MINUTE, DateFormat.is24HourFormat(AddEventActivity.this));
+                }, HOUR, MINUTE, false);
                 timePickerDialog.show();
             }
         }, YEAR, MONTH, DATE);
@@ -448,7 +471,9 @@ public class AddEventActivity extends AppCompatActivity {
         List<String> category = new ArrayList<String>();
         category.add("Seminar");
         category.add("Discussion");
-        category.add("Online Sharing");
+        category.add("Sharing session");
+        category.add("Talk show");
+        category.add("Meet and greet");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddEventActivity.this,android.R.layout.simple_spinner_dropdown_item,category);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

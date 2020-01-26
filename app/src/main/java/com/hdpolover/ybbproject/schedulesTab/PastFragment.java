@@ -166,7 +166,7 @@ public class PastFragment extends Fragment {
 
                         boolean isJoined = false;
                         for (String id : pastIdList) {
-                            if (modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("past")) {
+                            if (!modelEvent.getUid().equals(myUid) && modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("past")) {
                                 isJoined = true;
                             }
                         }

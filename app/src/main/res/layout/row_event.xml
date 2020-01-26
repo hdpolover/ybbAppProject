@@ -66,7 +66,6 @@
                             android:layout_marginTop="3dp"
                             android:layout_marginBottom="5dp"
                             android:autoLink="all"
-                            android:gravity="center"
                             android:text="Desember 20, 2019" />
                     </LinearLayout>
 
@@ -87,7 +86,6 @@
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_marginBottom="5dp"
                         android:text="Speaker"
                         android:autoLink="all"/>
@@ -117,7 +115,6 @@
                         android:layout_marginTop="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_marginBottom="5dp"
                         android:text="12.30 PM"
                         android:autoLink="all"/>
@@ -134,16 +131,14 @@
                         android:layout_marginRight="8dp"
                         android:src="@drawable/ic_folder"/>
 
-                    <TextView
-                        android:id="@+id/eCategoryTv"
-                        android:layout_marginTop="3dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginBottom="5dp"
-                        android:text="Category"
-                        android:autoLink="all
-"/>
+                        <TextView
+                            android:id="@+id/eCategoryTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:autoLink="all"
+                            android:text="Category" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -166,11 +161,11 @@
 
                         <TextView
                             android:id="@+id/eLocationTv"
-                            android:layout_marginTop="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Malang"
-                            android:autoLink="all"/>
+                            android:layout_marginTop="3dp"
+                            android:autoLink="all"
+                            android:text="Malang" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -190,7 +185,6 @@
                             android:layout_marginTop="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:text="Confirm"
                             android:autoLink="all"/>
 

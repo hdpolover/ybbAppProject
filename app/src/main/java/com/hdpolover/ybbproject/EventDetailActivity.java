@@ -256,8 +256,8 @@ public class EventDetailActivity  extends AppCompatActivity {
 
                         //set Start and end date
                         SocialTimeConverter stc = new SocialTimeConverter();
-                        eStartTv.setText(stc.getEventDateDetail(Long.parseLong(eStart)));
-                        eEndTv.setText(stc.getEventDateDetail(Long.parseLong(eEnd)));
+                        eStartTv.setText(stc.getEventStartDate(Long.parseLong(eStart)) + " at " + stc.getEventStartTime(Long.parseLong(eStart)));
+                        eEndTv.setText(stc.getEventStartDate(Long.parseLong(eEnd)) + " at " + stc.getEventStartTime(Long.parseLong(eEnd)));
 
                         //set Quota
                         eQuota = Integer.parseInt(quota);

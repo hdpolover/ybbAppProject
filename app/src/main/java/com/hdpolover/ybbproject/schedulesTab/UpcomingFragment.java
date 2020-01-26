@@ -169,7 +169,7 @@ public class UpcomingFragment extends Fragment {
 
                         boolean isJoined = false;
                         for (String id : upcomingIdList) {
-                            if (modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("upcoming")) {
+                            if (!modelEvent.getUid().equals(myUid) && modelEvent.geteId().equals(id) && modelEvent.geteStatus().equals("upcoming")) {
                                 isJoined = true;
                             }
                         }
