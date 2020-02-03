@@ -177,23 +177,38 @@ public class ProfileFragment extends Fragment {
                     String username = "@" + ds.child("username").getValue();
                     String job = "" + ds.child("job").getValue();
                     String city = "" + ds.child("city").getValue();
-                    String coutry = "" + ds.child("country").getValue();
+                    String country = "" + ds.child("country").getValue();
 
                     //set data
-                    if (name.length() > 21) {
-                        nameTv.setText(name.substring(0, 21) + "...");
+                    if (name.length() > 18) {
+                        nameTv.setText(name.substring(0, 18) + "...");
                     } else {
                         nameTv.setText(name);
                     }
 
-                    if (username.length() > 21) {
-                        usernameTv.setText(username.substring(0, 21) + "...");
+                    if (username.length() > 20) {
+                        usernameTv.setText(username.substring(0, 20) + "...");
                     } else {
                         usernameTv.setText(username);
                     }
-                    jobTv.setText(job);
-                    cityTv.setText(city);
-                    countryTv.setText(coutry);
+
+                    if (city.length() > 15) {
+                        cityTv.setText(city.substring(0, 15) + "...");
+                    } else {
+                        cityTv.setText(city);
+                    }
+
+                    if (country.length() > 15) {
+                        countryTv.setText(country.substring(0, 15) + "...");
+                    } else {
+                        countryTv.setText(country);
+                    }
+
+                    if (job.length() > 20) {
+                        jobTv.setText(job.substring(0, 20) + "...");
+                    } else {
+                        jobTv.setText(job);
+                    }
 
                     try {
                         //if image is received then set
@@ -489,82 +504,6 @@ public class ProfileFragment extends Fragment {
             pd.dismiss();
             Toast.makeText(getActivity(), "An error occured... ", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void loadMyPosts() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    //add to list
-                    postList.add(myPosts);
-
-                    //adapter
-                    adapterPost = new AdapterPost(getActivity(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void searchMyPosts(final String searchQuery) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        //show newest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recyclerview
-        postsRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = firebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("myUid").equalTo(uid);
-        //get all data
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    if (myPosts.getpDesc().toLowerCase().contains(searchQuery.toLowerCase())) {
-                        //add to list
-                        postList.add(myPosts);
-                    }
-
-                    //adapter
-                    adapterPost = new AdapterPost(getActivity(), postList);
-                    //set this adapter to recyclerview
-                    postsRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(getActivity(), "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void checkUserStatus() {

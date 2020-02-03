@@ -39,7 +39,7 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
  */
 public class DashboardTab extends Fragment {
 
-    TextView emailTv, phoneTv, bioTv, educationTv, interestTv, birthDateTv;
+    TextView emailTv, phoneTv, bioTv, educationTv, interestTv, birthDateTv, livingInTv, fromTv, occupationTv;
 
     String myUid;
 
@@ -60,6 +60,9 @@ public class DashboardTab extends Fragment {
         phoneTv = view.findViewById(R.id.phoneTv);
         interestTv = view.findViewById(R.id.interestTv);
         birthDateTv = view.findViewById(R.id.birthDateTv);
+        livingInTv = view.findViewById(R.id.livingInTv);
+        fromTv = view.findViewById(R.id.fromTv);
+        occupationTv = view.findViewById(R.id.occupationTv);
 
         checkUserStatus();
 
@@ -83,6 +86,28 @@ public class DashboardTab extends Fragment {
                     phoneTv.setText("" + ds.child("phone").getValue());
                     interestTv.setText("" + ds.child("interest").getValue());
                     birthDateTv.setText("" + ds.child("birthDate").getValue());
+
+                    String job = "" + ds.child("job").getValue();
+                    occupationTv.setText(job);
+
+                    String city = "" + ds.child("city").getValue();
+                    String country = "" + ds.child("country").getValue();
+                    String cityFrom = "" + ds.child("cityFrom").getValue();
+                    String countryFrom = "" + ds.child("countryFrom").getValue();
+
+                    if (city.isEmpty() || country.isEmpty()) {
+                        livingInTv.setText("--, --");
+                    } else {
+                        String livingIn = city + ", " + country;
+                        livingInTv.setText(livingIn);
+                    }
+
+                    if (cityFrom.isEmpty() || countryFrom.isEmpty()) {
+                        fromTv.setText("--, --");
+                    }  else {
+                        String from = cityFrom + ", " + countryFrom;
+                        fromTv.setText(from);
+                    }
                 }
             }
 

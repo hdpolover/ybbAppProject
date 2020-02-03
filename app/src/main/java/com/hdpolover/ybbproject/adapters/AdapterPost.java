@@ -325,7 +325,11 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 }
 
                 String name = user.getName();
-                username.setText(name);
+                if (name.length() > 30) {
+                    username.setText(name.substring(0, 27) + "...");
+                } else {
+                    username.setText(name);
+                }
             }
 
             @Override

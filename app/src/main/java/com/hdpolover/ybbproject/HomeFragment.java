@@ -352,22 +352,26 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 peopleList.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    ModelUser modelUser = ds.getValue(ModelUser.class);
+                    try {
+                        ModelUser modelUser = ds.getValue(ModelUser.class);
 
-                    if (!modelUser.getUid().equals(myUid)) {
-                        if (idList.size() == 0) {
-                            peopleList.add(modelUser);
-                        } else {
-                            boolean isFollowed = true;
-                            for (String id : idList) {
-                                if (modelUser.getUid().equals(id)) {
-                                    isFollowed = false;
+                        if (!modelUser.getUid().equals(myUid)) {
+                            if (idList.size() == 0) {
+                                peopleList.add(modelUser);
+                            } else {
+                                boolean isFollowed = true;
+                                for (String id : idList) {
+                                    if (modelUser.getUid().equals(id)) {
+                                        isFollowed = false;
+                                    }
+                                }
+                                if (isFollowed) {
+                                    peopleList.add(modelUser);
                                 }
                             }
-                            if (isFollowed) {
-                                peopleList.add(modelUser);
-                            }
                         }
+                    } catch (Exception e) {
+                        Log.e("invalid", "user not found");
                     }
 
                     //adapter

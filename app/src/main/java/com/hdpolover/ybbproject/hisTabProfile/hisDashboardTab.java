@@ -24,7 +24,7 @@ import com.hdpolover.ybbproject.R;
 public class hisDashboardTab extends Fragment {
 
 
-    TextView emailTv, phoneTv, bioTv, educationTv, interestTv, birthDateTv;
+    TextView emailTv, phoneTv, bioTv, educationTv, interestTv, birthDateTv, occupationTv, livingInTv, fromTv;
 
     String hisUid;
 
@@ -43,6 +43,9 @@ public class hisDashboardTab extends Fragment {
         phoneTv = view.findViewById(R.id.phoneTv);
         interestTv = view.findViewById(R.id.interestTv);
         birthDateTv = view.findViewById(R.id.birthDateTv);
+        occupationTv = view.findViewById(R.id.occupationTv);
+        livingInTv = view.findViewById(R.id.livingInTv);
+        fromTv = view.findViewById(R.id.fromTv);
 
         //get myUid of clicked user
         Intent intent = getActivity().getIntent();
@@ -69,6 +72,28 @@ public class hisDashboardTab extends Fragment {
                     phoneTv.setText("" + ds.child("phone").getValue());
                     interestTv.setText("" + ds.child("interest").getValue());
                     birthDateTv.setText("" + ds.child("birthDate").getValue());
+
+                    String job = "" + ds.child("job").getValue();
+                    occupationTv.setText(job);
+
+                    String city = "" + ds.child("city").getValue();
+                    String country = "" + ds.child("country").getValue();
+                    String cityFrom = "" + ds.child("cityFrom").getValue();
+                    String countryFrom = "" + ds.child("countryFrom").getValue();
+
+                    if (city.isEmpty() || country.isEmpty()) {
+                        livingInTv.setText("--, --");
+                    } else {
+                        String livingIn = city + ", " + country;
+                        livingInTv.setText(livingIn);
+                    }
+
+                    if (cityFrom.isEmpty() || countryFrom.isEmpty()) {
+                        fromTv.setText("--, --");
+                    }  else {
+                        String from = cityFrom + ", " + countryFrom;
+                        fromTv.setText(from);
+                    }
                 }
             }
 

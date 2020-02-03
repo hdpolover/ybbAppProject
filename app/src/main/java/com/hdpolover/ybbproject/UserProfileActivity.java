@@ -140,20 +140,35 @@ public class UserProfileActivity extends AppCompatActivity {
                     String country = "" + ds.child("country").getValue();
 
                     //set data
-                    if (name.length() > 21) {
-                        nameTv.setText(name.substring(0, 21) + "...");
+                    if (name.length() > 18) {
+                        nameTv.setText(name.substring(0, 18) + "...");
                     } else {
                         nameTv.setText(name);
                     }
 
-                    if (username.length() > 21) {
-                        usernameTv.setText(username.substring(0, 21) + "...");
+                    if (username.length() > 20) {
+                        usernameTv.setText(username.substring(0, 20) + "...");
                     } else {
                         usernameTv.setText(username);
                     }
-                    jobTv.setText(job);
-                    cityTv.setText(city);
-                    countryTv.setText(country);
+
+                    if (city.length() > 15) {
+                        cityTv.setText(city.substring(0, 15) + "...");
+                    } else {
+                        cityTv.setText(city);
+                    }
+
+                    if (country.length() > 15) {
+                        countryTv.setText(country.substring(0, 15) + "...");
+                    } else {
+                        countryTv.setText(country);
+                    }
+
+                    if (job.length() > 20) {
+                        jobTv.setText(job.substring(0, 20) + "...");
+                    } else {
+                        jobTv.setText(job);
+                    }
 
                     try {
                         //if image is received then set
