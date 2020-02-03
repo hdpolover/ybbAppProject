@@ -140,8 +140,8 @@ public class UserProfileActivity extends AppCompatActivity {
                     String country = "" + ds.child("country").getValue();
 
                     //set data
-                    if (name.length() > 18) {
-                        nameTv.setText(name.substring(0, 18) + "...");
+                    if (name.length() > 16) {
+                        nameTv.setText(name.substring(0, 16) + "...");
                     } else {
                         nameTv.setText(name);
                     }
