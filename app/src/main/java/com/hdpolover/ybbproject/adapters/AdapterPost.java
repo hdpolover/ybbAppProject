@@ -123,8 +123,16 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         //this is to get the user data
         getUserData(myHolder.uPictureIv, myHolder.uNameTv, hisUid);
 
-        //set data
-        myHolder.pDescTv.setText(pDesc);
+        if (pDesc.length() > 450) {
+            //set data
+            myHolder.pDescTv.setText(pDesc.substring(0, 450) + "...");
+            myHolder.readmoreTv.setVisibility(View.VISIBLE);
+        } else {
+            //set data
+            myHolder.pDescTv.setText(pDesc);
+            myHolder.readmoreTv.setVisibility(View.GONE);
+        }
+
 
         //set post image
         //if no image then hide the imageview
@@ -666,7 +674,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
     class MyHolder extends RecyclerView.ViewHolder {
         //view from row_post.xml
         ImageView uPictureIv, pImageIv;
-        TextView uNameTv, pTimeTv, pDescTv;
+        TextView uNameTv, pTimeTv, pDescTv, readmoreTv;
         ImageButton moreBtn;
         LinearLayout profileLayout;
         ImageView upvoteIv, commentIv;
@@ -692,6 +700,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             commentIv = itemView.findViewById(R.id.commentIv);
             upvoteTv = itemView.findViewById(R.id.upvoteTv);
             commentTv = itemView.findViewById(R.id.commentTv);
+            readmoreTv = itemView.findViewById(R.id.readmoreTv);
 
             postCard = itemView.findViewById(R.id.postCard);
 

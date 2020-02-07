@@ -72,11 +72,20 @@
                 android:layout_height="wrap_content"
                 android:text="Description"
                 android:layout_marginTop="7dp"
-                android:layout_marginBottom="7dp"
                 android:textColor="@color/colorBlack"
                 android:autoLink="all"/>
 
+            <TextView
+                android:id="@+id/readmoreTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read more"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"/>
+
             <ImageView
+                android:layout_marginTop="7dp"
                 android:id="@+id/pImageIv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
