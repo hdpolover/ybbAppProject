@@ -24,8 +24,8 @@ android {
         applicationId "com.hdpolover.ybbproject"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 15
-        versionName "1.0.0"
+        versionCode 16
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         signingConfig signingConfigs.debug
