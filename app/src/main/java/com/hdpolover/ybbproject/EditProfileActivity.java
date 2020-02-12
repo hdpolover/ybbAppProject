@@ -200,7 +200,12 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usernameList.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    try {
                         usernameList.add("" + ds.child("username").getValue().toString());
+                    } catch (Exception e) {
+
+                    }
+
                 }
             }
 
