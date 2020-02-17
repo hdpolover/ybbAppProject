@@ -197,7 +197,7 @@ public class HomeFragment extends Fragment {
         chips.add(chip6);
         chips.add(chip7);
 
-        final String[] chipContents = {"All", "Followings", "Istanbul", "IYS2020", "Winter", "Museum", "Kota"};
+        final String[] chipContents = {"All", "Followings", "Program", "Scholarship", "Internship", "Istanbul", "Kota"};
 
         for (int i = 0; i < chips.size(); i++) {
             chips.get(i).setText(chipContents[i]);
@@ -333,6 +333,7 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     idList.add(snapshot.getKey());
                 }
+
                 showPeople();
             }
 
@@ -366,7 +367,9 @@ public class HomeFragment extends Fragment {
                                     }
                                 }
                                 if (isFollowed) {
-                                    peopleList.add(modelUser);
+                                    if (peopleList.size() <= 15) {
+                                        peopleList.add(modelUser);
+                                    }
                                 }
                             }
                         }

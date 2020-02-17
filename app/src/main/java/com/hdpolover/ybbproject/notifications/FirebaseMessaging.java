@@ -53,6 +53,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
         String notifCategory = remoteMessage.getData().get("notifCategory");
         String postId = remoteMessage.getData().get("postId");
+        String sent = remoteMessage.getData().get("sent");
 
         if (notifCategory.equals("0")) {
             RemoteMessage.Notification notification = remoteMessage.getNotification();
@@ -85,7 +86,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
             Intent intent = new Intent(this, PostDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("uid", user);
+            bundle.putString("uid", sent);
             bundle.putString("postId", postId);
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -142,6 +143,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
         String notifCategory = remoteMessage.getData().get("notifCategory");
         String postId = remoteMessage.getData().get("postId");
+        String sent = remoteMessage.getData().get("sent");
 
         if (notifCategory.equals("0")) {
             RemoteMessage.Notification notification = remoteMessage.getNotification();
@@ -169,7 +171,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             int i = Integer.parseInt(user.replaceAll("[\\D]", ""));
             Intent intent = new Intent(this, PostDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("uid", user);
+            bundle.putString("uid", sent);
             bundle.putString("postId", postId);
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

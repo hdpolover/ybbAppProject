@@ -3,10 +3,15 @@ package com.hdpolover.ybbproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -31,6 +36,10 @@ import com.hdpolover.ybbproject.landingPages.LandingPageActivity;
 import com.hdpolover.ybbproject.models.ModelEvent;
 import com.hdpolover.ybbproject.models.ModelUser;
 
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +71,8 @@ public class SplashActivity extends AppCompatActivity {
         checkEventStatus();
 
         if (isNetworkConnected() || isInternetAvailable()) {
+            //forceUpdate();
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -158,5 +169,70 @@ public class SplashActivity extends AppCompatActivity {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Events");
         ref.child(uid).child(eId).updateChildren(hashMap);
+    }
+
+    public void forceUpdate(){
+        PackageManager packageManager = this.getPackageManager();
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo =packageManager.getPackageInfo(getPackageName(),0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String currentVersion = packageInfo.versionName;
+        new ForceUpdateAsync(currentVersion,SplashActivity.this).execute();
+    }
+
+    public class ForceUpdateAsync extends AsyncTask<String, String, JSONObject> {
+
+        private String latestVersion;
+        private String currentVersion;
+        private Context context;
+
+        public ForceUpdateAsync(String currentVersion, Context context){
+            this.currentVersion = currentVersion;
+            this.context = context;
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            try {
+                latestVersion = Jsoup.connect("https://play.google.com/store/apps/details?id=" + context.getPackageName()+ "&hl=en")
+                        .timeout(30000)
+                        .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                        .referrer("http://www.google.com")
+                        .get()
+                        .select("div.hAyfc:nth-child(3) > span:nth-child(2) > div:nth-child(1) > span:nth-child(1)")
+                        .first()
+                        .ownText();
+                Log.e("latestversion","---"+latestVersion);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return new JSONObject();
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            if(latestVersion!=null){
+                if(!currentVersion.equalsIgnoreCase(latestVersion)){
+                    // Toast.makeText(context,"update is available.",Toast.LENGTH_LONG).show();
+                    if(!(context instanceof SplashActivity)) {
+                        if(!((Activity)context).isFinishing()){
+                            showForceUpdateDialog();
+                        }
+                    }
+                }
+            }
+            super.onPostExecute(jsonObject);
+        }
+
+        public void showForceUpdateDialog(){
+
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName())));
+        }
+
     }
 }

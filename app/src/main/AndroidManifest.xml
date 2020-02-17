@@ -24,8 +24,11 @@
         android:roundIcon="@drawable/ybb_black_cropped"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".landingPages.LandingPageActivity"
-            android:theme="@style/AppThemeNo"/>
+        <activity android:name=".PeopleActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".landingPages.LandingPageActivity"
+            android:theme="@style/AppThemeNo" />
         <activity android:name=".SettingAboutActivity" />
         <activity android:name=".HelpCenterActivity" />
         <activity android:name=".WebviewSettingActivity" />
@@ -40,7 +43,9 @@
         <activity android:name=".UserFollowersActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".NotificationActivity" />
-        <activity android:name=".UploadProfileActivity" android:theme="@style/AppThemeNo" />
+        <activity
+            android:name=".UploadProfileActivity"
+            android:theme="@style/AppThemeNo" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".AddEventActivity" />
         <activity android:name=".SettingsActivity" />
