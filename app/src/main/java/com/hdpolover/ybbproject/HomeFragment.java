@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
     ShimmerFrameLayout shimmerFrameLayoutPost;
     LinearLayout noPostHomeLayout;
     LinearLayout verifiedAccountLayout;
+    LinearLayout seeAllLayout;
 
     Chip chip1, chip2, chip3, chip4, chip5, chip6, chip7;
     Chip activeChip;
@@ -106,6 +107,7 @@ public class HomeFragment extends Fragment {
         shimmerFrameLayoutPeople = view.findViewById(R.id.shimmerFrameLayoutPeople);
         shimmerFrameLayoutPost = view.findViewById(R.id.shimmerFrameLayoutPost);
         noPostHomeLayout = view.findViewById(R.id.noPostHomeLayout);
+        seeAllLayout = view.findViewById(R.id.seeAllLayout);
 
         //hide layouts on create
         noPostHomeLayout.setVisibility(View.GONE);
@@ -169,6 +171,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), AddPostActivity.class));
+            }
+        });
+
+        seeAllLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), PeopleActivity.class));
             }
         });
 

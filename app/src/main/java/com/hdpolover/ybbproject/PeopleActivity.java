@@ -1,5 +1,6 @@
 package com.hdpolover.ybbproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hdpolover.ybbproject.adapters.AdapterPeople;
+import com.hdpolover.ybbproject.adapters.AdapterPeopleSuggestion;
 import com.hdpolover.ybbproject.adapters.AdapterPostUpvoter;
 import com.hdpolover.ybbproject.models.ModelUser;
 
@@ -36,8 +40,8 @@ public class PeopleActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
-    List<ModelUser> postUptoversList;
-    AdapterPostUpvoter adapterPostUpvoter;
+    List<ModelUser> peopleList;
+    AdapterPeople adapterPeople;
 
     List<String> idList;
 
@@ -54,9 +58,6 @@ public class PeopleActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //get id of post using intent
-        Intent intent = getIntent();
-        postId = intent.getStringExtra("postId");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //init views
@@ -68,19 +69,19 @@ public class PeopleActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        postUptoversList = new ArrayList<>();
-        adapterPostUpvoter = new AdapterPostUpvoter(getApplicationContext(), postUptoversList);
-        recyclerView.setAdapter(adapterPostUpvoter);
+        peopleList = new ArrayList<>();
+        adapterPeople = new AdapterPeople(getApplicationContext(), peopleList);
+        recyclerView.setAdapter(adapterPeople);
 
         idList = new ArrayList<>();
 
         checkUserStatus();
 
-        getLikes();
+        getUnfollowedPeople(myUid);
     }
 
-    private void getLikes() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("PostUpvotes").child(postId);
+    private void getUnfollowedPeople(final String uid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Follows").child(uid).child("Followings");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,7 +89,8 @@ public class PeopleActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     idList.add(snapshot.getKey());
                 }
-                showUsers();
+
+                showPeople();
             }
 
             @Override
@@ -98,32 +100,49 @@ public class PeopleActivity extends AppCompatActivity {
         });
     }
 
-    private void showUsers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void showPeople() {
+        //path of all posts
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        //get all data from this ref
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                postUptoversList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    ModelUser modelUser = ds.getValue(ModelUser.class);
-                    for (String id : idList) {
-                        try {
-                            if (modelUser.getUid() != null) {
-                                if (modelUser.getUid().equals(id)) {
-                                    postUptoversList.add(modelUser);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                peopleList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    try {
+                        ModelUser modelUser = ds.getValue(ModelUser.class);
+
+                        if (!modelUser.getUid().equals(myUid)) {
+                            if (idList.size() == 0) {
+                                peopleList.add(modelUser);
+                            } else {
+                                boolean isFollowed = true;
+                                for (String id : idList) {
+                                    if (modelUser.getUid().equals(id)) {
+                                        isFollowed = false;
+                                    }
+                                }
+                                if (isFollowed) {
+                                    peopleList.add(modelUser);
                                 }
                             }
-                        } catch (Exception e) {
-                            Log.d("gagal", modelUser.getUid() + " != " + id);
                         }
+                    } catch (Exception e) {
+                        Log.e("invalid", "user not found");
                     }
+
+                    //adapter
+                    adapterPeople = new AdapterPeople(getApplicationContext(), peopleList);
+                    //set adapter recycler view
+                    recyclerView.setAdapter(adapterPeople);
+                    adapterPeople.notifyDataSetChanged();
                 }
-                adapterPostUpvoter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //in case of error
+//                Toast.makeText(getActivity(), ""+databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

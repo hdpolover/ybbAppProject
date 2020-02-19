@@ -46,16 +46,45 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/peopleTv"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="People you may want to know"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/peopleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:text="People you may want to know"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/seeAllLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="25dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="See all"
+
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmerFrameLayoutPeople"
